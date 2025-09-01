@@ -90,21 +90,36 @@
 
   /* Mic inside textarea */
   .with-mic{ position:relative; }
-  .with-mic textarea{ padding-right:56px; } /* room for mic */
+  .with-mic textarea{ padding-right:98px; } /* extra room for button on small screens */
   .rec-btn{
     border:1px solid var(--border);
     background:#0a1426; color:var(--text);
     border-radius:999px; font-size:14px; line-height:1;
     cursor:pointer; transition:background .2s ease, transform .06s ease, box-shadow .2s ease;
+    display:inline-grid; grid-auto-flow:column; align-items:center; gap:6px;
   }
   .rec-btn.rec-btn--inside{
     position:absolute; bottom:10px; right:10px; z-index:2;
-    padding:8px 12px; display:inline-grid; grid-auto-flow:column; align-items:center; gap:6px;
-    box-shadow:0 2px 10px rgba(0,0,0,.25);
+    padding:8px 12px; box-shadow:0 2px 10px rgba(0,0,0,.25);
+    /* make sure label is always visible on mobile */
+    min-width:86px; justify-content:center;
   }
   .rec-btn[aria-pressed="true"]{ background:#101828; transform:translateY(-1px); }
   .rec-btn:focus{ outline:none; box-shadow:0 0 0 3px rgba(84,160,255,.15), 0 2px 10px rgba(0,0,0,.25); }
-  @media (max-width:420px){ .rec-btn.rec-btn--inside .label{ display:none; } }
+  /* IMPORTANT: keep label visible on mobile (no hiding) */
+  .rec-btn .label{ white-space:nowrap; }
+
+  /* spinner + status */
+  .transcribe-status{
+    font-size:12px; color:var(--muted); margin-top:6px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .spinner{
+    width:16px; height:16px; border:2px solid #2a3d5c;
+    border-top-color:#F5F7FA; border-radius:50%;
+    animation:spin .8s linear infinite; flex:0 0 16px;
+  }
+  @keyframes spin{ to { transform:rotate(360deg); } }
 
   /* Submit button */
   .cta{
@@ -122,7 +137,6 @@
   .cta::after{ content:""; position:absolute; inset:0; border-radius:inherit; background:var(--cta); z-index:-1; }
   .cta:hover{ transform:translateY(-1px); background:#101828; }
   .cta:hover::before{ opacity:1; }
-  @keyframes spin{ to{ transform:rotate(360deg); } }
 
   .note{ color:var(--muted); font-size:13px; }
   .success{
@@ -180,7 +194,7 @@
         <div class="with-mic">
           <textarea id="q_bottleneck" name="q_bottleneck" placeholder="Describe the tasks that typically take the most time or create delays." required></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_bottleneck" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -191,7 +205,7 @@
         <div class="with-mic">
           <textarea id="q_automate" name="q_automate" placeholder="Explain which task would bring the greatest benefit if automated, and why"></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_automate" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -202,7 +216,7 @@
         <div class="with-mic">
           <textarea id="q_workflow" name="q_workflow" placeholder="Outline the tools, processes, and common challenges you face in your workflow"></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_workflow" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -213,7 +227,7 @@
         <div class="with-mic">
           <textarea id="q_accuracy_speed" name="q_accuracy_speed" placeholder="Share your priorities between accuracy and speed, and why"></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_accuracy_speed" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -224,7 +238,7 @@
         <div class="with-mic">
           <textarea id="q_collab" name="q_collab" placeholder="Is it a slick system, or more like a game of email tennis?"></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_collab" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -235,7 +249,7 @@
         <div class="with-mic">
           <textarea id="q_errors" name="q_errors" placeholder="Provide an example of an error you often encounter or need to correct"></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_errors" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -246,7 +260,7 @@
         <div class="with-mic">
           <textarea id="q_ai_concerns" name="q_ai_concerns" placeholder="List the main risks or concerns you have about adopting AI in your practice"></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_ai_concerns" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -266,7 +280,7 @@
           <div class="with-mic">
             <textarea id="ai_view_why" name="ai_view_why" placeholder="Will it nick your job, or just the boring parts of it?"></textarea>
             <button type="button" class="rec-btn rec-btn--inside" data-target="ai_view_why" aria-pressed="false" aria-label="Record audio for this answer">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
               <span class="label">Record</span>
             </button>
           </div>
@@ -278,7 +292,7 @@
         <div class="with-mic">
           <textarea id="q_security" name="q_security" placeholder="Detail the safeguards, compliance standards, or controls you expect’."></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_security" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -289,7 +303,7 @@
         <div class="with-mic">
           <textarea id="q_outcome" name="q_outcome" placeholder="What would you actually do with the hours you get back — work smarter, or longer lunches?"></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_outcome" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -300,7 +314,7 @@
         <div class="with-mic">
           <textarea id="q_anything" name="q_anything" placeholder="This is your chance to say the thing you wish someone had asked."></textarea>
           <button type="button" class="rec-btn rec-btn--inside" data-target="q_anything" aria-pressed="false" aria-label="Record audio for this answer">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             <span class="label">Record</span>
           </button>
         </div>
@@ -320,8 +334,8 @@
   &copy; <script>document.write(new Date().getFullYear())</script> Lylo. All rights reserved.
 </footer>
 
+<!-- pre-warm -->
 <script>
-  // --- pre-warm on load (Render free tier) ---
   const API = ""; // same-origin
   const wait = (ms) => new Promise(r => setTimeout(r, ms));
   const withTimeout = (p, ms=15000) => Promise.race([p, new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")), ms))]);
@@ -331,7 +345,7 @@
     if (!el) return;
     el.style.display = "block";
     el.textContent = "Preparing transcriber…";
-    const delays = [0, 2000, 4000, 8000, 16000, 32000]; // ~1 minute total
+    const delays = [0, 2000, 4000, 8000, 16000, 32000];
     for (const d of delays) {
       if (d) await wait(d);
       try {
@@ -348,8 +362,8 @@
   document.addEventListener("DOMContentLoaded", prewarm);
 </script>
 
+<!-- submit to /api/submit -->
 <script>
-  // --- submit to /api/submit (emails you) ---
   const form = document.getElementById('researchForm');
   const success = document.getElementById('success');
 
@@ -412,12 +426,34 @@
   });
 </script>
 
+<!-- recorder with spinner + always-visible label -->
 <script>
-  // --- recorder per question -> /api/transcribe ---
   (function(){
     if (!navigator.mediaDevices || !window.MediaRecorder) return;
     const buttons = Array.from(document.querySelectorAll('.rec-btn'));
     let mediaRecorder = null, chunks = [], currentBtn = null, currentStream = null;
+
+    function getStatusEl(targetId){
+      const ta = document.getElementById(targetId);
+      let el = ta?.parentElement?.querySelector('.transcribe-status');
+      if (!el && ta?.parentElement) {
+        el = document.createElement('div');
+        el.className = 'transcribe-status';
+        el.setAttribute('aria-live', 'polite');
+        ta.parentElement.appendChild(el);
+      }
+      return el;
+    }
+    function showStatus(el, text, {spinning=false, tone='muted'}={}){
+      if (!el) return;
+      el.style.opacity = '1';
+      el.style.color = tone === 'ok' ? '#b4f5c7' : (tone === 'error' ? '#f5b4b4' : 'var(--muted)');
+      el.innerHTML = spinning ? `<span class="spinner" aria-hidden="true"></span>${text}` : text;
+    }
+    function fadeStatus(el, delay=1800){
+      if (!el) return;
+      setTimeout(() => { el.style.transition='opacity .4s ease'; el.style.opacity='0'; }, delay);
+    }
 
     async function startRecording(btn){
       const targetId = btn.dataset.target;
@@ -436,6 +472,9 @@
         const blob = new Blob(chunks, { type: mediaRecorder.mimeType || 'audio/webm' });
         chunks = [];
 
+        const statusEl = getStatusEl(targetId);
+        showStatus(statusEl, 'Transcribing…', {spinning:true});
+
         try {
           btn.disabled = true;
           const fd = new FormData();
@@ -449,23 +488,25 @@
           if (cleaned) {
             ta.value = (ta.value ? ta.value.trim() + '\n\n' : '') + cleaned;
             ta.dispatchEvent(new Event('input', { bubbles:true }));
+            showStatus(statusEl, 'Added transcript', {spinning:false, tone:'ok'});
+            fadeStatus(statusEl);
           } else {
-            alert('No speech detected. Try again a little closer to the mic.');
+            showStatus(statusEl, 'No speech detected. Try again a bit closer.', {spinning:false, tone:'error'});
           }
         } catch (err) {
           console.error(err);
-          alert('Sorry, we could not transcribe that audio.');
+          showStatus(statusEl, 'Sorry, we couldn’t transcribe that.', {spinning:false, tone:'error'});
         } finally {
           btn.disabled = false;
           btn.setAttribute('aria-pressed', 'false');
-          btn.querySelector('.label')?.replaceChildren('Record');
+          btn.querySelector('.label')?.replaceChildren('Record'); // keep label visible on mobile
           currentBtn = null;
         }
       };
 
       mediaRecorder.start();
       btn.setAttribute('aria-pressed', 'true');
-      btn.querySelector('.label')?.replaceChildren('Stop');
+      btn.querySelector('.label')?.replaceChildren('Stop'); // clearly shows Stop on mobile
       currentBtn = btn;
     }
 
