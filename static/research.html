@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lylo. — Research Questionnaire</title>
+<meta name="description" content="Lylo research questionnaire for solicitors.">
+<style>
+  :root{
+    --bg:#0A1220; --panel:#0B1322; --text:#F5F7FA; --muted:#C7CCD7;
+    --border:#1C2A3F; --cta:#111722; --radius:20px; --space:22px;
+    --container:1120px;
+    --font:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+           "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; font-family:var(--font);
+    background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  }
+
+  /* Page layout */
+  .wrap{
+    width:100%; max-width:var(--container); margin:0 auto;
+    padding:calc(var(--space)*2) var(--space) calc(var(--space)*3);
+    display:grid; gap:calc(var(--space)*2);
+  }
+  .panel{
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    background:var(--panel);
+    padding:calc(var(--space)*1.5);
+  }
+  .header{ text-align:center; margin-bottom:calc(var(--space)*1); }
+  .logo{
+    font-weight:700; font-size:40px; letter-spacing:-0.03em;
+    margin:0 0 8px 0; line-height:1;
+    color:var(--text); text-decoration:none; display:inline-block;
+  }
+  .logo:hover{ opacity:0.85; }
+  .tagline{ font-size:22px; line-height:1.25; margin:0; color:var(--muted); }
+
+  /* Form proportions */
+  form{
+    display:grid;
+    gap:24px;
+    max-width:760px;           /* keeps form comfortably narrow */
+    margin:0 auto;
+  }
+  .inline{
+    display:grid;
+    gap:16px;
+  }
+  @media (min-width:720px){
+    .inline{ grid-template-columns:1fr 1fr; } /* pairs short fields */
+  }
+  .field{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+
+  /* Inputs */
+  label{ font-weight:600; font-size:15px; }
+  .help{ color:var(--muted); font-size:13px; line-height:1.4; }
+
+  input[type="text"], input[type="email"], select, textarea{
+    width:100%;
+    border:1px solid var(--border);
+    background:#0a1426;
+    color:var(--text);
+    border-radius:14px;
+    padding:14px 14px;
+    font-size:15px;
+    outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease, background .2s ease;
+  }
+  textarea{
+    min-height:140px;          /* consistent height for big answers */
+    resize:vertical;
+    line-height:1.5;
+  }
+  input:focus, select:focus, textarea:focus{
+    border-color:#2a3d5c;
+    box-shadow:0 0 0 3px rgba(84,160,255,.15);
+  }
+
+  /* Mic inside textarea */
+  .with-mic{ position:relative; }
+  .with-mic textarea{ padding-right:56px; } /* room for mic */
+  .rec-btn{
+    border:1px solid var(--border);
+    background:#0a1426; color:var(--text);
+    border-radius:999px; font-size:14px; line-height:1;
+    cursor:pointer; transition:background .2s ease, transform .06s ease, box-shadow .2s ease;
+  }
+  .rec-btn.rec-btn--inside{
+    position:absolute; bottom:10px; right:10px; z-index:2;
+    padding:8px 12px; display:inline-grid; grid-auto-flow:column; align-items:center; gap:6px;
+    box-shadow:0 2px 10px rgba(0,0,0,.25);
+  }
+  .rec-btn[aria-pressed="true"]{ background:#101828; transform:translateY(-1px); }
+  .rec-btn:focus{ outline:none; box-shadow:0 0 0 3px rgba(84,160,255,.15), 0 2px 10px rgba(0,0,0,.25); }
+  @media (max-width:420px){ .rec-btn.rec-btn--inside .label{ display:none; } }
+
+  /* Submit button */
+  .cta{
+    display:inline-block; width:100%; max-width:260px; margin-top:6px;
+    padding:16px 18px; text-align:center; font-weight:600; font-size:16px;
+    color:var(--text); background:var(--cta); border:none; border-radius:14px;
+    position:relative; z-index:0; overflow:hidden; cursor:pointer;
+    transition:transform .06s ease, background .2s ease;
+  }
+  .cta::before{
+    content:""; position:absolute; inset:-6px; border-radius:inherit;
+    background:conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b);
+    filter:blur(6px); z-index:-2; animation:spin 4s linear infinite; opacity:0; transition:opacity .3s ease;
+  }
+  .cta::after{ content:""; position:absolute; inset:0; border-radius:inherit; background:var(--cta); z-index:-1; }
+  .cta:hover{ transform:translateY(-1px); background:#101828; }
+  .cta:hover::before{ opacity:1; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .note{ color:var(--muted); font-size:13px; }
+  .success{
+    display:none; margin-top:10px; padding:12px 14px;
+    border-radius:12px; border:1px solid #1d3a2a;
+    background:#0d1f16; color:#d5f5e3; font-size:14px;
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <section class="panel">
+    <header class="header">
+      <a href="index.html" class="logo">Lylo.</a>
+      <h1 class="tagline" style="margin-top:6px;">Thanks for being part of our research!</h1>
+    </header>
+
+    <form id="researchForm" novalidate>
+      <!-- Row 1: Identity -->
+      <div class="inline">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" placeholder="Jane Doe" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="janedoe@gmail.com" />
+        </div>
+      </div>
+
+      <!-- Row 2: Role + Experience -->
+      <div class="inline">
+        <div class="field">
+          <label for="role">Your role</label>
+          <select id="role" name="role" required>
+            <option value="" selected disabled>Select one</option>
+            <option>Solicitor</option><option>Paralegal</option>
+            <option>Legal Assistant</option><option>Barrister</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="experience">Years of experience</label>
+          <select id="experience" name="experience" required>
+            <option value="" selected disabled>Select one</option>
+            <option>0–2</option><option>3–5</option><option>6–10</option><option>10+</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Full-width Qs -->
+      <div class="field">
+        <label for="q_bottleneck">What’s the most time-consuming part of preparing ET1s or Schedules of Loss?</label>
+        <div class="with-mic">
+          <textarea id="q_bottleneck" name="q_bottleneck" placeholder="Describe the tasks that typically take the most time or create delays." required></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_bottleneck" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_automate">If Lylo automated one step perfectly, which would matter most and why?</label>
+        <div class="with-mic">
+          <textarea id="q_automate" name="q_automate" placeholder="Explain which task would bring the greatest benefit if automated, and why"></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_automate" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_workflow">Walk us through your current workflow — tools, steps, and the headaches.</label>
+        <div class="with-mic">
+          <textarea id="q_workflow" name="q_workflow" placeholder="Outline the tools, processes, and common challenges you face in your workflow"></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_workflow" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_accuracy_speed">What’s more important for you: absolute accuracy or faster turnaround?</label>
+        <div class="with-mic">
+          <textarea id="q_accuracy_speed" name="q_accuracy_speed" placeholder="Share your priorities between accuracy and speed, and why"></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_accuracy_speed" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_collab">How do you collaborate with colleagues on ET1s or SoLs today?</label>
+        <div class="with-mic">
+          <textarea id="q_collab" name="q_collab" placeholder="Is it a slick system, or more like a game of email tennis?"></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_collab" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_errors">What’s the most frustrating mistake or error you’ve caught before submission?</label>
+        <div class="with-mic">
+          <textarea id="q_errors" name="q_errors" placeholder="Provide an example of an error you often encounter or need to correct"></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_errors" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_ai_concerns">What concerns you most about using AI for legal work?</label>
+        <div class="with-mic">
+          <textarea id="q_ai_concerns" name="q_ai_concerns" placeholder="List the main risks or concerns you have about adopting AI in your practice"></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_ai_concerns" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="inline">
+        <div class="field">
+          <label for="ai_view">Do you see AI as a threat to your profession, or an opportunity?</label>
+          <select id="ai_view" name="ai_view" required>
+            <option value="" selected disabled>Select one</option>
+            <option>Threat</option><option>Opportunity</option>
+            <option>Both</option><option>Not sure</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="ai_view_why">Why?</label>
+          <div class="with-mic">
+            <textarea id="ai_view_why" name="ai_view_why" placeholder="Will it nick your job, or just the boring parts of it?"></textarea>
+            <button type="button" class="rec-btn rec-btn--inside" data-target="ai_view_why" aria-pressed="false" aria-label="Record audio for this answer">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span class="label">Record</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_security">What security or compliance features would give you confidence using Lylo?</label>
+        <div class="with-mic">
+          <textarea id="q_security" name="q_security" placeholder="Detail the safeguards, compliance standards, or controls you expect’."></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_security" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_outcome">If Lylo worked perfectly, what would your workday look like?</label>
+        <div class="with-mic">
+          <textarea id="q_outcome" name="q_outcome" placeholder="What would you actually do with the hours you get back — work smarter, or longer lunches?"></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_outcome" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q_anything">Anything else you’d like us to know?</label>
+        <div class="with-mic">
+          <textarea id="q_anything" name="q_anything" placeholder="This is your chance to say the thing you wish someone had asked."></textarea>
+          <button type="button" class="rec-btn rec-btn--inside" data-target="q_anything" aria-pressed="false" aria-label="Record audio for this answer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3a3 3 0 0 1 3 3v6a3 3 0 1 1-6 0V6a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M5 11v1a7 7 0 0 0 14 0v-1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M12 19v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="label">Record</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="field">
+        <button type="submit" class="cta">Submit response</button>
+        <div class="note">By submitting, you consent to us processing your responses for product research.</div>
+        <div id="success" class="success" role="status" aria-live="polite">Thanks — your response has been recorded.</div>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer style="text-align:center; padding:calc(var(--space)*2); border-top:1px solid var(--border); color:var(--muted); font-size:14px;">
+  &copy; <script>document.write(new Date().getFullYear())</script> Lylo. All rights reserved.
+</footer>
+
+<script>
+  // Local save (swap for POST later if needed)
+  const form = document.getElementById('researchForm');
+  const success = document.getElementById('success');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const data = Object.fromEntries(new FormData(form).entries());
+    const entries = JSON.parse(localStorage.getItem('lylo_research') || '[]');
+    entries.push({ ...data, submittedAt: new Date().toISOString() });
+    localStorage.setItem('lylo_research', JSON.stringify(entries));
+    success.style.display = 'block';
+    form.reset();
+    success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // Recorder → /api/transcribe
+  (function(){
+    if (!navigator.mediaDevices || !window.MediaRecorder) return;
+    const buttons = Array.from(document.querySelectorAll('.rec-btn'));
+    let mediaRecorder = null, chunks = [], currentBtn = null, currentStream = null;
+
+    async function startRecording(btn){
+      const targetId = btn.dataset.target;
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      currentStream = stream;
+
+      const preferred = ['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/mpeg'];
+      const mimeType = preferred.find(t => MediaRecorder.isTypeSupported(t)) || '';
+      mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+
+      chunks = [];
+      mediaRecorder.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+      mediaRecorder.onstop = async () => {
+        try { stream.getTracks().forEach(t => t.stop()); } catch(e){}
+        const blob = new Blob(chunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+        chunks = [];
+
+        try {
+          const fd = new FormData();
+          fd.append('file', blob, 'answer.webm');
+          fd.append('question_id', targetId);
+          const res = await fetch('/api/transcribe', { method:'POST', body:fd });
+          if (!res.ok) throw new Error('Transcription failed');
+          const { transcript } = await res.json();
+          const ta = document.getElementById(targetId);
+          ta.value = (ta.value ? (ta.value.trim() + '\n\n') : '') + (transcript || '').trim();
+          ta.dispatchEvent(new Event('input', { bubbles:true }));
+        } catch (err) {
+          console.error(err);
+          alert('Sorry, we could not transcribe that audio.');
+        } finally {
+          btn.disabled = false;
+          btn.setAttribute('aria-pressed', 'false');
+          btn.textContent = '🎙️ Record';
+          currentBtn = null;
+        }
+      };
+
+      mediaRecorder.start();
+      btn.setAttribute('aria-pressed', 'true');
+      btn.textContent = '■ Stop';
+      currentBtn = btn;
+    }
+
+    function stopRecording(){
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+      if (currentStream) { try { currentStream.getTracks().forEach(t => t.stop()); } catch(e){} }
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        if (currentBtn && currentBtn !== btn && mediaRecorder?.state === 'recording') { stopRecording(); return; }
+        if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+          btn.disabled = true;
+          try { await startRecording(btn); } finally { btn.disabled = false; }
+        } else if (btn === currentBtn && mediaRecorder.state === 'recording') {
+          stopRecording();
+        }
+      });
+    });
+  })();
+</script>
+</body>
+</html>

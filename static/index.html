@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lylo. — AI for solicitors</title>
+<meta name="description" content="Works without internet. Built for security and trust. ET1 and Schedule of Loss drafting.">
+
+<style>
+  :root{
+    --bg:#0A1220;
+    --panel:#0B1322;
+    --text:#F5F7FA;
+    --muted:#C7CCD7;
+    --border:#1C2A3F;
+    --cta:#111722;
+    --radius:20px;
+    --space:22px;
+    --container:1120px;
+    --font:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+           "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  .wrap{
+    width:100%;
+    max-width:var(--container);
+    margin:0 auto;
+    padding:calc(var(--space)*2) var(--space) calc(var(--space)*3); /* reduced top padding */
+    display:grid;
+    gap:calc(var(--space)*2);
+  }
+
+  @media (min-width: 980px){
+    .wrap{
+      grid-template-columns: 1fr 1fr;
+      align-items:center;
+      min-height: 80dvh;
+    }
+  }
+
+  .stack{max-width: 640px; margin:auto; text-align:center;}
+
+  .logo{
+    font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    font-weight:700;
+    font-size:64px;
+    letter-spacing:-0.03em;
+    margin:0 0 calc(var(--space)*0.8);
+    line-height:1;
+  }
+
+  .tagline{
+    font-size:24px;
+    line-height:1.25;
+    margin:0 0 calc(var(--space)*1.2);
+  }
+
+  .bullets{
+    list-style:none; margin:0 0 calc(var(--space)*1.4); padding:0;
+    display:grid; gap:14px;
+    justify-content:center;
+  }
+  .bullet{
+    display:grid; grid-template-columns:26px 1fr; column-gap:12px;
+    align-items:center; font-size:17px; line-height:1.45;
+    max-width:400px; margin:0 auto;
+  }
+  .tick{
+    width:22px; height:22px; border-radius:999px;
+    display:grid; place-items:center;
+    background:var(--bg);
+    border:1px solid var(--bg);
+  }
+  .tick svg path{ stroke:var(--bg); }
+
+  /* CTA with glowing rainbow border */
+  .cta {
+    display:inline-block; 
+    width:100%; 
+    max-width:300px;
+    margin:auto;
+    padding:16px 18px; 
+    text-align:center;
+    font-weight:600; 
+    font-size:17px;
+    color:var(--text);
+    background:var(--cta);
+    border:none;
+    border-radius:14px;
+    position:relative;
+    z-index:0;
+    overflow:hidden;
+    transition:transform .06s ease, background .2s ease;
+  }
+
+  .cta::before {
+    content:"";
+    position:absolute;
+    inset:-6px;
+    border-radius:inherit;
+    background:conic-gradient(
+      from 0deg,
+      #ff6b6b,
+      #feca57,
+      #1dd1a1,
+      #54a0ff,
+      #5f27cd,
+      #ff6b6b
+    );
+    filter:blur(6px);
+    z-index:-2;
+    animation:spin 4s linear infinite;
+    opacity:0;
+    transition:opacity .3s ease;
+  }
+
+  .cta::after {
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:var(--cta);
+    z-index:-1;
+  }
+
+  .cta:hover {
+    transform:translateY(-1px);
+    background:#101828;
+  }
+
+  .cta:hover::before {
+    opacity:1;
+  }
+
+  @keyframes spin {
+    to { transform:rotate(360deg); }
+  }
+
+  .note{color:var(--muted); font-size:13px; margin-top:10px}
+
+  .visual{
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    background:var(--panel);
+    padding:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  footer{
+    text-align:center;
+    padding:calc(var(--space)*2);
+    border-top:1px solid var(--border);
+    color:var(--muted);
+    font-size:14px;
+    margin-top:calc(var(--space)*3);
+  }
+
+  @media (min-width:1200px){
+    .logo{font-size:72px}
+    .tagline{font-size:26px}
+  }
+</style>
+</head>
+<body>
+
+<main class="wrap">
+  <section class="stack">
+    <h1 class="logo">Lylo.</h1>
+    <p class="tagline">Offline, secure AI for solicitors.</p>
+
+    <ul class="bullets">
+      <li class="bullet">
+        <span class="tick" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6 12.5l3.2 3.2L18 7.9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>
+        Built for Employment Law. Drafts and compiles documents such as Statement of Facts, ET1’s and Schedule of Loss’ with total accuracy and zero cloud risk.
+        </span>
+      </li>
+    </ul>
+
+    <a href="/static/research.html" class="cta" id="getStarted">Get started</a>
+    <div class="note">In development stages. Register interest.</div>
+  </section>
+
+  <aside class="visual">
+    <img 
+      src="/static/poc.gif"
+      alt="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss."
+      width="800" height="850"
+      style="width:100%; max-width:460px; height:auto; border-radius:calc(var(--radius) - 4px);" 
+      loading="eager" decoding="async" />
+  </aside>
+</main>
+
+<footer>
+  &copy; <script>document.write(new Date().getFullYear())</script> Lylo. All rights reserved.
+</footer>
+
+
+
+</body>
+</html>
