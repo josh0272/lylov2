@@ -3,7 +3,7 @@ FROM python:3.11-slim
 
 # System dependencies (libstdc++ required for faster-whisper)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libstdc++6 git && rm -rf /var/lib/apt/lists/*
+    ffmpeg libstdc++6 git && rm -rf /var/lib/apt/lists/*
 
 # Create working directory
 WORKDIR /app
