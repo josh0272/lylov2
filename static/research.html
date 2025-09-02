@@ -172,6 +172,72 @@
     /* Success message centered too */
     .success{ text-align:center; }
   }
+  /* === Professionalized form variant === */
+  /* Subtle cards around long-answer questions only */
+  .field:has(textarea){
+    padding:12px; border-radius:14px;
+    border:1px solid rgba(255,255,255,.06);
+    background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+  }
+
+  /* Slightly more breathing room on desktop */
+  @media (min-width:721px){
+    form{ gap:28px; }
+  }
+
+  /* Blue-only primary action for research page */
+  .cta--blue{
+    background:
+      linear-gradient(180deg,#111722 0%, #0C1423 100%) padding-box,
+      conic-gradient(from 0deg, #8ec5ff, #4ea2ff, #2b7dff, #4ea2ff, #8ec5ff) border-box;
+  }
+  .cta--blue:hover{
+    background:
+      linear-gradient(180deg,#111A2A 0%, #0C1626 100%) padding-box,
+      conic-gradient(from 60deg, #8ec5ff, #4ea2ff, #2b7dff, #4ea2ff, #8ec5ff) border-box;
+  }
+
+  /* Add small lock icon to the submit button for trust */
+  .cta--blue::before{
+    content:""; display:inline-block; width:14px; height:14px; margin-right:8px; vertical-align:-2px;
+    background: currentColor; mask: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"white\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"10\" rx=\"2\" ry=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/></svg>') no-repeat 50% 50% / contain;
+  }
+
+  /* Success animation */
+  .success{ transition: opacity .25s ease, transform .25s ease; }
+  .success[style*="display: block"]{ opacity:1; transform:translateY(0); }
+
+  /* Mobile polish kept from earlier */
+  @media (max-width: 640px){
+    .panel{ padding: calc(var(--space)*1.2); }
+    .header{ text-align:center; }
+    .logo{ font-size:36px; }
+    .tagline{ font-size:20px; }
+
+    form{ gap:20px; max-width:100%; }
+    .inline{ grid-template-columns:1fr; gap:14px; }
+
+    label{ font-size:17px; line-height:1.35; text-align:center; }
+    .help{ text-align:center; }
+
+    input[type="text"], input[type="email"], select, textarea{ padding:16px 16px; font-size:16px; }
+    textarea{ min-height:160px; }
+
+    .with-mic textarea{ padding-right:106px; }
+    .rec-btn.rec-btn--inside{ bottom:12px; right:12px; }
+
+    .field:has(.cta){ align-items:center; }
+    .cta{ margin-left:auto; margin-right:auto; }
+    .note{ text-align:center; max-width:28ch; }
+    .success{ text-align:center; }
+  }
+  /* Mobile mic repositioning */
+  @media (max-width: 640px){
+    .with-mic{ display:flex; flex-direction:column; align-items:center; }
+    .with-mic textarea{ padding-right:16px !important; } /* remove extra padding */
+    .rec-btn.rec-btn--inside{ position:static; margin-top:10px; width:auto; min-width:120px; }
+  }
 </style>
 </head>
 <body>
@@ -350,7 +416,8 @@
 
       <!-- Submit -->
       <div class="field">
-        <button type="submit" class="cta">Submit response</button>
+        <button type="submit" class="cta cta--blue">Submit response</button>
+        <div class="note">Your responses are confidential and used only for product research.</div>
         <div class="note">By submitting, you consent to us processing your responses for product research.</div>
         <div id="success" class="success" role="status" aria-live="polite">Thanks — your response has been recorded.</div>
       </div>
