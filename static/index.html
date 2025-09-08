@@ -165,9 +165,7 @@
     animation: lmPulse 1.6s ease-out 1;
   }
   @keyframes lmPulse {
-    0% {
-      box-shadow: none;
-    }
+    0% { box-shadow: none; }
     40% {
       box-shadow:
         0 0 6px rgba(84,160,255,0.95),
@@ -217,15 +215,15 @@
         <video
           id="lyloVideo"
           autoplay
-          loop
           muted
           playsinline
           preload="metadata"
-          poster="/static/poc.gif"
+          poster="/static/poc.jpg"
           aria-label="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss.">
+          <!-- Put MP4 first for iOS Safari -->
+          <source src="/static/poc.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
           <source src="/static/poc.webm" type="video/webm">
-          <source src="/static/poc.mp4" type="video/mp4">
-          <img src="/static/poc.gif" alt="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss.">
+          <img src="/static/poc.jpg" alt="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss.">
         </video>
 
         <!-- overlay buttons -->
@@ -256,6 +254,28 @@
     else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
     else if (video.msRequestFullscreen) video.msRequestFullscreen();
   });
+
+  // autoplay fallback for iOS Safari
+  (function () {
+    if (!video) return;
+
+    const tryPlay = () => video.play().catch(() => {});
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      video.addEventListener('loadeddata', tryPlay, { once: true });
+    }
+
+    const onInteract = () => {
+      video.setAttribute('controls', '');
+      video.play().catch(() => {});
+      window.removeEventListener('touchstart', onInteract);
+      window.removeEventListener('click', onInteract);
+    };
+
+    window.addEventListener('touchstart', onInteract, { passive: true });
+    window.addEventListener('click', onInteract);
+  })();
 </script>
 
 </body>
