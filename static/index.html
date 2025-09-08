@@ -106,9 +106,7 @@
   }
 
   @media (max-width: 980px){
-    .video-wrapper video {
-      border:1px solid rgba(245,247,250,0.22);
-    }
+    .video-wrapper video { border:1px solid rgba(245,247,250,0.22); }
   }
 
   .fullscreen-btn{
@@ -122,65 +120,24 @@
   .fullscreen-btn:hover{ background:rgba(17,23,34,.9); transform:translateY(-1px); }
 
   .learnmore-btn {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
-    gap: 0;
-    padding: 8px 10px;
-    border-radius: 999px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    color: var(--text);
-    background: rgba(17,23,34,0.6);
+    position: absolute; top: 12px; right: 12px; z-index: 2;
+    display: inline-flex; align-items: center; overflow: hidden;
+    gap: 0; padding: 8px 10px; border-radius: 999px;
+    font-size: 14px; font-weight: 600; text-decoration: none;
+    color: var(--text); background: rgba(17,23,34,0.6);
     backdrop-filter: blur(4px) saturate(115%);
     border: 1px solid rgba(84,160,255,0.4);
     box-shadow: 0 0 4px rgba(84,160,255,0.25);
-    transition: padding .25s ease, gap .25s ease,
-                transform .2s ease, box-shadow .3s ease, background .2s ease;
+    transition: padding .25s ease, gap .25s ease, transform .2s ease, box-shadow .3s ease, background .2s ease;
   }
-  .learnmore-btn .label {
-    white-space: nowrap;
-    max-width: 0;
-    opacity: 0;
-    margin-left: 0;
-    transition: max-width .35s ease, opacity .25s ease, margin-left .25s ease;
-  }
-  .learnmore-btn.expanded,
-  .learnmore-btn:hover,
-  .learnmore-btn:focus-visible {
-    padding: 8px 14px;
-    gap: 6px;
-  }
-  .learnmore-btn.expanded .label,
-  .learnmore-btn:hover .label,
-  .learnmore-btn:focus-visible .label {
-    max-width: 120px;
-    opacity: 1;
-    margin-left: 2px;
-  }
-  .learnmore-btn:hover {
-    background: rgba(17,23,34,0.8);
-    transform: translateY(-1px);
-    box-shadow: 0 0 6px rgba(84,160,255,0.6);
-  }
-  .learnmore-btn:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(84,160,255,0.7);
-  }
-  .learnmore-btn.pulse-once { animation: lmPulse 1.6s ease-out 1; }
-  @keyframes lmPulse {
-    0%   { box-shadow: none; }
-    40%  { box-shadow: 0 0 6px rgba(84,160,255,0.95), 0 0 12px rgba(84,160,255,0.7); }
-    100% { box-shadow: 0 0 4px rgba(84,160,255,0.25); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .learnmore-btn.pulse-once { animation: none; }
-  }
+  .learnmore-btn .label{white-space:nowrap; max-width:0; opacity:0; margin-left:0; transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;}
+  .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{padding:8px 14px; gap:6px;}
+  .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px; opacity:1; margin-left:2px;}
+  .learnmore-btn:hover{background:rgba(17,23,34,0.8); transform:translateY(-1px); box-shadow:0 0 6px rgba(84,160,255,0.6);}
+  .learnmore-btn:focus-visible{outline:none; box-shadow:0 0 0 3px rgba(84,160,255,0.7);}
+  .learnmore-btn.pulse-once{animation:lmPulse 1.6s ease-out 1;}
+  @keyframes lmPulse{0%{box-shadow:none;}40%{box-shadow:0 0 6px rgba(84,160,255,0.95),0 0 12px rgba(84,160,255,0.7);}100%{box-shadow:0 0 4px rgba(84,160,255,0.25);}}
+  @media (prefers-reduced-motion: reduce){.learnmore-btn.pulse-once{animation:none;}}
 
   footer{
     text-align:center; padding:24px 0;
@@ -197,9 +154,7 @@
       <h1 class="logo">Lylo.</h1>
       <p class="tagline">Offline, secure AI for solicitors.</p>
       <ul class="bullets">
-        <li class="bullet">
-          Built for Employment Law. Drafts and compiles documents such as Statement of Facts, ET1’s and Schedule of Loss’ with total accuracy and zero cloud risk.
-        </li>
+        <li class="bullet">Built for Employment Law. Drafts and compiles documents such as Statement of Facts, ET1’s and Schedule of Loss’ with total accuracy and zero cloud risk.</li>
       </ul>
       <a href="/research" class="cta" id="getStarted">Take part</a>
       <div class="note">In development stages. Register interest.</div>
@@ -245,6 +200,7 @@
   const video = document.getElementById("lyloVideo");
   const fsBtn = document.getElementById("fullscreenToggle");
 
+  // Enter fullscreen (tries all vendor methods)
   function goFullscreen() {
     if (!video) return;
     if (document.fullscreenElement && document.exitFullscreen) {
@@ -255,6 +211,7 @@
     try { if (video.webkitRequestFullscreen) return video.webkitRequestFullscreen(); } catch(e) {}
     try { if (video.webkitEnterFullscreen) return video.webkitEnterFullscreen(); } catch(e) {}
     try { if (video.webkitEnterFullScreen) return video.webkitEnterFullScreen(); } catch(e) {}
+    // fallback: expose controls so user can tap native fullscreen
     video.setAttribute('controls', '');
   }
 
@@ -263,24 +220,14 @@
     fsBtn.addEventListener("touchend", e => { e.preventDefault(); goFullscreen(); }, { passive: false });
   }
 
-  // ✅ Resume video if it freezes after leaving fullscreen
-  function handleFsExit() {
-    if (video && video.paused) {
-      video.play().catch(() => {});
-    }
-  }
-  document.addEventListener("fullscreenchange", handleFsExit);
-  document.addEventListener("webkitendfullscreen", handleFsExit);
-
-  // Autoplay fallback
+  // Ensure autoplay (no random controls)
   (function () {
     if (!video) return;
     const tryPlay = () => video.play();
-    if (video.readyState >= 2) {
-      tryPlay().catch(() => {});
-    } else {
-      video.addEventListener('loadeddata', () => { tryPlay().catch(() => {}); }, { once: true });
-    }
+
+    if (video.readyState >= 2) { tryPlay().catch(() => {}); }
+    else { video.addEventListener('loadeddata', () => { tryPlay().catch(() => {}); }, { once: true }); }
+
     const onVideoTap = () => {
       tryPlay().catch(() => {
         video.setAttribute('controls', '');
@@ -289,17 +236,60 @@
     };
     video.addEventListener('touchstart', onVideoTap, { passive: true, once: true });
     video.addEventListener('click', onVideoTap, { once: true });
+
     video.addEventListener('play', () => {
       if (video.hasAttribute('controls')) video.removeAttribute('controls');
     });
   })();
 
+  // 🔧 iOS fullscreen exit freeze fix
+  function resumeInlinePlayback() {
+    if (!video) return;
+    // Force "inline" presentation if supported (iOS 15+)
+    try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
+
+    // Nudge time to force repaint
+    try {
+      const t = video.currentTime || 0;
+      video.pause();
+      // tiny seek backward or forward to invalidate the frame
+      video.currentTime = Math.max(0, t - 0.001);
+    } catch (e) {}
+
+    // Retry playing a few times (rAF + small timeout)
+    const tryPlay = () => video.play().catch(() => {});
+    requestAnimationFrame(tryPlay);
+    setTimeout(tryPlay, 50);
+    setTimeout(tryPlay, 150);
+
+    // As a last resort, reload the media then play
+    setTimeout(() => {
+      if (video.paused || video.readyState < 2) {
+        const wasMuted = video.muted;
+        video.load();
+        video.muted = true; // ensure inline autoplay
+        video.play().catch(() => {});
+        // restore mute state if you ever change it
+        video.muted = wasMuted;
+      }
+    }, 400);
+  }
+
+  // Standard fullscreen exit
+  document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) resumeInlinePlayback();
+  });
+
+  // iOS-specific native fullscreen exit
+  // NOTE: This event is fired on the video element
+  video.addEventListener("webkitendfullscreen", resumeInlinePlayback);
+
   // Learn more pill animation
   (function () {
     const btn = document.getElementById('learnMoreBtn');
     if (!btn) return;
-    const expandDelay = 7000;
-    const showFor = 4000;
+    const expandDelay = 7000;   // delay before expanding
+    const showFor = 4000;       // how long to stay expanded
     setTimeout(() => {
       btn.classList.add('expanded', 'pulse-once');
       setTimeout(() => {
