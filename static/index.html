@@ -9,57 +9,80 @@
 <style>
   :root{
     --bg:#0A1220; --panel:#0B1322; --text:#F5F7FA; --muted:#C7CCD7;
-    --border:#1C2A3F; --cta:#111722; --radius:20px; --space:22px; --container:1120px;
-    --accent:#54a0ff;            /* matches questionnaire page */
-    --outline:#2a3d5c;           /* matches questionnaire page */
+    --border:#1C2A3F; --cta:#111722; --radius:20px; --space:22px; --container:1360px;
+    --accent:#54a0ff; --outline:#2a3d5c;
     --font:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text","Helvetica Neue","Segoe UI", Roboto, Arial, sans-serif;
 
-    /* background-only additions */
-    --bg-top:#0A1220;            /* start of vignette */
-    --bg-bottom:#080D18;         /* end of vignette */
+    --bg-top:#0A1220; --bg-bottom:#080D18;
     --noise:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO0WQ8AAW0B8w1i6b0AAAAASUVORK5CYII=");
   }
+
   *{box-sizing:border-box}
+
+  /* Sticky footer layout */
   html,body{height:100%}
   body{
     margin:0; font-family:var(--font); color:var(--text);
     -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
     background:none; position:relative;
+
+    min-height:100svh;
+    display:flex; flex-direction:column;
   }
-  body::before{ content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; background:
+  main{ flex:1; display:flex; }
+
+  /* Background effects */
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; background:
       radial-gradient(1200px 700px at 70% -10%, rgba(84,160,255,.08), transparent 70%),
       radial-gradient(900px 600px at -10% 30%, rgba(25,195,125,.07), transparent 70%),
       linear-gradient(to bottom, var(--bg-top) 0%, var(--bg-top) 40%, var(--bg-bottom) 100%);
   }
-  body::after{ content:""; position:fixed; inset:0; pointer-events:none; background-image:var(--noise); opacity:.05; mix-blend-mode:soft-light; }
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none;
+    background-image:var(--noise); opacity:.05; mix-blend-mode:soft-light;
+  }
 
-  .wrap{width:100%;max-width:var(--container);margin:0 auto;padding:calc(var(--space)*2) var(--space) calc(var(--space)*3);display:grid;gap:calc(var(--space)*2);}  
-  @media (min-width:980px){.wrap{grid-template-columns:1fr 1fr;align-items:center;min-height:80dvh;}}
-  .stack{max-width:640px;margin:auto;text-align:center;}
+  /* Main content grid */
+  .wrap{
+    width:100%; max-width:var(--container); margin:auto;
+    padding:clamp(48px, 6vh, 100px) var(--space) clamp(28px, 4vh, 60px);
+    display:grid; gap:calc(var(--space)*1.5);
+  }
+  @media (min-width:980px){
+    .wrap{
+      grid-template-columns:1fr 1.35fr;
+      align-items:center;
+    }
+  }
 
-  .logo{font-family:"SF Pro Display",-apple-system,"Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:64px;letter-spacing:-.03em;margin:0 0 calc(var(--space)*0.8);line-height:1;}
-  .tagline{font-size:24px;line-height:1.25;margin:0 0 calc(var(--space)*1.2);letter-spacing:-0.01em;font-weight:500;}  
+  .stack{max-width:640px; text-align:center;}
+
+  .logo{
+    font-family:"SF Pro Display",-apple-system,"Helvetica Neue",Arial,sans-serif;
+    font-weight:700; font-size:64px; letter-spacing:-.03em;
+    margin:0 0 calc(var(--space)*0.8); line-height:1;
+  }
+  .tagline{
+    font-size:24px; line-height:1.25; margin:0 0 calc(var(--space)*1.2);
+    letter-spacing:-0.01em; font-weight:500;
+  }
   .bullets{list-style:none;margin:0 0 calc(var(--space)*1.4);padding:0;display:grid;gap:14px;justify-content:center;}
   .bullet{font-size:17px;line-height:1.45;max-width:440px;margin:0 auto;}
 
-  /* Take part button */
+  /* CTA */
   .cta{
     display:inline-block; width:100%; max-width:300px; margin:auto;
-    padding:16px 18px; text-align:center; font-weight:600; font-size:17px;
-    color:var(--text);
-    /* Gradient border using layered backgrounds (no bleed through) */
+    padding:16px 18px; text-align:center; font-weight:600; font-size:17px; color:var(--text);
     border:1px solid transparent; border-radius:14px;
     background:
       linear-gradient(180deg,#111722 0%, #0C1423 100%) padding-box,
       conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;
     position:relative; z-index:0; overflow:hidden; text-decoration:none; cursor:pointer;
     transition:transform .25s cubic-bezier(.2,.8,.2,1), background-color .25s ease, outline-color .25s ease, box-shadow .25s ease;
-    outline:2px solid rgba(84,160,255,.18);
-    outline-offset:2px;
+    outline:2px solid rgba(84,160,255,.18); outline-offset:2px;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 8px 24px rgba(0,0,0,.45);
   }
-  /* ring pseudo-element removed in favor of layered background border */
-  /* inner overlay removed; inner gradient handled by padding-box layer */
   .cta:hover{
     transform:translateY(-1px);
     background:
@@ -68,72 +91,172 @@
     outline-color:rgba(84,160,255,.28);
     box-shadow:0 0 0 6px rgba(84,160,255,.12), inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);
   }
-  /* no ::before; hover handled on background and shadow */
   .cta:focus-visible{
     outline:2px solid rgba(84,160,255,.65);
     outline-offset:3px;
     box-shadow:0 0 0 6px rgba(84,160,255,.16);
   }
-  @keyframes spin{to{transform:rotate(360deg);}}
 
   .note{color:var(--muted);font-size:13px;margin-top:10px}
 
-  .visual{
-    border:1px solid rgba(255,255,255,.06);
-    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-    border-radius:var(--radius);
-    padding:20px; display:flex; align-items:center; justify-content:center;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 20px 60px rgba(0,0,0,.45);
-    backdrop-filter:saturate(115%) blur(4px);
-  }
-  .visual img{
-    width:100%; max-width:460px; height:auto; border-radius:calc(var(--radius) - 4px);
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), 0 30px 80px rgba(0,0,0,.5);
+  /* VISUAL (no panel) */
+  .visual{display:flex; align-items:center; justify-content:center;}
+  .video-wrapper{position:relative;width:100%;}
+  .video-wrapper video,
+  .video-wrapper img{
+    width:100%; height:auto;
+    max-height:62vh;
+    border-radius:calc(var(--radius) - 4px);
+    display:block; object-fit:cover;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
   }
 
-  footer{text-align:center;padding:calc(var(--space)*2);border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px;margin-top:calc(var(--space)*3);}  
-  @media (min-width:1200px){.logo{font-size:72px}.tagline{font-size:26px}}
+  /* Overlay controls */
+  .fullscreen-btn{
+    position:absolute; bottom:12px; right:12px;
+    background:rgba(17,23,34,.7); color:var(--text);
+    font-size:18px; font-weight:600; line-height:1;
+    padding:8px 12px; border:none; border-radius:10px; cursor:pointer;
+    transition:background .2s ease, transform .06s ease;
+    z-index:2;
+  }
+  .fullscreen-btn:hover{ background:rgba(17,23,34,.9); transform:translateY(-1px); }
 
-  /* Global transitions + accessibility */
-  *,*:before,*:after{
-    transition:transform .25s cubic-bezier(.2,.8,.2,1), opacity .25s ease, background-color .25s ease, box-shadow .25s ease;
+  /* Learn more pill with thin bright pulse */
+  .learnmore-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+
+    color: var(--text);
+    background: rgba(17,23,34,0.6);
+    backdrop-filter: blur(4px) saturate(115%);
+    border: 1px solid rgba(84,160,255,0.4);
+
+    /* resting subtle glow */
+    box-shadow: 0 0 4px rgba(84,160,255,0.25);
+
+    transition: transform .2s ease, box-shadow .3s ease, background .2s ease;
   }
-  @media (prefers-reduced-motion: reduce){
-    *,*:before,*:after{ transition:none !important; animation:none !important; }
+
+  .learnmore-btn:hover {
+    background: rgba(17,23,34,0.8);
+    transform: translateY(-1px);
+    box-shadow: 0 0 6px rgba(84,160,255,0.6);
   }
+
+  .learnmore-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(84,160,255,0.7);
+  }
+
+  /* Pulse once on load */
+  .learnmore-btn.pulse-once {
+    animation: lmPulse 1.6s ease-out 1;
+  }
+  @keyframes lmPulse {
+    0% {
+      box-shadow: none;
+    }
+    40% {
+      box-shadow:
+        0 0 6px rgba(84,160,255,0.95),
+        0 0 12px rgba(84,160,255,0.7);
+    }
+    100% {
+      box-shadow: 0 0 4px rgba(84,160,255,0.25);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .learnmore-btn.pulse-once { animation: none; }
+  }
+
+  footer{
+    text-align:center; padding:24px 0;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:var(--muted); font-size:14px;
+  }
+
+  /* Accessibility */
+  *,*:before,*:after{transition:transform .25s cubic-bezier(.2,.8,.2,1), opacity .25s ease, background-color .25s ease, box-shadow .25s ease;}
+  @media (prefers-reduced-motion: reduce){*,*:before,*:after{transition:none !important; animation:none !important;}}
   ::selection{ background:rgba(84,160,255,.28); color:#fff; }
   :root{ color-scheme:dark; }
 </style>
 </head>
 <body>
 
-<main class="wrap">
-  <section class="stack">
-    <h1 class="logo">Lylo.</h1>
-    <p class="tagline">Offline, secure AI for solicitors.</p>
+<main>
+  <div class="wrap">
+    <section class="stack">
+      <h1 class="logo">Lylo.</h1>
+      <p class="tagline">Offline, secure AI for solicitors.</p>
 
-    <ul class="bullets">
-      <li class="bullet">
-        Built for Employment Law. Drafts and compiles documents such as Statement of Facts, ET1’s and Schedule of Loss’ with total accuracy and zero cloud risk.
-      </li>
-    </ul>
+      <ul class="bullets">
+        <li class="bullet">
+          Built for Employment Law. Drafts and compiles documents such as Statement of Facts, ET1’s and Schedule of Loss’ with total accuracy and zero cloud risk.
+        </li>
+      </ul>
 
-    <a href="/research" class="cta" id="getStarted">Take part</a>
-    <div class="note">In development stages. Register interest.</div>
-  </section>
+      <a href="/research" class="cta" id="getStarted">Take part</a>
+      <div class="note">In development stages. Register interest.</div>
+    </section>
 
-  <aside class="visual">
-    <img 
-      src="/static/poc.gif"
-      alt="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss."
-      width="800" height="850"
-      loading="eager" decoding="async" />
-  </aside>
+    <aside class="visual">
+      <div class="video-wrapper">
+        <video
+          id="lyloVideo"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="metadata"
+          poster="/static/poc.gif"
+          aria-label="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss.">
+          <source src="/static/poc.webm" type="video/webm">
+          <source src="/static/poc.mp4" type="video/mp4">
+          <img src="/static/poc.gif" alt="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss.">
+        </video>
+
+        <!-- overlay buttons -->
+        <a href="/demo" class="learnmore-btn pulse-once" aria-label="Learn more about this demo">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6" opacity="0.9"/>
+            <path d="M12 17v-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="12" cy="7.5" r="1.2" fill="currentColor"/>
+          </svg>
+          Learn more
+        </a>
+        <button class="fullscreen-btn" id="fullscreenToggle" aria-label="Enter fullscreen">⤢</button>
+      </div>
+    </aside>
+  </div>
 </main>
 
 <footer>
   &copy; <script>document.write(new Date().getFullYear())</script> Lylo. All rights reserved.
 </footer>
+
+<script>
+  // fullscreen button
+  const video = document.getElementById("lyloVideo");
+  const btn = document.getElementById("fullscreenToggle");
+  btn.addEventListener("click", () => {
+    if (video.requestFullscreen) video.requestFullscreen();
+    else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+    else if (video.msRequestFullscreen) video.msRequestFullscreen();
+  });
+</script>
 
 </body>
 </html>
