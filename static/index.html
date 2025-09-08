@@ -75,7 +75,7 @@
   .fullscreen-btn:hover{background:rgba(17,23,34,.9);transform:translateY(-1px);}
 
   .learnmore-btn{position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;align-items:center;overflow:hidden;gap:0;padding:8px 10px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;color:var(--text);background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);border:1px solid rgba(84,160,255,0.4);box-shadow:0 0 4px rgba(84,160,255,0.25);transition:.25s;}
-  .learnmore-btn .label{white-space:nowrap;max-width:0;opacity:0;margin-left:0;transition:.35s;}
+  .learnmore-btn .label{white-space:nowrap;max-width:0;opacity:0;margin-left:0;transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;}
   .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{padding:8px 14px;gap:6px;}
   .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
   .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
@@ -93,7 +93,7 @@
       <h1 class="logo">Lylo.</h1>
       <p class="tagline">Offline, secure AI for solicitors.</p>
       <ul class="bullets">
-        <li class="bullet">Lylo is a secure, retrieval based chat system, with specialist modules for Employment Law to assist with drafting Statements of Fact, ET1s, and Schedules of Loss.</li>
+        <li class="bullet">Built for Employment Law. Drafts and compiles documents such as Statement of Facts, ET1’s and Schedule of Loss’ with total accuracy and zero cloud risk.</li>
       </ul>
       <a href="/research" class="cta" id="getStarted">Take part</a>
       <div class="note">In development stages. Register interest.</div>
@@ -152,37 +152,90 @@
     fsBtn.addEventListener("touchend", e => { e.preventDefault(); goFullscreen(); }, { passive:false });
   }
 
-  // Autoplay fallback
-  (function(){
+  // --- Helper: try to (re)start playback safely
+  function tryPlaySequence({forceReload=false, nudge=false} = {}) {
     if (!video) return;
-    const tryPlay = () => video.play();
-    if (video.readyState >= 2) { tryPlay().catch(() => {}); }
-    else { video.addEventListener('loadeddata', () => { tryPlay().catch(() => {}); }, { once:true }); }
-    const onVideoTap = () => { tryPlay().catch(() => { video.setAttribute('controls',''); video.play().catch(() => {}); }); };
-    video.addEventListener('touchstart', onVideoTap, { passive:true, once:true });
-    video.addEventListener('click', onVideoTap, { once:true });
-    video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
-  })();
-
-  // Fix freeze when leaving fullscreen
-  function resumeInlinePlayback() {
-    if (!video) return;
-    try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
     const wasMuted = video.muted;
-    video.load();
-    video.muted = true;
+
+    // Keep inline presentation when possible (iOS 15+)
+    try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
+
+    if (forceReload) {
+      video.load();
+    } else if (nudge) {
+      try {
+        const t = video.currentTime || 0;
+        video.pause();
+        video.currentTime = Math.max(0, t - 0.001);
+      } catch(e) {}
+    }
+
+    video.muted = true; // ensure autoplay-friendly
     video.play().catch(()=>{});
     video.muted = wasMuted;
   }
 
+  // --- Autoplay on first load
+  (function(){
+    if (!video) return;
+    const playNow = () => video.play().catch(()=>{});
+    if (video.readyState >= 2) playNow();
+    else video.addEventListener('loadeddata', playNow, { once:true });
+
+    // Only if tapping the VIDEO (not page) fails, show controls once
+    const onVideoTap = () => {
+      video.play().catch(() => { video.setAttribute('controls',''); video.play().catch(()=>{}); });
+    };
+    video.addEventListener('touchstart', onVideoTap, { passive:true, once:true });
+    video.addEventListener('click', onVideoTap, { once:true });
+
+    video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
+  })();
+
+  // --- Fix freeze when leaving fullscreen (all exits)
   document.addEventListener("fullscreenchange", () => {
-    if (!document.fullscreenElement) resumeInlinePlayback();
+    if (!document.fullscreenElement) tryPlaySequence({ nudge:true });
+  });
+  // iOS ❌ close button: wait a bit and reload to avoid stale frames
+  video.addEventListener("webkitendfullscreen", () => {
+    setTimeout(() => { tryPlaySequence({ forceReload:true }); }, 500);
   });
 
-  // 🔧 Special case: iOS ❌ close button
-  video.addEventListener("webkitendfullscreen", () => {
-    setTimeout(() => { resumeInlinePlayback(); }, 500); // delay for iOS to finish exit
+  // --- Resume after returning from background / lock
+  function onReturnToForeground() {
+    // If video appears stalled or paused, reload+play; else just nudge+play
+    if (video.paused || video.readyState < 2) {
+      tryPlaySequence({ forceReload:true });
+    } else {
+      tryPlaySequence({ nudge:true });
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') onReturnToForeground();
   });
+  window.addEventListener('pageshow', (e) => { onReturnToForeground(); });
+  window.addEventListener('focus', onReturnToForeground);
+
+  // --- Lightweight stall watchdog (iOS freeze detector)
+  (function(){
+    let lastTime = 0;
+    setInterval(() => {
+      if (!video || document.visibilityState !== 'visible') return;
+      if (video.paused) { lastTime = video.currentTime; return; }
+      const ct = video.currentTime || 0;
+      // If time hasn't advanced in ~2s while "playing", recover
+      if (Math.abs(ct - lastTime) < 0.01) {
+        // first try a nudge, then reload if still stuck next tick
+        tryPlaySequence({ nudge:true });
+        setTimeout(() => {
+          if (Math.abs((video.currentTime||0) - ct) < 0.01) {
+            tryPlaySequence({ forceReload:true });
+          }
+        }, 250);
+      }
+      lastTime = ct;
+    }, 2000);
+  })();
 
   // Learn more pill animation
   (function(){
