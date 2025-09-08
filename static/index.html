@@ -114,7 +114,7 @@
   /* Mobile-only light border */
   @media (max-width: 980px){
     .video-wrapper video {
-      border:1px solid rgba(245,247,250,0.22); /* light border on mobile */
+      border:1px solid rgba(245,247,250,0.22);
     }
   }
 
@@ -138,9 +138,9 @@
 
     display: inline-flex;
     align-items: center;
-    overflow: hidden;              
-    gap: 0;                        
-    padding: 8px 10px;             
+    overflow: hidden;
+    gap: 0;
+    padding: 8px 10px;
     border-radius: 999px;
     font-size: 14px;
     font-weight: 600;
@@ -271,15 +271,50 @@
   const video = document.getElementById("lyloVideo");
   const fsBtn = document.getElementById("fullscreenToggle");
 
-  if (fsBtn) {
-    fsBtn.addEventListener("click", () => {
-      if (video.requestFullscreen) video.requestFullscreen();
-      else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
-      else if (video.msRequestFullscreen) video.msRequestFullscreen();
-    });
+  // Robust fullscreen handler for iOS/Android/Desktop
+  function goFullscreen() {
+    if (!video) return;
+
+    // If already fullscreen, exit.
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+      return;
+    }
+
+    try {
+      // Standard API
+      if (video.requestFullscreen) return video.requestFullscreen();
+    } catch(e) {}
+
+    try {
+      // Safari (iPadOS/desktop)
+      if (video.webkitRequestFullscreen) return video.webkitRequestFullscreen();
+    } catch(e) {}
+
+    try {
+      // iOS Safari (older/newer variants)
+      if (video.webkitEnterFullscreen) return video.webkitEnterFullscreen();
+    } catch(e) {}
+
+    try {
+      if (video.webkitEnterFullScreen) return video.webkitEnterFullScreen();
+    } catch(e) {}
+
+    // Last resort: briefly show controls to let user tap the native fullscreen icon
+    // (We remove them again after playback starts.)
+    video.setAttribute('controls', '');
   }
 
-  // autoplay + controls fallback
+  if (fsBtn) {
+    // Use both click and touchend so it's always treated as a user gesture
+    fsBtn.addEventListener("click", goFullscreen);
+    fsBtn.addEventListener("touchend", function(e){
+      e.preventDefault();
+      goFullscreen();
+    }, { passive: false });
+  }
+
+  // Autoplay + controls fallback (no random controls on page taps)
   (function () {
     if (!video) return;
     const tryPlay = () => video.play();
@@ -305,12 +340,13 @@
     });
   })();
 
-  // Learn more pill animation
+  // Learn more pill animation (delay then expand, pulse, collapse)
   (function () {
     const btn = document.getElementById('learnMoreBtn');
     if (!btn) return;
-    const expandDelay = 6000;
-    const showFor = 4000;
+    const expandDelay = 7000;   // delay before expandings
+    const showFor = 4000;       // how long to stay expanded
+
     setTimeout(() => {
       btn.classList.add('expanded', 'pulse-once');
       setTimeout(() => {
