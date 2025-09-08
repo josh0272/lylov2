@@ -8,142 +8,81 @@
 
 <style>
   :root{
-    --bg:#0A1220; --panel:#0B1322; --text:#F5F7FA; --muted:#C7CCD7;
-    --border:#1C2A3F; --cta:#111722; --radius:20px; --space:22px; --container:1360px;
-    --accent:#54a0ff; --outline:#2a3d5c;
-    --font:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text","Helvetica Neue","Segoe UI", Roboto, Arial, sans-serif;
-
+    --bg:#0A1220; --text:#F5F7FA; --muted:#C7CCD7;
+    --cta:#111722; --radius:20px; --space:22px; --container:1360px;
+    --accent:#54a0ff;
+    --font:-apple-system, BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
     --bg-top:#0A1220; --bg-bottom:#080D18;
     --noise:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO0WQ8AAW0B8w1i6b0AAAAASUVORK5CYII=");
   }
 
   *{box-sizing:border-box}
-
   html,body{height:100%}
   body{
-    margin:0; font-family:var(--font); color:var(--text);
-    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-    background:none; position:relative;
-    min-height:100svh;
-    display:flex; flex-direction:column;
+    margin:0;font-family:var(--font);color:var(--text);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    background:none;position:relative;min-height:100svh;
+    display:flex;flex-direction:column;
   }
-  main{ flex:1; display:flex; }
+  main{flex:1;display:flex;}
 
   body::before{
-    content:""; position:fixed; inset:0; pointer-events:none; z-index:-1; background:
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+    background:
       radial-gradient(1200px 700px at 70% -10%, rgba(84,160,255,.08), transparent 70%),
       radial-gradient(900px 600px at -10% 30%, rgba(25,195,125,.07), transparent 70%),
-      linear-gradient(to bottom, var(--bg-top) 0%, var(--bg-top) 40%, var(--bg-bottom) 100%);
+      linear-gradient(to bottom,var(--bg-top) 0%,var(--bg-top) 40%,var(--bg-bottom) 100%);
   }
   body::after{
-    content:""; position:fixed; inset:0; pointer-events:none;
-    background-image:var(--noise); opacity:.05; mix-blend-mode:soft-light;
+    content:"";position:fixed;inset:0;pointer-events:none;
+    background-image:var(--noise);opacity:.05;mix-blend-mode:soft-light;
   }
 
   .wrap{
-    width:100%; max-width:var(--container); margin:auto;
-    padding:clamp(48px, 6vh, 100px) var(--space) clamp(28px, 4vh, 60px);
-    display:grid; gap:calc(var(--space)*1.5);
+    width:100%;max-width:var(--container);margin:auto;
+    padding:clamp(48px,6vh,100px) var(--space) clamp(28px,4vh,60px);
+    display:grid;gap:calc(var(--space)*1.5);
   }
-  @media (min-width:980px){
-    .wrap{
-      grid-template-columns:1fr 1.35fr;
-      align-items:center;
-    }
+  @media(min-width:980px){
+    .wrap{grid-template-columns:1fr 1.35fr;align-items:center;}
   }
+  .stack{max-width:640px;text-align:center;}
 
-  .stack{max-width:640px; text-align:center;}
-
-  .logo{
-    font-family:"SF Pro Display",-apple-system,"Helvetica Neue",Arial,sans-serif;
-    font-weight:700; font-size:64px; letter-spacing:-.03em;
-    margin:0 0 calc(var(--space)*0.8); line-height:1;
-  }
-  .tagline{
-    font-size:24px; line-height:1.25; margin:0 0 calc(var(--space)*1.2);
-    letter-spacing:-0.01em; font-weight:500;
-  }
+  .logo{font-family:"SF Pro Display",-apple-system,"Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:64px;letter-spacing:-.03em;margin:0 0 calc(var(--space)*0.8);line-height:1;}
+  .tagline{font-size:24px;line-height:1.25;margin:0 0 calc(var(--space)*1.2);letter-spacing:-0.01em;font-weight:500;}
   .bullets{list-style:none;margin:0 0 calc(var(--space)*1.4);padding:0;display:grid;gap:14px;justify-content:center;}
   .bullet{font-size:17px;line-height:1.45;max-width:440px;margin:0 auto;}
 
   .cta{
-    display:inline-block; width:100%; max-width:300px; margin:auto;
-    padding:16px 18px; text-align:center; font-weight:600; font-size:17px; color:var(--text);
-    border:1px solid transparent; border-radius:14px;
-    background:
-      linear-gradient(180deg,#111722 0%, #0C1423 100%) padding-box,
-      conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;
-    position:relative; z-index:0; overflow:hidden; text-decoration:none; cursor:pointer;
-    transition:transform .25s cubic-bezier(.2,.8,.2,1), background-color .25s ease, outline-color .25s ease, box-shadow .25s ease;
-    outline:2px solid rgba(84,160,255,.18); outline-offset:2px;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 8px 24px rgba(0,0,0,.45);
+    display:inline-block;width:100%;max-width:300px;margin:auto;
+    padding:16px 18px;text-align:center;font-weight:600;font-size:17px;color:var(--text);
+    border:1px solid transparent;border-radius:14px;
+    background:linear-gradient(180deg,#111722 0%, #0C1423 100%) padding-box,
+               conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;
+    cursor:pointer;transition:.25s;outline:2px solid rgba(84,160,255,.18);outline-offset:2px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 8px 24px rgba(0,0,0,.45);
+    text-decoration:none;
   }
-  .cta:hover{
-    transform:translateY(-1px);
-    background:
-      linear-gradient(180deg,#111A2A 0%, #0C1626 100%) padding-box,
-      conic-gradient(from 90deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;
-    outline-color:rgba(84,160,255,.28);
-    box-shadow:0 0 0 6px rgba(84,160,255,.12), inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);
-  }
-  .cta:focus-visible{
-    outline:2px solid rgba(84,160,255,.65);
-    outline-offset:3px;
-    box-shadow:0 0 0 6px rgba(84,160,255,.16);
-  }
-
+  .cta:hover{transform:translateY(-1px);}
   .note{color:var(--muted);font-size:13px;margin-top:10px}
 
-  .visual{display:flex; align-items:center; justify-content:center;}
+  .visual{display:flex;align-items:center;justify-content:center;}
   .video-wrapper{position:relative;width:100%;}
-  .video-wrapper video,
-  .video-wrapper img{
-    width:100%; height:auto;
-    max-height:62vh;
-    border-radius:calc(var(--radius) - 4px);
-    display:block; object-fit:cover;
-    box-shadow:0 30px 80px rgba(0,0,0,.5);
-  }
+  .video-wrapper video{width:100%;height:auto;max-height:62vh;border-radius:calc(var(--radius) - 4px);display:block;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.5);}
+  @media(max-width:980px){.video-wrapper video{border:1px solid rgba(245,247,250,0.22);}}
 
-  @media (max-width: 980px){
-    .video-wrapper video { border:1px solid rgba(245,247,250,0.22); }
-  }
+  .fullscreen-btn{position:absolute;bottom:12px;right:12px;background:rgba(17,23,34,.7);color:var(--text);font-size:18px;font-weight:600;line-height:1;padding:8px 12px;border:none;border-radius:10px;cursor:pointer;transition:background .2s ease,transform .06s ease;z-index:2;}
+  .fullscreen-btn:hover{background:rgba(17,23,34,.9);transform:translateY(-1px);}
 
-  .fullscreen-btn{
-    position:absolute; bottom:12px; right:12px;
-    background:rgba(17,23,34,.7); color:var(--text);
-    font-size:18px; font-weight:600; line-height:1;
-    padding:8px 12px; border:none; border-radius:10px; cursor:pointer;
-    transition:background .2s ease, transform .06s ease;
-    z-index:2;
-  }
-  .fullscreen-btn:hover{ background:rgba(17,23,34,.9); transform:translateY(-1px); }
-
-  .learnmore-btn {
-    position: absolute; top: 12px; right: 12px; z-index: 2;
-    display: inline-flex; align-items: center; overflow: hidden;
-    gap: 0; padding: 8px 10px; border-radius: 999px;
-    font-size: 14px; font-weight: 600; text-decoration: none;
-    color: var(--text); background: rgba(17,23,34,0.6);
-    backdrop-filter: blur(4px) saturate(115%);
-    border: 1px solid rgba(84,160,255,0.4);
-    box-shadow: 0 0 4px rgba(84,160,255,0.25);
-    transition: padding .25s ease, gap .25s ease, transform .2s ease, box-shadow .3s ease, background .2s ease;
-  }
-  .learnmore-btn .label{white-space:nowrap; max-width:0; opacity:0; margin-left:0; transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;}
-  .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{padding:8px 14px; gap:6px;}
-  .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px; opacity:1; margin-left:2px;}
-  .learnmore-btn:hover{background:rgba(17,23,34,0.8); transform:translateY(-1px); box-shadow:0 0 6px rgba(84,160,255,0.6);}
-  .learnmore-btn:focus-visible{outline:none; box-shadow:0 0 0 3px rgba(84,160,255,0.7);}
+  .learnmore-btn{position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;align-items:center;overflow:hidden;gap:0;padding:8px 10px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;color:var(--text);background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);border:1px solid rgba(84,160,255,0.4);box-shadow:0 0 4px rgba(84,160,255,0.25);transition:.25s;}
+  .learnmore-btn .label{white-space:nowrap;max-width:0;opacity:0;margin-left:0;transition:.35s;}
+  .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{padding:8px 14px;gap:6px;}
+  .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
+  .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
   .learnmore-btn.pulse-once{animation:lmPulse 1.6s ease-out 1;}
   @keyframes lmPulse{0%{box-shadow:none;}40%{box-shadow:0 0 6px rgba(84,160,255,0.95),0 0 12px rgba(84,160,255,0.7);}100%{box-shadow:0 0 4px rgba(84,160,255,0.25);}}
-  @media (prefers-reduced-motion: reduce){.learnmore-btn.pulse-once{animation:none;}}
 
-  footer{
-    text-align:center; padding:24px 0;
-    border-top:1px solid rgba(255,255,255,.06);
-    color:var(--muted); font-size:14px;
-  }
+  footer{text-align:center;padding:24px 0;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px;}
 </style>
 </head>
 <body>
@@ -164,12 +103,7 @@
       <div class="video-wrapper">
         <video
           id="lyloVideo"
-          autoplay
-          loop
-          muted
-          playsinline
-          webkit-playsinline
-          preload="metadata"
+          autoplay loop muted playsinline webkit-playsinline preload="metadata"
           poster="/static/poc.jpg"
           aria-label="Demo video showing Lylo drafting a Schedule of Loss.">
           <source src="/static/poc.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
@@ -200,7 +134,6 @@
   const video = document.getElementById("lyloVideo");
   const fsBtn = document.getElementById("fullscreenToggle");
 
-  // Enter fullscreen (tries all vendor methods)
   function goFullscreen() {
     if (!video) return;
     if (document.fullscreenElement && document.exitFullscreen) {
@@ -211,90 +144,54 @@
     try { if (video.webkitRequestFullscreen) return video.webkitRequestFullscreen(); } catch(e) {}
     try { if (video.webkitEnterFullscreen) return video.webkitEnterFullscreen(); } catch(e) {}
     try { if (video.webkitEnterFullScreen) return video.webkitEnterFullScreen(); } catch(e) {}
-    // fallback: expose controls so user can tap native fullscreen
-    video.setAttribute('controls', '');
+    video.setAttribute('controls','');
   }
 
   if (fsBtn) {
     fsBtn.addEventListener("click", goFullscreen);
-    fsBtn.addEventListener("touchend", e => { e.preventDefault(); goFullscreen(); }, { passive: false });
+    fsBtn.addEventListener("touchend", e => { e.preventDefault(); goFullscreen(); }, { passive:false });
   }
 
-  // Ensure autoplay (no random controls)
-  (function () {
+  // Autoplay fallback
+  (function(){
     if (!video) return;
     const tryPlay = () => video.play();
-
     if (video.readyState >= 2) { tryPlay().catch(() => {}); }
-    else { video.addEventListener('loadeddata', () => { tryPlay().catch(() => {}); }, { once: true }); }
-
-    const onVideoTap = () => {
-      tryPlay().catch(() => {
-        video.setAttribute('controls', '');
-        video.play().catch(() => {});
-      });
-    };
-    video.addEventListener('touchstart', onVideoTap, { passive: true, once: true });
-    video.addEventListener('click', onVideoTap, { once: true });
-
-    video.addEventListener('play', () => {
-      if (video.hasAttribute('controls')) video.removeAttribute('controls');
-    });
+    else { video.addEventListener('loadeddata', () => { tryPlay().catch(() => {}); }, { once:true }); }
+    const onVideoTap = () => { tryPlay().catch(() => { video.setAttribute('controls',''); video.play().catch(() => {}); }); };
+    video.addEventListener('touchstart', onVideoTap, { passive:true, once:true });
+    video.addEventListener('click', onVideoTap, { once:true });
+    video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
   })();
 
-  // 🔧 iOS fullscreen exit freeze fix
+  // Fix freeze when leaving fullscreen
   function resumeInlinePlayback() {
     if (!video) return;
-    // Force "inline" presentation if supported (iOS 15+)
     try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
-
-    // Nudge time to force repaint
-    try {
-      const t = video.currentTime || 0;
-      video.pause();
-      // tiny seek backward or forward to invalidate the frame
-      video.currentTime = Math.max(0, t - 0.001);
-    } catch (e) {}
-
-    // Retry playing a few times (rAF + small timeout)
-    const tryPlay = () => video.play().catch(() => {});
-    requestAnimationFrame(tryPlay);
-    setTimeout(tryPlay, 50);
-    setTimeout(tryPlay, 150);
-
-    // As a last resort, reload the media then play
-    setTimeout(() => {
-      if (video.paused || video.readyState < 2) {
-        const wasMuted = video.muted;
-        video.load();
-        video.muted = true; // ensure inline autoplay
-        video.play().catch(() => {});
-        // restore mute state if you ever change it
-        video.muted = wasMuted;
-      }
-    }, 400);
+    const wasMuted = video.muted;
+    video.load();
+    video.muted = true;
+    video.play().catch(()=>{});
+    video.muted = wasMuted;
   }
 
-  // Standard fullscreen exit
   document.addEventListener("fullscreenchange", () => {
     if (!document.fullscreenElement) resumeInlinePlayback();
   });
 
-  // iOS-specific native fullscreen exit
-  // NOTE: This event is fired on the video element
-  video.addEventListener("webkitendfullscreen", resumeInlinePlayback);
+  // 🔧 Special case: iOS ❌ close button
+  video.addEventListener("webkitendfullscreen", () => {
+    setTimeout(() => { resumeInlinePlayback(); }, 500); // delay for iOS to finish exit
+  });
 
   // Learn more pill animation
-  (function () {
+  (function(){
     const btn = document.getElementById('learnMoreBtn');
     if (!btn) return;
-    const expandDelay = 7000;   // delay before expanding
-    const showFor = 4000;       // how long to stay expanded
+    const expandDelay = 7000, showFor = 4000;
     setTimeout(() => {
-      btn.classList.add('expanded', 'pulse-once');
-      setTimeout(() => {
-        btn.classList.remove('pulse-once', 'expanded');
-      }, showFor);
+      btn.classList.add('expanded','pulse-once');
+      setTimeout(() => { btn.classList.remove('pulse-once','expanded'); }, showFor);
     }, expandDelay);
   })();
 </script>
