@@ -213,7 +213,7 @@
 
   /* Accessibility */
   *,*:before,*:after{transition:transform .25s cubic-bezier(.2,.8,.2,1), opacity .25s ease, background-color .25s ease, box-shadow .25s ease;}
-  @media (prefers-reduced-motion: reduce){*,*:before,*:after{transition:none !important; animation:none !important;}}
+  @media (prefers-reduced-motion: reduce){*,*:before,*:after{transition:none !important; animation:none !重要;}
   ::selection{ background:rgba(84,160,255,.28); color:#fff; }
   :root{ color-scheme:dark; }
 </style>
@@ -244,6 +244,7 @@
           loop
           muted
           playsinline
+          webkit-playsinline
           preload="metadata"
           poster="/static/poc.jpg"
           aria-label="Drag & drop payslips to Lylo; Lylo drafts an accurate Schedule of Loss.">
@@ -286,40 +287,51 @@
     });
   }
 
-  // autoplay fallback for iOS Safari
+  // autoplay + controls fallback (mobile-friendly, no controls unless necessary)
   (function () {
     if (!video) return;
 
-    const tryPlay = () => video.play().catch(() => {});
+    const tryPlay = () => video.play();
+
+    // Try autoplay after metadata is ready
     if (video.readyState >= 2) {
-      tryPlay();
+      tryPlay().catch(() => {/* ignore */});
     } else {
-      video.addEventListener('loadeddata', tryPlay, { once: true });
+      video.addEventListener('loadeddata', () => {
+        tryPlay().catch(() => {/* ignore */});
+      }, { once: true });
     }
 
-    const onInteract = () => {
-      video.setAttribute('controls', '');
-      video.play().catch(() => {});
-      window.removeEventListener('touchstart', onInteract);
-      window.removeEventListener('click', onInteract);
+    // On first direct tap on the VIDEO ONLY, try play again without controls.
+    // If still blocked, add controls just once; remove them on successful play.
+    const onVideoTap = () => {
+      tryPlay().catch(() => {
+        video.setAttribute('controls', ''); // last resort
+        video.play().catch(() => {/* still blocked */});
+      });
     };
 
-    window.addEventListener('touchstart', onInteract, { passive: true });
-    window.addEventListener('click', onInteract);
+    video.addEventListener('touchstart', onVideoTap, { passive: true, once: true });
+    video.addEventListener('click', onVideoTap, { once: true });
+
+    // If controls were added but playback starts, remove them to avoid overlays on taps
+    video.addEventListener('play', () => {
+      if (video.hasAttribute('controls')) {
+        video.removeAttribute('controls');
+      }
+    });
   })();
 
-  // One-time expand + pulse, then collapse back to icon
+  // One-time expand + pulse, then collapse back to icon (slower start)
   (function () {
     const btn = document.getElementById('learnMoreBtn');
     if (!btn) return;
 
-    // Start collapsed (icon only) — expand briefly after load
-    const expandDelay = 3500;   // ms after load
-    const showFor = 2500;      // ms to keep expanded before collapsing
+    const expandDelay = 2000;   // wait longer before expanding
+    const showFor = 1800;       // keep expanded for this long
 
     setTimeout(() => {
       btn.classList.add('expanded', 'pulse-once');
-      // remove pulse class after animation ends, keep expanded for a bit, then collapse
       setTimeout(() => {
         btn.classList.remove('pulse-once', 'expanded');
       }, showFor);
