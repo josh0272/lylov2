@@ -231,7 +231,7 @@
   learnMoreBtn.addEventListener('mouseleave', closeLabel);
   learnMoreBtn.addEventListener('blur', closeLabel);
 
-  /* ====== Video handling (frame-driven + iOS-specific recovery) ====== */
+  /* ====== Video handling (iOS-targeted recovery) ====== */
   const fsBtn   = document.getElementById('fullscreenToggle');
   const video   = document.getElementById('lyloVideo');
   const wrapper = document.querySelector('.video-wrapper');
@@ -245,35 +245,82 @@
 
   function safePlay(){ if (!video) return; try { video.play().catch(()=>{}); } catch(e){} }
 
-  // Frame progress tracking (via RVFC where available)
+  /* --- Frame progress tracking --- */
   let lastFrameTime = performance.now();
   function startFrameWatch(){
     if (!video) return;
     if ('requestVideoFrameCallback' in HTMLVideoElement.prototype){
-      const loop = () => {
-        video.requestVideoFrameCallback((now/*ms*/) => { lastFrameTime = now; loop(); });
-      };
+      const loop = () => { video.requestVideoFrameCallback((now)=>{ lastFrameTime = now; loop(); }); };
       loop();
     } else {
       video.addEventListener('timeupdate', () => { lastFrameTime = performance.now(); });
     }
   }
+  function framesStale(ms){ return (performance.now() - lastFrameTime) > ms; }
 
-  // iOS helpers
-  function maybeRewindIOS(){
+  /* --- iOS recovery helpers --- */
+  function rewindIOS(){
     if (!IS_IOS) return;
     try {
       const t = video.currentTime || 0;
-      video.currentTime = Math.max(0, t > 12 ? t - 10 : Math.max(0, t - 3));
+      video.currentTime = Math.max(0, t > 12 ? t - 10 : t - 3);
       safePlay();
     } catch(e){}
   }
-  function reloadIOS(){
+
+  function hardRefreshIOS(){
     if (!IS_IOS) return;
-    try { video.load(); safePlay(); } catch(e){}
+    try {
+      // capture state
+      const src = video.currentSrc || (video.querySelector('source')?.src) || '';
+      const t   = video.currentTime || 0;
+      const target = Math.max(0, t - 1.0); // resume just before previous time
+
+      if (!src) { video.load(); return safePlay(); }
+
+      // detach <source> plumbing and rebind a direct src
+      video.pause();
+      video.removeAttribute('src'); // in case it was set earlier
+      // Force a pipeline reset
+      video.load();
+
+      // Rebind to a concrete URL (avoids <source> selection cache)
+      video.src = src;
+      video.preload = 'auto';
+
+      const onLoaded = () => {
+        video.removeEventListener('loadeddata', onLoaded);
+        try { video.currentTime = target; } catch(e){}
+        safePlay();
+      };
+      video.addEventListener('loadeddata', onLoaded, { once:true });
+      // kick
+      safePlay();
+    } catch(e){
+      try { video.load(); safePlay(); } catch(_) {}
+    }
   }
 
-  // Boot once ready
+  async function recoverIOSSequence({ reason, firstDelay=350 } = {}){
+    if (!IS_IOS) return;
+    // Step 1: quick resume inline
+    try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e){}
+    safePlay();
+
+    // Step 2: give it a beat; if still stale, rewind once
+    await new Promise(r => setTimeout(r, firstDelay));
+    if (!video.paused && framesStale(700)) {
+      rewindIOS();
+    }
+
+    // Step 3: check again; if still stale, hard refresh pipeline
+    await new Promise(r => setTimeout(r, 500));
+    if (!video.paused && framesStale(1200)) {
+      hardRefreshIOS();
+    }
+  }
+
+  /* --- Boot video & watchers --- */
   if (video){
     const onReady = () => { safePlay(); startFrameWatch(); };
     if (video.readyState >= 2) onReady(); else video.addEventListener('loadeddata', onReady, { once:true });
@@ -289,16 +336,17 @@
     video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
   }
 
-  // Resume when returning to page/app (no seeks)
-  function resume(){
-    if (!video) return;
-    if (video.readyState < 2 || video.paused) safePlay();
+  /* --- Return from background / screen lock --- */
+  function onReturnToForeground(){
+    // Desktop: keep it simple; iOS: run the recovery sequence
+    if (IS_IOS) recoverIOSSequence({ reason:'foreground', firstDelay:250 });
+    else safePlay();
   }
-  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') resume(); });
-  window.addEventListener('pageshow', resume);
-  window.addEventListener('focus', resume);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') onReturnToForeground(); });
+  window.addEventListener('pageshow', onReturnToForeground);
+  window.addEventListener('focus', onReturnToForeground);
 
-  // Fullscreen handling: native on iOS, wrapper elsewhere
+  /* --- Fullscreen handling --- */
   function isFullscreen(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
   async function enterFullscreen(){
     if (IS_IOS && video && video.webkitEnterFullscreen) { try { return video.webkitEnterFullscreen(); } catch(e){} }
@@ -320,27 +368,10 @@
   document.addEventListener('fullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
   document.addEventListener('webkitfullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
 
-  // iOS: recover **after** exiting fullscreen (swipe or X)
+  // iOS: after exiting native fullscreen (X or swipe), run recovery
   if (IS_IOS && video){
     video.addEventListener('webkitendfullscreen', () => {
-      // Force inline presentation, then resume
-      try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e){}
-      safePlay();
-
-      // Give the UI a beat, then if frames aren't advancing, do one rewind; if still stuck, reload.
-      const check1Delay = 350;   // quick check
-      const check2Delay = 600;   // follow-up if still stuck
-
-      setTimeout(() => {
-        const stale1 = (performance.now() - lastFrameTime) > 700 && !video.paused;
-        if (stale1) {
-          maybeRewindIOS();
-          setTimeout(() => {
-            const stale2 = (performance.now() - lastFrameTime) > 1200 && !video.paused;
-            if (stale2) reloadIOS();
-          }, check2Delay);
-        }
-      }, check1Delay);
+      recoverIOSSequence({ reason:'exit-fullscreen', firstDelay:300 });
     });
   }
 
