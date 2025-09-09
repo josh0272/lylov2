@@ -6,9 +6,13 @@
 <title>Lylo. — AI for solicitors</title>
 <meta name="description" content="Works without internet. Built for security and trust. ET1 and Schedule of Loss drafting.">
 
+<!-- Cormorant Garamond (free, Canela-adjacent) -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+
 <style>
   :root{
-    --bg:#0A1220; --text:#F5F7FA; --muted:#C7CCD7;
+    --bg:#0A1220; --bg-soft:#0D1729;
+    --text:#F5F7FA; --muted:#C7CCD7;
     --cta:#111722; --radius:20px; --space:22px; --container:1360px;
     --accent:#54a0ff;
     --font:-apple-system, BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
@@ -21,8 +25,7 @@
   body{
     margin:0;font-family:var(--font);color:var(--text);
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
-    background:none;position:relative;min-height:100svh;
-    display:flex;flex-direction:column;
+    background:none;position:relative;min-height:100svh;display:flex;flex-direction:column;
   }
   main{flex:1;display:flex;}
 
@@ -33,80 +36,219 @@
       radial-gradient(900px 600px at -10% 30%, rgba(25,195,125,.07), transparent 70%),
       linear-gradient(to bottom,var(--bg-top) 0%,var(--bg-top) 40%,var(--bg-bottom) 100%);
   }
-  body::after{
-    content:"";position:fixed;inset:0;pointer-events:none;
-    background-image:var(--noise);opacity:.05;mix-blend-mode:soft-light;
+  body::after{content:"";position:fixed;inset:0;pointer-events:none;background-image:var(--noise);opacity:.05;mix-blend-mode:soft-light;}
+
+  /* ===== Header ===== */
+  header.site-header{
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    height:64px;
+    background:linear-gradient(180deg, var(--bg-soft) 0%, #0B1526 100%);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 1px 0 rgba(255,255,255,0.06);
+  }
+  .header-inner{
+    width:100%; max-width:var(--container);
+    padding:0 16px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo-small{
+    font-family:'Cormorant Garamond', serif;
+    font-weight:600; font-size:26px; letter-spacing:-.02em;
+    color:var(--text); text-decoration:none;
   }
 
+  /* Hamburger */
+  .hamburger{
+    width:40px; height:36px; position:relative; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    border:none; background:none; padding:0;
+  }
+  .hamburger:focus-visible{ outline:2px solid rgba(84,160,255,.45); border-radius:8px; }
+  .hamburger .line{
+    position:absolute; width:22px; height:2px; background:var(--text);
+    border-radius:2px; transition:transform .25s ease, opacity .2s ease, width .2s ease;
+  }
+  .hamburger .line.top{ transform:translateY(-6px); }
+  .hamburger .line.middle{ transform:translateY(0); }
+  .hamburger .line.bottom{ transform:translateY(6px); }
+  .hamburger[aria-expanded="true"] .line.top{ transform:rotate(45deg); }
+  .hamburger[aria-expanded="true"] .line.middle{ opacity:0; }
+  .hamburger[aria-expanded="true"] .line.bottom{ transform:rotate(-45deg); }
+
+  /* Mobile menu */
+  .nav-panel{
+    position:fixed; inset:0; z-index:999;
+    background:var(--bg); display:none;
+  }
+  .nav-panel.open{ display:block; }
+  .nav-panel .panel-inner{
+    max-width:var(--container); margin:0 auto; height:100%;
+    padding:88px 20px 24px; display:flex; flex-direction:column; gap:22px;
+  }
+  .nav-panel a{
+    color:var(--text); text-decoration:none;
+    font-weight:600; font-size:22px; letter-spacing:0.01em;
+    padding:14px 2px; border-bottom:1px solid rgba(255,255,255,.08);
+  }
+
+  /* Hero layout */
   .wrap{
     width:100%;max-width:var(--container);margin:auto;
-    padding:clamp(48px,6vh,100px) var(--space) clamp(28px,4vh,60px);
-    display:grid;gap:calc(var(--space)*1.5);
+    padding:calc(64px + 60px) var(--space) clamp(28px,4vh,60px);
+    display:grid; justify-items:center; gap:0;
+  }
+  @media(max-width:979px){
+    .wrap{
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "logo"
+        "tagline"
+        "visual"
+        "bullets"
+        "cta"
+        "note";
+    }
   }
   @media(min-width:980px){
-    .wrap{grid-template-columns:1fr 1.35fr;align-items:center;}
+    .wrap{
+      grid-template-columns: 1fr 1.35fr; align-items:center;
+      grid-template-areas:
+        "logo    visual"
+        "tagline visual"
+        "bullets visual"
+        "cta     visual"
+        "note    visual";
+    }
   }
-  .stack{max-width:640px;text-align:center;}
 
-  .logo{font-family:"SF Pro Display",-apple-system,"Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:64px;letter-spacing:-.03em;margin:0 0 calc(var(--space)*0.8);line-height:1;}
-  .tagline{font-size:24px;line-height:1.25;margin:0 0 calc(var(--space)*1.2);letter-spacing:-0.01em;font-weight:500;}
-  .bullets{list-style:none;margin:0 0 calc(var(--space)*1.4);padding:0;display:grid;gap:14px;justify-content:center;}
-  .bullet{font-size:17px;line-height:1.45;max-width:440px;margin:0 auto;}
+  .logo{
+    grid-area:logo; font-family:'Cormorant Garamond', serif;
+    font-weight:600; font-size:88px; letter-spacing:-.03em; line-height:1;
+    text-align:center; margin:0 0 12px;
+  }
+  .tagline{
+    grid-area:tagline; font-family:var(--font);
+    font-size:28px; line-height:1.4; letter-spacing:-0.01em;
+    font-weight:400; text-align:center; margin:0 0 30px;
+  }
+  .bullets{grid-area:bullets;list-style:none;padding:0;display:grid;gap:12px;justify-content:center;max-width:640px;text-align:center;margin:0 0 20px;}
+  .bullet{font-family:var(--font);font-size:17px;line-height:1.55;max-width:440px;margin:0 auto;}
 
+  /* CTA with shimmer hover */
   .cta{
-    display:inline-block;width:100%;max-width:300px;margin:auto;
-    padding:16px 18px;text-align:center;font-weight:600;font-size:17px;color:var(--text);
-    border:1px solid transparent;border-radius:14px;
-    background:linear-gradient(180deg,#111722 0%, #0C1423 100%) padding-box,
-               conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;
-    cursor:pointer;transition:.25s;outline:2px solid rgba(84,160,255,.18);outline-offset:2px;
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 8px 24px rgba(0,0,0,.45);
-    text-decoration:none;
+    grid-area:cta; display:inline-block; width:auto; padding:12px 20px;
+    text-align:center; font-weight:600; font-size:16px; color:var(--text);
+    border:1px solid transparent; border-radius:var(--radius);
+    background:
+      linear-gradient(180deg,#111722 0%, #0C1423 100%) padding-box,
+      conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;
+    background-size:200% 200%;
+    position:relative; z-index:0; overflow:hidden; text-decoration:none; cursor:pointer;
+    outline:2px solid rgba(84,160,255,.18); outline-offset:2px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 6px 20px rgba(0,0,0,.45);
+    margin:0 auto 10px;
+    transition: transform .25s ease, box-shadow .25s ease, background-position 1.2s ease;
   }
-  .cta:hover{transform:translateY(-1px);}
-  .note{color:var(--muted);font-size:13px;margin-top:10px}
+  .cta:hover{
+    transform:translateY(-1px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);
+    background-position:100% 0; /* shimmer sweep */
+  }
 
-  .visual{display:flex;align-items:center;justify-content:center;}
-  .video-wrapper{position:relative;width:100%;}
-  .video-wrapper video{width:100%;height:auto;max-height:62vh;border-radius:calc(var(--radius) - 4px);display:block;object-fit:cover;box-shadow:0 30px 80px rgba(0,0,0,.5);}
-  @media(max-width:980px){.video-wrapper video{border:1px solid rgba(245,247,250,0.22);}}
+  .note{grid-area:note;color:var(--muted);font-size:13px;margin:4px 0 0;text-align:center;}
 
-  .fullscreen-btn{position:absolute;bottom:12px;right:12px;background:rgba(17,23,34,.7);color:var(--text);font-size:18px;font-weight:600;line-height:1;padding:8px 12px;border:none;border-radius:10px;cursor:pointer;transition:background .2s ease,transform .06s ease;z-index:2;}
+  /* ===== Video area ===== */
+  .visual{grid-area:visual;display:flex;align-items:center;justify-content:center;width:100%;margin:8px 0 20px;}
+  .video-wrapper{
+    position:relative;width:100%;max-width:900px;background:#000;
+    border-radius:calc(var(--radius) - 4px);
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  .video-wrapper video{
+    width:100%;height:auto;max-height:62vh;display:block;
+    object-fit:cover;border-radius:0;
+  }
+  @media(max-width:980px){.video-wrapper{border:1px solid rgba(245,247,250,0.22);}}
+
+/* Buttons over the video */
+  .fullscreen-btn{
+    position:absolute;bottom:12px;right:12px;background:rgba(17,23,34,.7);
+    color:var(--text);font-size:18px;font-weight:600;line-height:1;
+    padding:8px 12px;border:none;border-radius:10px;cursor:pointer;transition:background .2s ease,transform .06s ease;z-index:2;
+  }
   .fullscreen-btn:hover{background:rgba(17,23,34,.9);transform:translateY(-1px);}
 
-  .learnmore-btn{position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;align-items:center;overflow:hidden;gap:0;padding:8px 10px;border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;color:var(--text);background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);border:1px solid rgba(84,160,255,0.4);box-shadow:0 0 4px rgba(84,160,255,0.25);transition:.25s;}
-  .learnmore-btn .label{white-space:nowrap;max-width:0;opacity:0;margin-left:0;transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;}
-  .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{padding:8px 14px;gap:6px;}
-  .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
+  .learnmore-btn{
+    position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;align-items:center;
+    overflow:hidden;gap:6px;padding:8px 10px;border-radius:999px;font-size:14px;font-weight:600;
+    text-decoration:none;color:var(--text);background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);
+    border:1px solid rgba(84,160,255,0.4);box-shadow:0 0 4px rgba(84,160,255,0.25);transition:.25s;
+  }
+  .learnmore-btn svg{flex:0 0 auto;display:block;opacity:.95}
+  .learnmore-btn .label{
+    display:inline-block;overflow:hidden;white-space:nowrap;
+    max-width:0;opacity:0;margin-left:0;
+    transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;
+  }
+  .learnmore-btn.expanded,
+  .learnmore-btn:hover,
+  .learnmore-btn:focus-visible{ padding:8px 14px; }
+  .learnmore-btn.expanded .label,
+  .learnmore-btn:hover .label,
+  .learnmore-btn:focus-visible .label{ max-width:120px; opacity:1; margin-left:2px; }
   .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
-  .learnmore-btn.pulse-once{animation:lmPulse 1.6s ease-out 1;}
-  @keyframes lmPulse{0%{box-shadow:none;}40%{box-shadow:0 0 6px rgba(84,160,255,0.95),0 0 12px rgba(84,160,255,0.7);}100%{box-shadow:0 0 4px rgba(84,160,255,0.25);}}
 
-  footer{text-align:center;padding:24px 0;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px;}
+  /* === Fullscreen fixes === */
+  .video-wrapper:fullscreen,
+  .video-wrapper:-webkit-full-screen{
+    width:100vw;height:100vh;max-width:none;border-radius:0;
+  }
+  .video-wrapper:fullscreen video,
+  .video-wrapper:-webkit-full-screen video{
+    width:100%;height:100%;max-height:none;object-fit:contain;border-radius:0;box-shadow:none;
+  }
+  .video-wrapper:fullscreen .fullscreen-btn,
+  .video-wrapper:-webkit-full-screen .fullscreen-btn{
+    top:calc(env(safe-area-inset-top, 0px) + 12px);
+    right:calc(env(safe-area-inset-right, 0px) + 12px);
+    bottom:auto;
+  }
+  .video-wrapper:fullscreen .learnmore-btn,
+  .video-wrapper:-webkit-full-screen .learnmore-btn{ display:none; }
+
+  footer{text-align:center;padding:20px 0;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px;}
 </style>
 </head>
 <body>
 
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-small">Lylo.</a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span class="line top"></span>
+      <span class="line middle"></span>
+      <span class="line bottom"></span>
+    </button>
+  </div>
+</header>
+
+<nav class="nav-panel" id="mobileMenu" aria-hidden="true">
+  <div class="panel-inner">
+    <a href="/research">Survey</a>
+  </div>
+</nav>
+
 <main>
   <div class="wrap">
-    <section class="stack">
-      <h1 class="logo">Lylo.</h1>
-      <p class="tagline">Offline, secure AI for solicitors.</p>
-      <ul class="bullets">
-        <li class="bullet">Built for Employment Law. Drafts and compiles documents such as Statement of Facts, ET1’s and Schedule of Loss’ with total accuracy and zero cloud risk.</li>
-      </ul>
-      <a href="/research" class="cta" id="getStarted">Take part</a>
-      <div class="note">In development stages. Register interest.</div>
-    </section>
+    <h1 class="logo">Lylo.</h1>
+    <p class="tagline">Offline, secure AI for solicitors.</p>
 
     <aside class="visual">
       <div class="video-wrapper">
-        <video
-          id="lyloVideo"
-          autoplay loop muted playsinline webkit-playsinline preload="metadata"
-          poster="/static/poc.jpg"
-          aria-label="Demo video showing Lylo drafting a Schedule of Loss.">
-          <source src="/static/poc.mp4" type="video/mp4; codecs='avc1.42E01E, mp4a.40.2'">
+        <video id="lyloVideo" autoplay loop muted playsinline webkit-playsinline preload="metadata"
+          poster="/static/poc.jpg" aria-label="Demo video showing Lylo drafting a Schedule of Loss.">
+          <source src="/static/poc.mp4" type="video/mp4">
           <source src="/static/poc.webm" type="video/webm">
           <img src="/static/poc.jpg" alt="Lylo demo fallback image">
         </video>
@@ -123,6 +265,13 @@
         <button class="fullscreen-btn" id="fullscreenToggle" aria-label="Enter fullscreen">⤢</button>
       </div>
     </aside>
+
+    <ul class="bullets">
+      <li class="bullet">Retrieval based chat system, featuring specialist modules for Employment Law to support drafting Statements of Fact, ET1s, and Schedules of Loss.</li>
+    </ul>
+
+    <a href="/research" class="cta">Join the waitlist</a>
+    <div class="note">In development stages. Register interest.</div>
   </div>
 </main>
 
@@ -131,37 +280,66 @@
 </footer>
 
 <script>
-  const video = document.getElementById("lyloVideo");
-  const fsBtn = document.getElementById("fullscreenToggle");
-
-  function goFullscreen() {
-    if (!video) return;
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {});
-      return;
-    }
-    try { if (video.requestFullscreen) return video.requestFullscreen(); } catch(e) {}
-    try { if (video.webkitRequestFullscreen) return video.webkitRequestFullscreen(); } catch(e) {}
-    try { if (video.webkitEnterFullscreen) return video.webkitEnterFullscreen(); } catch(e) {}
-    try { if (video.webkitEnterFullScreen) return video.webkitEnterFullScreen(); } catch(e) {}
-    video.setAttribute('controls','');
+  /* ---------------- Mobile menu ---------------- */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  function setMenu(open){
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    mobileMenu.classList.toggle('open', open);
+    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.style.overflow = open ? 'hidden' : '';
   }
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.getAttribute('aria-expanded') !== 'true';
+    setMenu(open);
+  });
 
-  if (fsBtn) {
-    fsBtn.addEventListener("click", goFullscreen);
-    fsBtn.addEventListener("touchend", e => { e.preventDefault(); goFullscreen(); }, { passive:false });
+  /* ---------------- Learn More pill ---------------- */
+  const learnMoreBtn = document.getElementById('learnMoreBtn');
+  const learnMoreLabel = learnMoreBtn.querySelector('.label');
+
+  function openLabel(){
+    learnMoreBtn.classList.add('expanded');
+    const full = learnMoreLabel.scrollWidth;
+    learnMoreLabel.style.maxWidth = full + 'px';
+    learnMoreLabel.style.opacity = '1';
+    learnMoreLabel.style.marginLeft = '2px';
   }
+  function closeLabel(){
+    learnMoreLabel.style.maxWidth = '0px';
+    learnMoreLabel.style.opacity = '0';
+    learnMoreLabel.style.marginLeft = '0';
+    learnMoreBtn.classList.remove('expanded');
+  }
+  function expandCycle(){
+    openLabel();
+    setTimeout(() => {
+      if (!learnMoreBtn.matches(':hover, :focus, :focus-visible')) closeLabel();
+    }, 4000);
+  }
+  setTimeout(() => {
+    expandCycle();
+    setInterval(expandCycle, 10000);
+  }, 7000);
+  learnMoreBtn.addEventListener('mouseenter', openLabel);
+  learnMoreBtn.addEventListener('focus', openLabel);
+  learnMoreBtn.addEventListener('mouseleave', closeLabel);
+  learnMoreBtn.addEventListener('blur', closeLabel);
 
-  // --- Helper: try to (re)start playback safely
-  function tryPlaySequence({forceReload=false, nudge=false} = {}) {
+  /* ---------------- Video + iOS hardening ---------------- */
+  const fsBtn   = document.getElementById('fullscreenToggle');
+  const video   = document.getElementById('lyloVideo');
+  const wrapper = document.querySelector('.video-wrapper');
+
+  // Centralized play helper: nudge or hard-reload, keep inline, respect autoplay policy.
+  function tryPlaySequence({ forceReload = false, nudge = false } = {}) {
     if (!video) return;
-    const wasMuted = video.muted;
 
-    // Keep inline presentation when possible (iOS 15+)
+    // Keep inline presentation when supported (iOS 15+)
     try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
 
     if (forceReload) {
-      video.load();
+      try { video.load(); } catch(e) {}
     } else if (nudge) {
       try {
         const t = video.currentTime || 0;
@@ -170,83 +348,113 @@
       } catch(e) {}
     }
 
-    video.muted = true; // ensure autoplay-friendly
-    video.play().catch(()=>{});
+    const wasMuted = video.muted;
+    video.muted = true; // align with iOS autoplay rules during play()
+    video.play().catch(() => {});
     video.muted = wasMuted;
   }
 
-  // --- Autoplay on first load
-  (function(){
+  // Autoplay boot on first load
+  (function bootAutoplay(){
     if (!video) return;
-    const playNow = () => video.play().catch(()=>{});
+    const playNow = () => { tryPlaySequence(); };
     if (video.readyState >= 2) playNow();
-    else video.addEventListener('loadeddata', playNow, { once:true });
+    else video.addEventListener('loadeddata', playNow, { once: true });
 
-    // Only if tapping the VIDEO (not page) fails, show controls once
+    // If tapping the VIDEO fails, show controls once and try again (gestured play).
     const onVideoTap = () => {
-      video.play().catch(() => { video.setAttribute('controls',''); video.play().catch(()=>{}); });
+      video.play().catch(() => {
+        video.setAttribute('controls', '');
+        video.play().catch(() => {});
+      });
     };
-    video.addEventListener('touchstart', onVideoTap, { passive:true, once:true });
-    video.addEventListener('click', onVideoTap, { once:true });
+    video.addEventListener('touchstart', onVideoTap, { passive: true, once: true });
+    video.addEventListener('click',      onVideoTap, {               once: true });
 
-    video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
+    // Hide controls again once we're actually playing (keep the clean UI).
+    video.addEventListener('play', () => {
+      if (video.hasAttribute('controls')) video.removeAttribute('controls');
+    });
   })();
 
-  // --- Fix freeze when leaving fullscreen (all exits)
-  document.addEventListener("fullscreenchange", () => {
-    if (!document.fullscreenElement) tryPlaySequence({ nudge:true });
-  });
-  // iOS ❌ close button: wait a bit and reload to avoid stale frames
-  video.addEventListener("webkitendfullscreen", () => {
-    setTimeout(() => { tryPlaySequence({ forceReload:true }); }, 500);
-  });
-
-  // --- Resume after returning from background / lock
+  // Resume after returning from background / app switch / lock
   function onReturnToForeground() {
-    // If video appears stalled or paused, reload+play; else just nudge+play
+    if (!video) return;
     if (video.paused || video.readyState < 2) {
-      tryPlaySequence({ forceReload:true });
+      tryPlaySequence({ forceReload: true });
     } else {
-      tryPlaySequence({ nudge:true });
+      tryPlaySequence({ nudge: true });
     }
   }
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') onReturnToForeground();
   });
-  window.addEventListener('pageshow', (e) => { onReturnToForeground(); });
+  window.addEventListener('pageshow', () => { onReturnToForeground(); });
   window.addEventListener('focus', onReturnToForeground);
 
-  // --- Lightweight stall watchdog (iOS freeze detector)
-  (function(){
+  // Lightweight stall watchdog (detect frozen currentTime while "playing")
+  (function stallWatchdog(){
+    if (!video) return;
     let lastTime = 0;
     setInterval(() => {
       if (!video || document.visibilityState !== 'visible') return;
-      if (video.paused) { lastTime = video.currentTime; return; }
+      if (video.paused) { lastTime = video.currentTime || 0; return; }
       const ct = video.currentTime || 0;
-      // If time hasn't advanced in ~2s while "playing", recover
+      // If time hasn't advanced in ~2s, nudge then possibly hard-reload
       if (Math.abs(ct - lastTime) < 0.01) {
-        // first try a nudge, then reload if still stuck next tick
-        tryPlaySequence({ nudge:true });
+        tryPlaySequence({ nudge: true });
         setTimeout(() => {
-          if (Math.abs((video.currentTime||0) - ct) < 0.01) {
-            tryPlaySequence({ forceReload:true });
-          }
+          const ct2 = video.currentTime || 0;
+          if (Math.abs(ct2 - ct) < 0.01) tryPlaySequence({ forceReload: true });
         }, 250);
       }
       lastTime = ct;
     }, 2000);
   })();
 
-  // Learn more pill animation
-  (function(){
-    const btn = document.getElementById('learnMoreBtn');
-    if (!btn) return;
-    const expandDelay = 7000, showFor = 4000;
-    setTimeout(() => {
-      btn.classList.add('expanded','pulse-once');
-      setTimeout(() => { btn.classList.remove('pulse-once','expanded'); }, showFor);
-    }, expandDelay);
-  })();
+  // Recover after leaving fullscreen (all exits, including iOS native player)
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) tryPlaySequence({ nudge: true });
+  });
+  if (video) {
+    video.addEventListener('webkitendfullscreen', () => {
+      // iOS native player close can leave a stale frame — reload after a short delay
+      setTimeout(() => { tryPlaySequence({ forceReload: true }); }, 500);
+    });
+  }
+
+  /* ---------------- Fullscreen toggle (UI + behavior) ---------------- */
+  function isFullscreen(){
+    return document.fullscreenElement || document.webkitFullscreenElement || null;
+  }
+  async function enterFullscreen(){
+    // Prefer wrapper fullscreen for consistent overlay positioning
+    if (wrapper && wrapper.requestFullscreen) return wrapper.requestFullscreen();
+    if (wrapper && wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
+    // Fallback to iOS native video fullscreen if wrapper methods don't exist
+    if (video && video.webkitEnterFullscreen) return video.webkitEnterFullscreen();
+  }
+  async function exitFullscreen(){
+    if (document.exitFullscreen) return document.exitFullscreen();
+    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+  }
+  function updateFsBtnUI(full){
+    if (!fsBtn) return;
+    fsBtn.textContent = full ? '⤡' : '⤢';
+    fsBtn.setAttribute('aria-label', full ? 'Exit fullscreen' : 'Enter fullscreen');
+  }
+  if (fsBtn){
+    fsBtn.addEventListener('click', async () => {
+      if (!isFullscreen()){ await enterFullscreen(); updateFsBtnUI(true); }
+      else { await exitFullscreen(); updateFsBtnUI(false); }
+    });
+  }
+  document.addEventListener('fullscreenchange',      () => updateFsBtnUI(!!isFullscreen()));
+  document.addEventListener('webkitfullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
+  if (video){
+    video.addEventListener('webkitbeginfullscreen', () => updateFsBtnUI(true));
+    video.addEventListener('webkitendfullscreen',   () => updateFsBtnUI(false));
+  }
 </script>
 
 </body>
