@@ -141,9 +141,9 @@
   }
   .fullscreen-btn:hover,.pause-btn:hover{background:rgba(17,23,34,.92);transform:translateY(-1px);}
 
-  /* Positions */
-  .fullscreen-btn{ right:12px; bottom:12px; }
-  .pause-btn{ left:12px; bottom:12px; }
+  /* Positions (raised to sit above the timeline) */
+  .fullscreen-btn{ right:12px; bottom:56px; }
+  .pause-btn{ left:12px; bottom:56px; }
 
   /* Show on mobile tap or desktop hover when minimized */
   .video-wrapper.show-controls .fullscreen-btn,
@@ -355,7 +355,7 @@
   function openLabel(){learnMoreBtn.classList.add('expanded'); const w=learnMoreLabel.scrollWidth; learnMoreLabel.style.maxWidth=w+'px'; learnMoreLabel.style.opacity='1'; learnMoreLabel.style.marginLeft='2px';}
   function closeLabel(){learnMoreLabel.style.maxWidth='0px'; learnMoreLabel.style.opacity='0'; learnMoreLabel.style.marginLeft='0'; learnMoreBtn.classList.remove('expanded');}
   function expandCycle(){openLabel(); setTimeout(()=>{ if(!learnMoreBtn.matches(':hover,:focus,:focus-visible')) closeLabel(); }, 4000);}
-  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 10000); }, 7000);
+  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 20000); }, 7000);
   learnMoreBtn.addEventListener('mouseenter', openLabel);
   learnMoreBtn.addEventListener('focus', openLabel);
   learnMoreBtn.addEventListener('mouseleave', closeLabel);
