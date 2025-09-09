@@ -133,13 +133,18 @@
 /* Controls */
   .fullscreen-btn,
   .pause-btn{
-    position:absolute;bottom:48px;background:rgba(17,23,34,.7);color:var(--text);
-    font-size:18px;font-weight:600;line-height:1;padding:8px 12px;border:none;border-radius:10px;
-    cursor:pointer;transition:background .2s ease,transform .06s ease;z-index:3;
+    position:absolute;background:rgba(17,23,34,.78);color:var(--text);
+    font-size:20px;font-weight:600;line-height:1;padding:10px 14px;border:none;border-radius:12px;
+    cursor:pointer;transition:background .2s ease,transform .06s ease, box-shadow .2s ease;z-index:3;
+    border:1px solid rgba(255,255,255,.28);
+    backdrop-filter:blur(6px) saturate(120%);
+    box-shadow:0 6px 22px rgba(0,0,0,.55);
   }
-  .fullscreen-btn:hover,.pause-btn:hover{background:rgba(17,23,34,.9);transform:translateY(-1px);}
-  .fullscreen-btn{ right:12px; display:flex; }  /* <-- visible by default (fix) */
-  .pause-btn{ left:12px; display:none; }       /* only visible in fullscreen */
+  .fullscreen-btn:hover,.pause-btn:hover{background:rgba(17,23,34,.92);transform:translateY(-1px);}
+
+  /* Expand button LOWER in normal view (closer to corner) */
+  .fullscreen-btn{ right:12px; bottom:12px; display:flex; }
+  .pause-btn{ left:12px; bottom:64px; display:none; } /* only visible in fullscreen */
 
 /* "i" pill */
   .learnmore-btn{
@@ -162,42 +167,53 @@
   .video-wrapper:fullscreen video,.video-wrapper:-webkit-full-screen video{width:100%;height:100%;max-height:none;object-fit:contain;border-radius:0;box-shadow:none;}
   .video-wrapper:fullscreen .learnmore-btn,.video-wrapper:-webkit-full-screen .learnmore-btn{ display:none; }
 
-  /* Show timeline & pause button ONLY when native fullscreen (desktop) */
+  /* Stronger, clearer controls in FULLSCREEN */
   .video-wrapper:fullscreen .timeline,
   .video-wrapper:-webkit-full-screen .timeline,
   .video-wrapper:fullscreen .pause-btn,
   .video-wrapper:-webkit-full-screen .pause-btn{
     display:flex;
   }
-  /* Reposition buttons in native fullscreen for comfort */
   .video-wrapper:fullscreen .fullscreen-btn,
   .video-wrapper:-webkit-full-screen .fullscreen-btn{
-    top:calc(env(safe-area-inset-top, 0px) + 12px); right:calc(env(safe-area-inset-right, 0px) + 12px); bottom:auto;
+    display:flex;
+    top:calc(env(safe-area-inset-top, 0px) + 16px);
+    right:calc(env(safe-area-inset-right, 0px) + 16px);
+    bottom:auto;
   }
   .video-wrapper:fullscreen .pause-btn,
   .video-wrapper:-webkit-full-screen .pause-btn{
-    top:calc(env(safe-area-inset-top, 0px) + 12px); left:calc(env(safe-area-inset-left, 0px) + 12px); bottom:auto;
+    top:calc(env(safe-area-inset-top, 0px) + 16px);
+    left:calc(env(safe-area-inset-left, 0px) + 16px);
+    bottom:auto;
+  }
+  /* Bottom scrim in fullscreen to lift timeline contrast */
+  .video-wrapper:fullscreen::after,
+  .video-wrapper:-webkit-full-screen::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:140px;
+    background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0));
+    pointer-events:none; z-index:2;
   }
 
 /* ===== Timeline (hidden by default; only in fullscreen) ===== */
   .timeline{
-    position:absolute; left:10px; right:10px; bottom:12px; height:16px; z-index:3;
+    position:absolute; left:10px; right:10px; bottom:12px; height:18px; z-index:3;
     display:none; align-items:center; touch-action:none; user-select:none;
   }
   .timeline .track{
-    position:relative; width:100%; height:6px; border-radius:999px; overflow:hidden;
-    background:rgba(255,255,255,.14); box-shadow:inset 0 1px 0 rgba(0,0,0,.25);
+    position:relative; width:100%; height:8px; border-radius:999px; overflow:hidden;
+    background:rgba(255,255,255,.28); box-shadow:inset 0 1px 0 rgba(0,0,0,.35);
     transition:height .15s ease;
   }
   .timeline:hover .track,
-  .timeline.dragging .track{ height:8px; }
-  .timeline .buffer{position:absolute; left:0; top:0; bottom:0; width:0%; background:rgba(255,255,255,.24);}
-  .timeline .progress{position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, rgba(84,160,255,.9), rgba(84,160,255,.6));}
-  .timeline .handle{position:absolute; top:50%; transform:translate(-50%,-50%); width:12px; height:12px; border-radius:999px; background:#fff; opacity:.95; box-shadow:0 2px 8px rgba(0,0,0,.35); pointer-events:none;}
+  .timeline.dragging .track{ height:10px; }
+  .timeline .buffer{position:absolute; left:0; top:0; bottom:0; width:0%; background:rgba(255,255,255,.38);}
+  .timeline .progress{position:absolute; left:0; top:0; bottom:0; width:0%; background:linear-gradient(90deg, rgba(84,160,255,1), rgba(84,160,255,.75));}
+  .timeline .handle{position:absolute; top:50%; transform:translate(-50%,-50%); width:14px; height:14px; border-radius:999px; background:#fff; opacity:.98; box-shadow:0 2px 12px rgba(0,0,0,.45); pointer-events:none;}
 
   /* iOS simulated fullscreen overlay */
   .fs-overlay{
-    position:fixed; inset:0; z-index:20000; background:#000; display:none;
+    position:fixed; inset:0; z-index:10000; background:#000; display:none;
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
   .fs-overlay.open{ display:flex; align-items:center; justify-content:center; }
@@ -205,15 +221,25 @@
   .fs-overlay .video-wrapper video{ width:100%; height:100%; max-height:none; object-fit:contain; }
   .fs-overlay .learnmore-btn{ display:none; }
 
-  /* Show controls inside overlay (fullscreen state on mobile/iOS) */
+  /* Show + clarify controls inside overlay */
   .fs-overlay .timeline,
   .fs-overlay .pause-btn,
   .fs-overlay .fullscreen-btn{ display:flex; }
-
-  /* Safe-area aware placement in overlay */
-  .fs-overlay .fullscreen-btn{ right:calc(env(safe-area-inset-right) + 12px); bottom:calc(env(safe-area-inset-bottom) + 48px); top:auto; }
-  .fs-overlay .pause-btn{ left:calc(env(safe-area-inset-left) + 12px); bottom:calc(env(safe-area-inset-bottom) + 48px); top:auto; }
-  .fs-overlay .timeline{ left:calc(env(safe-area-inset-left) + 10px); right:calc(env(safe-area-inset-right) + 10px); bottom:calc(env(safe-area-inset-bottom) + 12px); }
+  .fs-overlay .fullscreen-btn{
+    right:calc(env(safe-area-inset-right) + 16px);
+    top:calc(env(safe-area-inset-top) + 16px);
+    bottom:auto;
+  }
+  .fs-overlay .pause-btn{
+    left:calc(env(safe-area-inset-left) + 16px);
+    top:calc(env(safe-area-inset-top) + 16px);
+    bottom:auto;
+  }
+  .fs-overlay .video-wrapper::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:140px;
+    background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0));
+    pointer-events:none; z-index:2;
+  }
 
   footer{text-align:center;padding:20px 0;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px;}
 </style>
@@ -256,7 +282,7 @@
           <span class="label">Learn more</span>
         </a>
 
-        <!-- Fullscreen toggle (visible in normal view too) -->
+        <!-- Fullscreen toggle (lower in normal view) -->
         <button class="fullscreen-btn" id="fullscreenToggle" aria-label="Enter fullscreen">⤢</button>
         <!-- Play/Pause toggle (shows only in fullscreen) -->
         <button class="pause-btn" id="pauseToggle" aria-label="Pause">❚❚</button>
@@ -303,7 +329,7 @@
   function openLabel(){learnMoreBtn.classList.add('expanded'); const w=learnMoreLabel.scrollWidth; learnMoreLabel.style.maxWidth=w+'px'; learnMoreLabel.style.opacity='1'; learnMoreLabel.style.marginLeft='2px';}
   function closeLabel(){learnMoreLabel.style.maxWidth='0px'; learnMoreLabel.style.opacity='0'; learnMoreLabel.style.marginLeft='0'; learnMoreBtn.classList.remove('expanded');}
   function expandCycle(){openLabel(); setTimeout(()=>{ if(!learnMoreBtn.matches(':hover,:focus,:focus-visible')) closeLabel(); }, 4000);}
-  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 20000); }, 7000);
+  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 10000); }, 7000);
   learnMoreBtn.addEventListener('mouseenter', openLabel);
   learnMoreBtn.addEventListener('focus', openLabel);
   learnMoreBtn.addEventListener('mouseleave', closeLabel);
@@ -317,7 +343,7 @@
 
   const IS_IOS = (() => {
     const ua = navigator.userAgent || '';
-    const platform = navigator.platform || '';
+       const platform = navigator.platform || '';
     const macTouch = platform === 'MacIntel' && navigator.maxTouchPoints > 1;
     return /iPad|iPhone|iPod/.test(ua) || macTouch;
   })();
