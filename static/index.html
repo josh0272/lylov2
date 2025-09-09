@@ -18,6 +18,7 @@
     --font:-apple-system, BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
     --bg-top:#0A1220; --bg-bottom:#080D18;
     --noise:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO0WQ8AAW0B8w1i6b0AAAAASUVORK5CYII=");
+    --lm-size:36px; /* learn more circle size */
   }
 
   *{box-sizing:border-box}
@@ -107,7 +108,11 @@
         "bullets"
         "cta"
         "note";
+      /* ↓ reduced space above the big Lylo on mobile */
+      padding:calc(64px + 24px) var(--space) clamp(20px,3vh,40px);
     }
+    .logo{ margin-bottom:8px; }
+    .tagline{ margin-bottom:22px; }
   }
   @media(min-width:980px){
     .wrap{
@@ -152,7 +157,7 @@
   .cta:hover{
     transform:translateY(-1px);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);
-    background-position:100% 0; /* shimmer sweep */
+    background-position:100% 0;
   }
 
   .note{grid-area:note;color:var(--muted);font-size:13px;margin:4px 0 0;text-align:center;}
@@ -179,11 +184,18 @@
   }
   .fullscreen-btn:hover{background:rgba(17,23,34,.9);transform:translateY(-1px);}
 
+  /* Learn More button: compact circle by default */
   .learnmore-btn{
-    position:absolute;top:12px;right:12px;z-index:2;display:inline-flex;align-items:center;
-    overflow:hidden;gap:6px;padding:8px 10px;border-radius:999px;font-size:14px;font-weight:600;
-    text-decoration:none;color:var(--text);background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);
-    border:1px solid rgba(84,160,255,0.4);box-shadow:0 0 4px rgba(84,160,255,0.25);transition:.25s;
+    position:absolute;top:12px;right:12px;z-index:2;
+    display:inline-flex;align-items:center;justify-content:center;
+    width:var(--lm-size); height:var(--lm-size);
+    padding:0; gap:0;
+    border-radius:999px;font-size:14px;font-weight:600;
+    text-decoration:none;color:var(--text);
+    background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);
+    border:1px solid rgba(84,160,255,0.4);
+    box-shadow:0 0 4px rgba(84,160,255,0.25);
+    transition:width .25s ease,height .25s ease,padding .25s ease,gap .25s ease,background .25s ease;
   }
   .learnmore-btn svg{flex:0 0 auto;display:block;opacity:.95}
   .learnmore-btn .label{
@@ -193,10 +205,12 @@
   }
   .learnmore-btn.expanded,
   .learnmore-btn:hover,
-  .learnmore-btn:focus-visible{ padding:8px 14px; }
+  .learnmore-btn:focus-visible{
+    width:auto;height:var(--lm-size);padding:8px 14px;gap:6px;
+  }
   .learnmore-btn.expanded .label,
   .learnmore-btn:hover .label,
-  .learnmore-btn:focus-visible .label{ max-width:120px; opacity:1; margin-left:2px; }
+  .learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
   .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
 
   /* === Fullscreen fixes === */
@@ -280,7 +294,7 @@
 </footer>
 
 <script>
-  /* ---------------- Mobile menu ---------------- */
+  /* Mobile menu */
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   function setMenu(open){
@@ -294,10 +308,9 @@
     setMenu(open);
   });
 
-  /* ---------------- Learn More pill ---------------- */
+  /* Learn More pill */
   const learnMoreBtn = document.getElementById('learnMoreBtn');
   const learnMoreLabel = learnMoreBtn.querySelector('.label');
-
   function openLabel(){
     learnMoreBtn.classList.add('expanded');
     const full = learnMoreLabel.scrollWidth;
@@ -319,25 +332,21 @@
   }
   setTimeout(() => {
     expandCycle();
-    setInterval(expandCycle, 10000);
+    setInterval(expandCycle, 20000);
   }, 7000);
   learnMoreBtn.addEventListener('mouseenter', openLabel);
   learnMoreBtn.addEventListener('focus', openLabel);
   learnMoreBtn.addEventListener('mouseleave', closeLabel);
   learnMoreBtn.addEventListener('blur', closeLabel);
 
-  /* ---------------- Video + iOS hardening ---------------- */
+  /* Video + iOS hardening */
   const fsBtn   = document.getElementById('fullscreenToggle');
   const video   = document.getElementById('lyloVideo');
   const wrapper = document.querySelector('.video-wrapper');
 
-  // Centralized play helper: nudge or hard-reload, keep inline, respect autoplay policy.
   function tryPlaySequence({ forceReload = false, nudge = false } = {}) {
     if (!video) return;
-
-    // Keep inline presentation when supported (iOS 15+)
     try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
-
     if (forceReload) {
       try { video.load(); } catch(e) {}
     } else if (nudge) {
@@ -347,21 +356,18 @@
         video.currentTime = Math.max(0, t - 0.001);
       } catch(e) {}
     }
-
     const wasMuted = video.muted;
-    video.muted = true; // align with iOS autoplay rules during play()
+    video.muted = true;
     video.play().catch(() => {});
     video.muted = wasMuted;
   }
 
-  // Autoplay boot on first load
   (function bootAutoplay(){
     if (!video) return;
     const playNow = () => { tryPlaySequence(); };
     if (video.readyState >= 2) playNow();
     else video.addEventListener('loadeddata', playNow, { once: true });
 
-    // If tapping the VIDEO fails, show controls once and try again (gestured play).
     const onVideoTap = () => {
       video.play().catch(() => {
         video.setAttribute('controls', '');
@@ -371,15 +377,12 @@
     video.addEventListener('touchstart', onVideoTap, { passive: true, once: true });
     video.addEventListener('click',      onVideoTap, {               once: true });
 
-    // Hide controls again once we're actually playing (keep the clean UI).
     video.addEventListener('play', () => {
       if (video.hasAttribute('controls')) video.removeAttribute('controls');
     });
   })();
 
-  // Resume after returning from background / app switch / lock
   function onReturnToForeground() {
-    if (!video) return;
     if (video.paused || video.readyState < 2) {
       tryPlaySequence({ forceReload: true });
     } else {
@@ -392,15 +395,12 @@
   window.addEventListener('pageshow', () => { onReturnToForeground(); });
   window.addEventListener('focus', onReturnToForeground);
 
-  // Lightweight stall watchdog (detect frozen currentTime while "playing")
   (function stallWatchdog(){
-    if (!video) return;
     let lastTime = 0;
     setInterval(() => {
-      if (!video || document.visibilityState !== 'visible') return;
+      if (document.visibilityState !== 'visible') return;
       if (video.paused) { lastTime = video.currentTime || 0; return; }
       const ct = video.currentTime || 0;
-      // If time hasn't advanced in ~2s, nudge then possibly hard-reload
       if (Math.abs(ct - lastTime) < 0.01) {
         tryPlaySequence({ nudge: true });
         setTimeout(() => {
@@ -412,26 +412,21 @@
     }, 2000);
   })();
 
-  // Recover after leaving fullscreen (all exits, including iOS native player)
   document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) tryPlaySequence({ nudge: true });
   });
   if (video) {
     video.addEventListener('webkitendfullscreen', () => {
-      // iOS native player close can leave a stale frame — reload after a short delay
       setTimeout(() => { tryPlaySequence({ forceReload: true }); }, 500);
     });
   }
 
-  /* ---------------- Fullscreen toggle (UI + behavior) ---------------- */
   function isFullscreen(){
     return document.fullscreenElement || document.webkitFullscreenElement || null;
   }
   async function enterFullscreen(){
-    // Prefer wrapper fullscreen for consistent overlay positioning
     if (wrapper && wrapper.requestFullscreen) return wrapper.requestFullscreen();
     if (wrapper && wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
-    // Fallback to iOS native video fullscreen if wrapper methods don't exist
     if (video && video.webkitEnterFullscreen) return video.webkitEnterFullscreen();
   }
   async function exitFullscreen(){
@@ -439,16 +434,13 @@
     if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
   }
   function updateFsBtnUI(full){
-    if (!fsBtn) return;
     fsBtn.textContent = full ? '⤡' : '⤢';
     fsBtn.setAttribute('aria-label', full ? 'Exit fullscreen' : 'Enter fullscreen');
   }
-  if (fsBtn){
-    fsBtn.addEventListener('click', async () => {
-      if (!isFullscreen()){ await enterFullscreen(); updateFsBtnUI(true); }
-      else { await exitFullscreen(); updateFsBtnUI(false); }
-    });
-  }
+  fsBtn.addEventListener('click', async () => {
+    if (!isFullscreen()){ await enterFullscreen(); updateFsBtnUI(true); }
+    else { await exitFullscreen(); updateFsBtnUI(false); }
+  });
   document.addEventListener('fullscreenchange',      () => updateFsBtnUI(!!isFullscreen()));
   document.addEventListener('webkitfullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
   if (video){
