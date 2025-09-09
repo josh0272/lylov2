@@ -225,7 +225,7 @@
   function openLabel(){learnMoreBtn.classList.add('expanded'); const w = learnMoreLabel.scrollWidth; learnMoreLabel.style.maxWidth = w+'px'; learnMoreLabel.style.opacity='1'; learnMoreLabel.style.marginLeft='2px';}
   function closeLabel(){learnMoreLabel.style.maxWidth='0px'; learnMoreLabel.style.opacity='0'; learnMoreLabel.style.marginLeft='0'; learnMoreBtn.classList.remove('expanded');}
   function expandCycle(){openLabel(); setTimeout(()=>{ if(!learnMoreBtn.matches(':hover,:focus,:focus-visible')) closeLabel(); }, 4000);}
-  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 20000); }, 7000);
+  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 10000); }, 7000);
   learnMoreBtn.addEventListener('mouseenter', openLabel);
   learnMoreBtn.addEventListener('focus', openLabel);
   learnMoreBtn.addEventListener('mouseleave', closeLabel);
@@ -243,16 +243,24 @@
     return /iPad|iPhone|iPod/.test(ua) || macTouch;
   })();
 
-  // Minimal, safe play() for all platforms
-  function safePlay(){
-    if (!video) return;
-    try { video.play().catch(()=>{}); } catch(e){}
-  }
+  function safePlay(){ if (!video) return; try { video.play().catch(()=>{}); } catch(e){} }
 
-  // iOS-only helpers
+  // iOS helper actions
   function nudgeIOS(){
     if (!IS_IOS) return;
-    try { video.currentTime = Math.max(0, (video.currentTime||0) + 0.001); } catch(e){}
+    try {
+      // micro seek forward then back a frame-equivalent to kick decoders
+      const t = video.currentTime || 0;
+      video.currentTime = Math.max(0, t + 0.001);
+    } catch(e){}
+  }
+  function rewindIOS(seconds=10){
+    if (!IS_IOS) return;
+    try {
+      const t = video.currentTime || 0;
+      video.currentTime = Math.max(0, t - seconds);
+      safePlay();
+    } catch(e){}
   }
   function reloadIOS(){
     if (!IS_IOS) return;
@@ -276,7 +284,7 @@
     video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
   })();
 
-  // Resume on return
+  // Resume when returning to page/app
   function resume(){
     if (!video) return;
     if (video.readyState < 2 || video.paused) safePlay();
@@ -286,32 +294,46 @@
   window.addEventListener('pageshow', resume);
   window.addEventListener('focus', resume);
 
-  // iOS-only stall watchdog (desktop stays clean and stable)
+  // iOS stall watchdog with rewind fallback
   if (IS_IOS){
-    let lastTick = Date.now();
-    video.addEventListener('timeupdate', () => { lastTick = Date.now(); });
+    let lastUpdate = Date.now();
+    let lastRewindAt = 0;
+    const REWIND_COOLDOWN = 2500; // avoid rewinding too frequently
 
+    video.addEventListener('timeupdate', () => { lastUpdate = Date.now(); });
+
+    function maybeRewind(reason){
+      const now = Date.now();
+      if (now - lastRewindAt < REWIND_COOLDOWN) { nudgeIOS(); return; }
+      lastRewindAt = now;
+      // Try a 10s rewind (your observed fix); if near start, fallback to 3s.
+      const t = video.currentTime || 0;
+      rewindIOS(t > 12 ? 10 : 3);
+    }
+
+    // Poll for stalls (~2s without timeupdate)
     setInterval(() => {
       if (document.visibilityState !== 'visible') return;
       if (video.paused) return;
-      // If no timeupdate in ~2s, try nudge; if still stuck after a beat, reload.
-      if (Date.now() - lastTick > 2000){
-        nudgeIOS();
-        setTimeout(() => { if (Date.now() - lastTick > 2300) reloadIOS(); }, 250);
+      if (Date.now() - lastUpdate > 2000){
+        maybeRewind('watchdog');
+        // If still no progress after a brief beat, reload as last resort
+        setTimeout(() => { if (Date.now() - lastUpdate > 2300) reloadIOS(); }, 300);
       }
-    }, 1200);
+    }, 1000);
 
-    // Buffering-ish events: gentle kick only on iOS
-    video.addEventListener('waiting', nudgeIOS);
-    video.addEventListener('stalled', nudgeIOS);
+    // Buffering-ish events: try rewind first
+    ['waiting','stalled','suspend','emptied'].forEach(evt=>{
+      video.addEventListener(evt, () => { maybeRewind(evt); });
+    });
   }
 
-  // Fullscreen handling: prefer native on iOS, wrapper on others
+  // Fullscreen handling: native on iOS, wrapper on others
   function isFullscreen(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
   async function enterFullscreen(){
     if (IS_IOS && video && video.webkitEnterFullscreen) { try { return video.webkitEnterFullscreen(); } catch(e){} }
-    if (wrapper.requestFullscreen) return wrapper.requestFullscreen();
-    if (wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
+    if (wrapper && wrapper.requestFullscreen) return wrapper.requestFullscreen();
+    if (wrapper && wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
   }
   async function exitFullscreen(){
     if (document.exitFullscreen) return document.exitFullscreen();
@@ -328,17 +350,25 @@
   document.addEventListener('fullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
   document.addEventListener('webkitfullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
 
-  // iOS fullscreen kicks only on iOS
+  // iOS: on entering native fullscreen, verify motion; if stuck, rewind; if still stuck, reload.
   if (IS_IOS && video){
     video.addEventListener('webkitbeginfullscreen', () => {
       const before = video.currentTime || 0;
       nudgeIOS();
       setTimeout(() => {
         const after = video.currentTime || 0;
-        if (after <= before + 0.01) reloadIOS();
-      }, 600);
+        if (after <= before + 0.01) {
+          rewindIOS(before > 12 ? 10 : 3);
+          setTimeout(() => {
+            const after2 = video.currentTime || 0;
+            if (after2 <= before + 0.01) reloadIOS();
+          }, 500);
+        }
+      }, 500);
     });
-    video.addEventListener('webkitendfullscreen', () => setTimeout(reloadIOS, 500));
+
+    // iOS can show a stale frame after close; reload quickly
+    video.addEventListener('webkitendfullscreen', () => setTimeout(reloadIOS, 400));
   }
 
   /* ====== Mobile-only delayed nav for CTA (no spinner) ====== */
