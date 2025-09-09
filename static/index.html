@@ -6,7 +6,6 @@
 <title>Lylo. — AI for solicitors</title>
 <meta name="description" content="Works without internet. Built for security and trust. ET1 and Schedule of Loss drafting.">
 
-<!-- Cormorant Garamond (free, Canela-adjacent) -->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -18,7 +17,7 @@
     --font:-apple-system, BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
     --bg-top:#0A1220; --bg-bottom:#080D18;
     --noise:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO0WQ8AAW0B8w1i6b0AAAAASUVORK5CYII=");
-    --lm-size:36px; /* learn more circle size */
+    --lm-size:36px;
   }
 
   *{box-sizing:border-box}
@@ -39,7 +38,6 @@
   }
   body::after{content:"";position:fixed;inset:0;pointer-events:none;background-image:var(--noise);opacity:.05;mix-blend-mode:soft-light;}
 
-  /* ===== Header ===== */
   header.site-header{
     position:fixed; top:0; left:0; right:0; z-index:1000;
     height:64px;
@@ -48,27 +46,12 @@
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 1px 0 rgba(255,255,255,0.06);
   }
-  .header-inner{
-    width:100%; max-width:var(--container);
-    padding:0 16px; display:flex; align-items:center; justify-content:space-between;
-  }
-  .logo-small{
-    font-family:'Cormorant Garamond', serif;
-    font-weight:600; font-size:26px; letter-spacing:-.02em;
-    color:var(--text); text-decoration:none;
-  }
+  .header-inner{width:100%; max-width:var(--container);padding:0 16px; display:flex; align-items:center; justify-content:space-between;}
+  .logo-small{font-family:'Cormorant Garamond', serif;font-weight:600; font-size:26px; letter-spacing:-.02em;color:var(--text); text-decoration:none;}
 
-  /* Hamburger */
-  .hamburger{
-    width:40px; height:36px; position:relative; cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-    border:none; background:none; padding:0;
-  }
+  .hamburger{width:40px; height:36px; position:relative; cursor:pointer;display:flex; align-items:center; justify-content:center;border:none; background:none; padding:0;}
   .hamburger:focus-visible{ outline:2px solid rgba(84,160,255,.45); border-radius:8px; }
-  .hamburger .line{
-    position:absolute; width:22px; height:2px; background:var(--text);
-    border-radius:2px; transition:transform .25s ease, opacity .2s ease, width .2s ease;
-  }
+  .hamburger .line{position:absolute; width:22px; height:2px; background:var(--text);border-radius:2px; transition:transform .25s ease, opacity .2s ease, width .2s ease;}
   .hamburger .line.top{ transform:translateY(-6px); }
   .hamburger .line.middle{ transform:translateY(0); }
   .hamburger .line.bottom{ transform:translateY(6px); }
@@ -76,23 +59,11 @@
   .hamburger[aria-expanded="true"] .line.middle{ opacity:0; }
   .hamburger[aria-expanded="true"] .line.bottom{ transform:rotate(-45deg); }
 
-  /* Mobile menu */
-  .nav-panel{
-    position:fixed; inset:0; z-index:999;
-    background:var(--bg); display:none;
-  }
+  .nav-panel{position:fixed; inset:0; z-index:999;background:var(--bg); display:none;}
   .nav-panel.open{ display:block; }
-  .nav-panel .panel-inner{
-    max-width:var(--container); margin:0 auto; height:100%;
-    padding:88px 20px 24px; display:flex; flex-direction:column; gap:22px;
-  }
-  .nav-panel a{
-    color:var(--text); text-decoration:none;
-    font-weight:600; font-size:22px; letter-spacing:0.01em;
-    padding:14px 2px; border-bottom:1px solid rgba(255,255,255,.08);
-  }
+  .nav-panel .panel-inner{max-width:var(--container); margin:0 auto; height:100%;padding:88px 20px 24px; display:flex; flex-direction:column; gap:22px;}
+  .nav-panel a{color:var(--text); text-decoration:none;font-weight:600; font-size:22px; letter-spacing:0.01em;padding:14px 2px; border-bottom:1px solid rgba(255,255,255,.08);}
 
-  /* Hero layout */
   .wrap{
     width:100%;max-width:var(--container);margin:auto;
     padding:calc(64px + 60px) var(--space) clamp(28px,4vh,60px);
@@ -108,7 +79,6 @@
         "bullets"
         "cta"
         "note";
-      /* ↓ reduced space above the big Lylo on mobile */
       padding:calc(64px + 24px) var(--space) clamp(20px,3vh,40px);
     }
     .logo{ margin-bottom:8px; }
@@ -126,20 +96,11 @@
     }
   }
 
-  .logo{
-    grid-area:logo; font-family:'Cormorant Garamond', serif;
-    font-weight:600; font-size:88px; letter-spacing:-.03em; line-height:1;
-    text-align:center; margin:0 0 12px;
-  }
-  .tagline{
-    grid-area:tagline; font-family:var(--font);
-    font-size:28px; line-height:1.4; letter-spacing:-0.01em;
-    font-weight:400; text-align:center; margin:0 0 30px;
-  }
+  .logo{grid-area:logo; font-family:'Cormorant Garamond', serif;font-weight:600; font-size:88px; letter-spacing:-.03em; line-height:1;text-align:center; margin:0 0 12px;}
+  .tagline{grid-area:tagline; font-family:var(--font);font-size:28px; line-height:1.4; letter-spacing:-0.01em;font-weight:400; text-align:center; margin:0 0 30px;}
   .bullets{grid-area:bullets;list-style:none;padding:0;display:grid;gap:12px;justify-content:center;max-width:640px;text-align:center;margin:0 0 20px;}
   .bullet{font-family:var(--font);font-size:17px;line-height:1.55;max-width:440px;margin:0 auto;}
 
-  /* CTA with shimmer hover + mobile loading state (no spinner) */
   .cta{
     grid-area:cta; display:inline-block; width:auto; padding:12px 20px;
     text-align:center; font-weight:600; font-size:16px; color:var(--text);
@@ -154,94 +115,39 @@
     margin:0 auto 10px;
     transition: transform .25s ease, box-shadow .25s ease, background-position 1.2s ease, opacity .2s ease;
   }
-  .cta:hover{
-    transform:translateY(-1px);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);
-    background-position:100% 0; /* shimmer sweep */
-  }
-
-  /* Loading state (mobile): just a quicker shimmer + slight opacity change */
-  .cta.loading{
-    pointer-events:none;
-    cursor:wait;
-    opacity:0.95;
-    animation: ctaShimmer 0.9s linear infinite;
-  }
-  @keyframes ctaShimmer {
-    0%   { background-position: 0% 0; }
-    100% { background-position: 100% 0; }
-  }
+  .cta:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);background-position:100% 0;}
+  .cta.loading{pointer-events:none;cursor:wait;opacity:0.95;animation: ctaShimmer 0.9s linear infinite;}
+  @keyframes ctaShimmer { 0%{background-position:0% 0} 100%{background-position:100% 0} }
 
   .note{grid-area:note;color:var(--muted);font-size:13px;margin:4px 0 0;text-align:center;}
 
-  /* ===== Video area ===== */
   .visual{grid-area:visual;display:flex;align-items:center;justify-content:center;width:100%;margin:8px 0 20px;}
-  .video-wrapper{
-    position:relative;width:100%;max-width:900px;background:#000;
-    border-radius:calc(var(--radius) - 4px);
-    overflow:hidden;
-    box-shadow:0 20px 50px rgba(0,0,0,.5);
-  }
-  .video-wrapper video{
-    width:100%;height:auto;max-height:62vh;display:block;
-    object-fit:cover;border-radius:0;
-  }
+  .video-wrapper{position:relative;width:100%;max-width:900px;background:#000;border-radius:calc(var(--radius) - 4px);overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);}
+  .video-wrapper video{width:100%;height:auto;max-height:62vh;display:block;object-fit:cover;border-radius:0;}
   @media(max-width:980px){.video-wrapper{border:1px solid rgba(245,247,250,0.22);}}
 
-/* Buttons over the video */
-  .fullscreen-btn{
-    position:absolute;bottom:12px;right:12px;background:rgba(17,23,34,.7);
-    color:var(--text);font-size:18px;font-weight:600;line-height:1;
-    padding:8px 12px;border:none;border-radius:10px;cursor:pointer;transition:background .2s ease,transform .06s ease;z-index:2;
-  }
+  .fullscreen-btn{position:absolute;bottom:12px;right:12px;background:rgba(17,23,34,.7);color:var(--text);font-size:18px;font-weight:600;line-height:1;padding:8px 12px;border:none;border-radius:10px;cursor:pointer;transition:background .2s ease,transform .06s ease;z-index:2;}
   .fullscreen-btn:hover{background:rgba(17,23,34,.9);transform:translateY(-1px);}
 
-  /* Learn More button: compact circle by default */
   .learnmore-btn{
     position:absolute;top:12px;right:12px;z-index:2;
     display:inline-flex;align-items:center;justify-content:center;
-    width:var(--lm-size); height:var(--lm-size);
-    padding:0; gap:0;
-    border-radius:999px;font-size:14px;font-weight:600;
-    text-decoration:none;color:var(--text);
+    width:var(--lm-size); height:var(--lm-size); padding:0; gap:0;
+    border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;color:var(--text);
     background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);
-    border:1px solid rgba(84,160,255,0.4);
-    box-shadow:0 0 4px rgba(84,160,255,0.25);
+    border:1px solid rgba(84,160,255,0.4);box-shadow:0 0 4px rgba(84,160,255,0.25);
     transition:width .25s ease,height .25s ease,padding .25s ease,gap .25s ease,background .25s ease;
   }
   .learnmore-btn svg{flex:0 0 auto;display:block;opacity:.95}
-  .learnmore-btn .label{
-    display:inline-block;overflow:hidden;white-space:nowrap;
-    max-width:0;opacity:0;margin-left:0;
-    transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;
-  }
-  .learnmore-btn.expanded,
-  .learnmore-btn:hover,
-  .learnmore-btn:focus-visible{
-    width:auto;height:var(--lm-size);padding:8px 14px;gap:6px;
-  }
-  .learnmore-btn.expanded .label,
-  .learnmore-btn:hover .label,
-  .learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
+  .learnmore-btn .label{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;opacity:0;margin-left:0;transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;}
+  .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{width:auto;height:var(--lm-size);padding:8px 14px;gap:6px;}
+  .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
   .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
 
-  /* === Fullscreen fixes === */
-  .video-wrapper:fullscreen,
-  .video-wrapper:-webkit-full-screen{
-    width:100vw;height:100vh;max-width:none;border-radius:0;
-  }
-  .video-wrapper:fullscreen video,
-  .video-wrapper:-webkit-full-screen video{
-    width:100%;height:100%;max-height:none;object-fit:contain;border-radius:0;box-shadow:none;
-  }
-  .video-wrapper:fullscreen .fullscreen-btn,
-  .video-wrapper:-webkit-full-screen .fullscreen-btn{
-    top:calc(env(safe-area-inset-top, 0px) + 12px);
-    right:calc(env(safe-area-inset-right, 0px) + 12px);
-    bottom:auto;
-  }
-  .video-wrapper:fullscreen .learnmore-btn,
-  .video-wrapper:-webkit-full-screen .learnmore-btn{ display:none; }
+  .video-wrapper:fullscreen,.video-wrapper:-webkit-full-screen{width:100vw;height:100vh;max-width:none;border-radius:0;}
+  .video-wrapper:fullscreen video,.video-wrapper:-webkit-full-screen video{width:100%;height:100%;max-height:none;object-fit:contain;border-radius:0;box-shadow:none;}
+  .video-wrapper:fullscreen .fullscreen-btn,.video-wrapper:-webkit-full-screen .fullscreen-btn{top:calc(env(safe-area-inset-top, 0px) + 12px);right:calc(env(safe-area-inset-right, 0px) + 12px);bottom:auto;}
+  .video-wrapper:fullscreen .learnmore-btn,.video-wrapper:-webkit-full-screen .learnmore-btn{ display:none; }
 
   footer{text-align:center;padding:20px 0;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px;}
 </style>
@@ -252,17 +158,13 @@
   <div class="header-inner">
     <a href="/" class="logo-small">Lylo.</a>
     <button class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
-      <span class="line top"></span>
-      <span class="line middle"></span>
-      <span class="line bottom"></span>
+      <span class="line top"></span><span class="line middle"></span><span class="line bottom"></span>
     </button>
   </div>
 </header>
 
 <nav class="nav-panel" id="mobileMenu" aria-hidden="true">
-  <div class="panel-inner">
-    <a href="/research">Survey</a>
-  </div>
+  <div class="panel-inner"><a href="/research">Survey</a></div>
 </nav>
 
 <main>
@@ -296,7 +198,6 @@
       <li class="bullet">Retrieval based chat system, featuring specialist modules for Employment Law to support drafting Statements of Fact, ET1s, and Schedules of Loss.</li>
     </ul>
 
-    <!-- Add id for JS hook -->
     <a href="/research" class="cta" id="joinCta">Join the waitlist</a>
     <div class="note">In development stages. Register interest.</div>
   </div>
@@ -307,7 +208,7 @@
 </footer>
 
 <script>
-  /* Mobile menu */
+  /* ====== Mobile menu ====== */
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobileMenu');
   function setMenu(open){
@@ -316,130 +217,101 @@
     mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
     document.body.style.overflow = open ? 'hidden' : '';
   }
-  hamburger.addEventListener('click', () => {
-    const open = hamburger.getAttribute('aria-expanded') !== 'true';
-    setMenu(open);
-  });
+  hamburger.addEventListener('click', () => setMenu(hamburger.getAttribute('aria-expanded') !== 'true'));
 
-  /* Learn More pill */
+  /* ====== Learn More pill ====== */
   const learnMoreBtn = document.getElementById('learnMoreBtn');
   const learnMoreLabel = learnMoreBtn.querySelector('.label');
-  function openLabel(){
-    learnMoreBtn.classList.add('expanded');
-    const full = learnMoreLabel.scrollWidth;
-    learnMoreLabel.style.maxWidth = full + 'px';
-    learnMoreLabel.style.opacity = '1';
-    learnMoreLabel.style.marginLeft = '2px';
-  }
-  function closeLabel(){
-    learnMoreLabel.style.maxWidth = '0px';
-    learnMoreLabel.style.opacity = '0';
-    learnMoreLabel.style.marginLeft = '0';
-    learnMoreBtn.classList.remove('expanded');
-  }
-  function expandCycle(){
-    openLabel();
-    setTimeout(() => {
-      if (!learnMoreBtn.matches(':hover, :focus, :focus-visible')) closeLabel();
-    }, 4000);
-  }
-  setTimeout(() => {
-    expandCycle();
-    setInterval(expandCycle, 20000);
-  }, 7000);
+  function openLabel(){learnMoreBtn.classList.add('expanded'); const w = learnMoreLabel.scrollWidth; learnMoreLabel.style.maxWidth = w+'px'; learnMoreLabel.style.opacity='1'; learnMoreLabel.style.marginLeft='2px';}
+  function closeLabel(){learnMoreLabel.style.maxWidth='0px'; learnMoreLabel.style.opacity='0'; learnMoreLabel.style.marginLeft='0'; learnMoreBtn.classList.remove('expanded');}
+  function expandCycle(){openLabel(); setTimeout(()=>{ if(!learnMoreBtn.matches(':hover,:focus,:focus-visible')) closeLabel(); }, 4000);}
+  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 20000); }, 7000);
   learnMoreBtn.addEventListener('mouseenter', openLabel);
   learnMoreBtn.addEventListener('focus', openLabel);
   learnMoreBtn.addEventListener('mouseleave', closeLabel);
   learnMoreBtn.addEventListener('blur', closeLabel);
 
-  /* Video + iOS hardening */
+  /* ====== Video handling ====== */
   const fsBtn   = document.getElementById('fullscreenToggle');
   const video   = document.getElementById('lyloVideo');
   const wrapper = document.querySelector('.video-wrapper');
 
-  function tryPlaySequence({ forceReload = false, nudge = false } = {}) {
-    if (!video) return;
-    try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
-    if (forceReload) { try { video.load(); } catch(e) {} }
-    else if (nudge) {
-      try {
-        const t = video.currentTime || 0;
-        video.pause();
-        video.currentTime = Math.max(0, t - 0.001);
-      } catch(e) {}
-    }
-    const wasMuted = video.muted;
-    video.muted = true;
-    video.play().catch(() => {});
-    video.muted = wasMuted;
-  }
-
-  (function bootAutoplay(){
-    if (!video) return;
-    const playNow = () => { tryPlaySequence(); };
-    if (video.readyState >= 2) playNow();
-    else video.addEventListener('loadeddata', playNow, { once: true });
-
-    const onVideoTap = () => {
-      video.play().catch(() => {
-        video.setAttribute('controls', '');
-        video.play().catch(() => {});
-      });
-    };
-    video.addEventListener('touchstart', onVideoTap, { passive: true, once: true });
-    video.addEventListener('click',      onVideoTap, {               once: true });
-
-    video.addEventListener('play', () => {
-      if (video.hasAttribute('controls')) video.removeAttribute('controls');
-    });
+  const IS_IOS = (() => {
+    const ua = navigator.userAgent || '';
+    const platform = navigator.platform || '';
+    const macTouch = platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+    return /iPad|iPhone|iPod/.test(ua) || macTouch;
   })();
 
-  function onReturnToForeground() {
-    if (video.paused || video.readyState < 2) {
-      tryPlaySequence({ forceReload: true });
-    } else {
-      tryPlaySequence({ nudge: true });
-    }
+  // Minimal, safe play() for all platforms
+  function safePlay(){
+    if (!video) return;
+    try { video.play().catch(()=>{}); } catch(e){}
   }
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') onReturnToForeground();
-  });
-  window.addEventListener('pageshow', () => { onReturnToForeground(); });
-  window.addEventListener('focus', onReturnToForeground);
 
-  (function stallWatchdog(){
-    let lastTime = 0;
+  // iOS-only helpers
+  function nudgeIOS(){
+    if (!IS_IOS) return;
+    try { video.currentTime = Math.max(0, (video.currentTime||0) + 0.001); } catch(e){}
+  }
+  function reloadIOS(){
+    if (!IS_IOS) return;
+    try { video.load(); safePlay(); } catch(e){}
+  }
+
+  // Autoplay boot
+  (function boot(){
+    if (!video) return;
+    const onReady = () => safePlay();
+    if (video.readyState >= 2) onReady(); else video.addEventListener('loadeddata', onReady, { once:true });
+
+    // Tap fallback
+    const onTap = () => {
+      safePlay();
+      if (video.paused) { video.setAttribute('controls', ''); safePlay(); }
+    };
+    video.addEventListener('touchstart', onTap, { passive:true, once:true });
+    video.addEventListener('click', onTap, { once:true });
+
+    video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
+  })();
+
+  // Resume on return
+  function resume(){
+    if (!video) return;
+    if (video.readyState < 2 || video.paused) safePlay();
+    if (IS_IOS) nudgeIOS();
+  }
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') resume(); });
+  window.addEventListener('pageshow', resume);
+  window.addEventListener('focus', resume);
+
+  // iOS-only stall watchdog (desktop stays clean and stable)
+  if (IS_IOS){
+    let lastTick = Date.now();
+    video.addEventListener('timeupdate', () => { lastTick = Date.now(); });
+
     setInterval(() => {
       if (document.visibilityState !== 'visible') return;
-      if (video.paused) { lastTime = video.currentTime || 0; return; }
-      const ct = video.currentTime || 0;
-      if (Math.abs(ct - lastTime) < 0.01) {
-        tryPlaySequence({ nudge: true });
-        setTimeout(() => {
-          const ct2 = video.currentTime || 0;
-          if (Math.abs(ct2 - ct) < 0.01) tryPlaySequence({ forceReload: true });
-        }, 250);
+      if (video.paused) return;
+      // If no timeupdate in ~2s, try nudge; if still stuck after a beat, reload.
+      if (Date.now() - lastTick > 2000){
+        nudgeIOS();
+        setTimeout(() => { if (Date.now() - lastTick > 2300) reloadIOS(); }, 250);
       }
-      lastTime = ct;
-    }, 2000);
-  })();
+    }, 1200);
 
-  document.addEventListener('fullscreenchange', () => {
-    if (!document.fullscreenElement) tryPlaySequence({ nudge: true });
-  });
-  if (video) {
-    video.addEventListener('webkitendfullscreen', () => {
-      setTimeout(() => { tryPlaySequence({ forceReload: true }); }, 500);
-    });
+    // Buffering-ish events: gentle kick only on iOS
+    video.addEventListener('waiting', nudgeIOS);
+    video.addEventListener('stalled', nudgeIOS);
   }
 
-  function isFullscreen(){
-    return document.fullscreenElement || document.webkitFullscreenElement || null;
-  }
+  // Fullscreen handling: prefer native on iOS, wrapper on others
+  function isFullscreen(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
   async function enterFullscreen(){
-    if (wrapper && wrapper.requestFullscreen) return wrapper.requestFullscreen();
-    if (wrapper && wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
-    if (video && video.webkitEnterFullscreen) return video.webkitEnterFullscreen();
+    if (IS_IOS && video && video.webkitEnterFullscreen) { try { return video.webkitEnterFullscreen(); } catch(e){} }
+    if (wrapper.requestFullscreen) return wrapper.requestFullscreen();
+    if (wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
   }
   async function exitFullscreen(){
     if (document.exitFullscreen) return document.exitFullscreen();
@@ -453,31 +325,35 @@
     if (!isFullscreen()){ await enterFullscreen(); updateFsBtnUI(true); }
     else { await exitFullscreen(); updateFsBtnUI(false); }
   });
-  document.addEventListener('fullscreenchange',      () => updateFsBtnUI(!!isFullscreen()));
+  document.addEventListener('fullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
   document.addEventListener('webkitfullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
-  if (video){
-    video.addEventListener('webkitbeginfullscreen', () => updateFsBtnUI(true));
-    video.addEventListener('webkitendfullscreen',   () => updateFsBtnUI(false));
+
+  // iOS fullscreen kicks only on iOS
+  if (IS_IOS && video){
+    video.addEventListener('webkitbeginfullscreen', () => {
+      const before = video.currentTime || 0;
+      nudgeIOS();
+      setTimeout(() => {
+        const after = video.currentTime || 0;
+        if (after <= before + 0.01) reloadIOS();
+      }, 600);
+    });
+    video.addEventListener('webkitendfullscreen', () => setTimeout(reloadIOS, 500));
   }
 
-  /* ----- Mobile-only delayed navigation for CTA (no spinner) ----- */
+  /* ====== Mobile-only delayed nav for CTA (no spinner) ====== */
   const joinCta = document.getElementById('joinCta');
   const isMobile = window.matchMedia('(max-width: 979px)');
-  const DELAY_MS = 900; // tweak as you like (700–1200ms feels good)
-
+  const DELAY_MS = 900;
   if (joinCta){
     joinCta.addEventListener('click', (e) => {
-      if (!isMobile.matches) return;                     // desktop: navigate immediately
-      if (joinCta.classList.contains('loading')) return; // debounce double taps
+      if (!isMobile.matches) return;
+      if (joinCta.classList.contains('loading')) return;
       e.preventDefault();
-
-      // Enter loading state: faster shimmer, slight opacity
       joinCta.classList.add('loading');
       joinCta.setAttribute('aria-busy','true');
-
       const href = joinCta.getAttribute('href') || '/';
       setTimeout(() => {
-        // Remove loading state just before navigating (optional, harmless if not seen)
         joinCta.classList.remove('loading');
         joinCta.removeAttribute('aria-busy');
         window.location.href = href;
