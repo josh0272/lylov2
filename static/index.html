@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lylo. — AI for solicitors</title>
 <meta name="description" content="Works without internet. Built for security and trust. ET1 and Schedule of Loss drafting.">
-
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
@@ -13,10 +12,10 @@
     --bg:#0A1220; --bg-soft:#0D1729;
     --text:#F5F7FA; --muted:#C7CCD7;
     --cta:#111722; --radius:20px; --space:22px; --container:1360px;
-    --accent:#54a0ff;
     --font:-apple-system, BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
     --bg-top:#0A1220; --bg-bottom:#080D18;
     --noise:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO0WQ8AAW0B8w1i6b0AAAAASUVORK5CYII=");
+    --accent:#54a0ff;
     --lm-size:36px;
   }
 
@@ -38,6 +37,7 @@
   }
   body::after{content:"";position:fixed;inset:0;pointer-events:none;background-image:var(--noise);opacity:.05;mix-blend-mode:soft-light;}
 
+  /* Header */
   header.site-header{
     position:fixed; top:0; left:0; right:0; z-index:1000;
     height:64px;
@@ -49,6 +49,7 @@
   .header-inner{width:100%; max-width:var(--container);padding:0 16px; display:flex; align-items:center; justify-content:space-between;}
   .logo-small{font-family:'Cormorant Garamond', serif;font-weight:600; font-size:26px; letter-spacing:-.02em;color:var(--text); text-decoration:none;}
 
+  /* Hamburger */
   .hamburger{width:40px; height:36px; position:relative; cursor:pointer;display:flex; align-items:center; justify-content:center;border:none; background:none; padding:0;}
   .hamburger:focus-visible{ outline:2px solid rgba(84,160,255,.45); border-radius:8px; }
   .hamburger .line{position:absolute; width:22px; height:2px; background:var(--text);border-radius:2px; transition:transform .25s ease, opacity .2s ease, width .2s ease;}
@@ -59,11 +60,13 @@
   .hamburger[aria-expanded="true"] .line.middle{ opacity:0; }
   .hamburger[aria-expanded="true"] .line.bottom{ transform:rotate(-45deg); }
 
+  /* Mobile menu */
   .nav-panel{position:fixed; inset:0; z-index:999;background:var(--bg); display:none;}
   .nav-panel.open{ display:block; }
   .nav-panel .panel-inner{max-width:var(--container); margin:0 auto; height:100%;padding:88px 20px 24px; display:flex; flex-direction:column; gap:22px;}
   .nav-panel a{color:var(--text); text-decoration:none;font-weight:600; font-size:22px; letter-spacing:0.01em;padding:14px 2px; border-bottom:1px solid rgba(255,255,255,.08);}
 
+  /* Hero */
   .wrap{
     width:100%;max-width:var(--container);margin:auto;
     padding:calc(64px + 60px) var(--space) clamp(28px,4vh,60px);
@@ -79,6 +82,7 @@
         "bullets"
         "cta"
         "note";
+      /* nudge content up a bit on mobile */
       padding:calc(64px + 24px) var(--space) clamp(20px,3vh,40px);
     }
     .logo{ margin-bottom:8px; }
@@ -101,6 +105,7 @@
   .bullets{grid-area:bullets;list-style:none;padding:0;display:grid;gap:12px;justify-content:center;max-width:640px;text-align:center;margin:0 0 20px;}
   .bullet{font-family:var(--font);font-size:17px;line-height:1.55;max-width:440px;margin:0 auto;}
 
+  /* CTA (shimmer hover + mobile delay state) */
   .cta{
     grid-area:cta; display:inline-block; width:auto; padding:12px 20px;
     text-align:center; font-weight:600; font-size:16px; color:var(--text);
@@ -121,14 +126,17 @@
 
   .note{grid-area:note;color:var(--muted);font-size:13px;margin:4px 0 0;text-align:center;}
 
+  /* Video area */
   .visual{grid-area:visual;display:flex;align-items:center;justify-content:center;width:100%;margin:8px 0 20px;}
   .video-wrapper{position:relative;width:100%;max-width:900px;background:#000;border-radius:calc(var(--radius) - 4px);overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);}
   .video-wrapper video{width:100%;height:auto;max-height:62vh;display:block;object-fit:cover;border-radius:0;}
   @media(max-width:980px){.video-wrapper{border:1px solid rgba(245,247,250,0.22);}}
 
+  /* Buttons on video */
   .fullscreen-btn{position:absolute;bottom:12px;right:12px;background:rgba(17,23,34,.7);color:var(--text);font-size:18px;font-weight:600;line-height:1;padding:8px 12px;border:none;border-radius:10px;cursor:pointer;transition:background .2s ease,transform .06s ease;z-index:2;}
   .fullscreen-btn:hover{background:rgba(17,23,34,.9);transform:translateY(-1px);}
 
+  /* "i" pill — circular at rest, expands on hover/auto */
   .learnmore-btn{
     position:absolute;top:12px;right:12px;z-index:2;
     display:inline-flex;align-items:center;justify-content:center;
@@ -144,6 +152,7 @@
   .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
   .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
 
+  /* Fullscreen CSS */
   .video-wrapper:fullscreen,.video-wrapper:-webkit-full-screen{width:100vw;height:100vh;max-width:none;border-radius:0;}
   .video-wrapper:fullscreen video,.video-wrapper:-webkit-full-screen video{width:100%;height:100%;max-height:none;object-fit:contain;border-radius:0;box-shadow:none;}
   .video-wrapper:fullscreen .fullscreen-btn,.video-wrapper:-webkit-full-screen .fullscreen-btn{top:calc(env(safe-area-inset-top, 0px) + 12px);right:calc(env(safe-area-inset-right, 0px) + 12px);bottom:auto;}
@@ -173,7 +182,7 @@
     <p class="tagline">Offline, secure AI for solicitors.</p>
 
     <aside class="visual">
-      <div class="video-wrapper">
+      <div class="video-wrapper" id="videoWrapper">
         <video id="lyloVideo" autoplay loop muted playsinline webkit-playsinline preload="metadata"
           poster="/static/poc.jpg" aria-label="Demo video showing Lylo drafting a Schedule of Loss.">
           <source src="/static/poc.mp4" type="video/mp4">
@@ -208,192 +217,181 @@
 </footer>
 
 <script>
-  /* ====== Mobile menu ====== */
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  function setMenu(open){
-    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
-    mobileMenu.classList.toggle('open', open);
-    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
-    document.body.style.overflow = open ? 'hidden' : '';
-  }
-  hamburger.addEventListener('click', () => setMenu(hamburger.getAttribute('aria-expanded') !== 'true'));
+/* ---------- Mobile menu ---------- */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+function setMenu(open){
+  hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  mobileMenu.classList.toggle('open', open);
+  mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+  document.body.style.overflow = open ? 'hidden' : '';
+}
+hamburger.addEventListener('click', () => setMenu(hamburger.getAttribute('aria-expanded') !== 'true'));
 
-  /* ====== Learn More pill ====== */
-  const learnMoreBtn = document.getElementById('learnMoreBtn');
-  const learnMoreLabel = learnMoreBtn.querySelector('.label');
-  function openLabel(){learnMoreBtn.classList.add('expanded'); const w = learnMoreLabel.scrollWidth; learnMoreLabel.style.maxWidth = w+'px'; learnMoreLabel.style.opacity='1'; learnMoreLabel.style.marginLeft='2px';}
-  function closeLabel(){learnMoreLabel.style.maxWidth='0px'; learnMoreLabel.style.opacity='0'; learnMoreLabel.style.marginLeft='0'; learnMoreBtn.classList.remove('expanded');}
-  function expandCycle(){openLabel(); setTimeout(()=>{ if(!learnMoreBtn.matches(':hover,:focus,:focus-visible')) closeLabel(); }, 4000);}
-  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 10000); }, 7000);
-  learnMoreBtn.addEventListener('mouseenter', openLabel);
-  learnMoreBtn.addEventListener('focus', openLabel);
-  learnMoreBtn.addEventListener('mouseleave', closeLabel);
-  learnMoreBtn.addEventListener('blur', closeLabel);
+/* ---------- Learn More pill ---------- */
+const learnMoreBtn = document.getElementById('learnMoreBtn');
+const learnMoreLabel = learnMoreBtn.querySelector('.label');
+function openLabel(){learnMoreBtn.classList.add('expanded'); const w = learnMoreLabel.scrollWidth; learnMoreLabel.style.maxWidth = w+'px'; learnMoreLabel.style.opacity='1'; learnMoreLabel.style.marginLeft='2px';}
+function closeLabel(){learnMoreLabel.style.maxWidth='0px'; learnMoreLabel.style.opacity='0'; learnMoreLabel.style.marginLeft='0'; learnMoreBtn.classList.remove('expanded');}
+function expandCycle(){openLabel(); setTimeout(()=>{ if(!learnMoreBtn.matches(':hover,:focus,:focus-visible')) closeLabel(); }, 4000);}
+setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 10000); }, 7000);
+learnMoreBtn.addEventListener('mouseenter', openLabel);
+learnMoreBtn.addEventListener('focus', openLabel);
+learnMoreBtn.addEventListener('mouseleave', closeLabel);
+learnMoreBtn.addEventListener('blur', closeLabel);
 
-  /* ====== Video handling (iOS-targeted recovery) ====== */
-  const fsBtn   = document.getElementById('fullscreenToggle');
-  const video   = document.getElementById('lyloVideo');
-  const wrapper = document.querySelector('.video-wrapper');
+/* ---------- Video & iOS hard rebuild path ---------- */
+const fsBtn    = document.getElementById('fullscreenToggle');
+const wrapper  = document.getElementById('videoWrapper');
+const IS_IOS   = (()=>{ const ua=navigator.userAgent||''; const p=navigator.platform||''; const macTouch=(p==='MacIntel'&&navigator.maxTouchPoints>1); return /iPad|iPhone|iPod/.test(ua)||macTouch; })();
 
-  const IS_IOS = (() => {
-    const ua = navigator.userAgent || '';
-    const platform = navigator.platform || '';
-    const macTouch = platform === 'MacIntel' && navigator.maxTouchPoints > 1;
-    return /iPad|iPhone|iPod/.test(ua) || macTouch;
-  })();
+let video      = document.getElementById('lyloVideo');
+let lastFrameTS = performance.now();
+let lastCT       = 0;
+let rvfcActive   = false;
+let lastRebuildAt = 0;
 
-  function safePlay(){ if (!video) return; try { video.play().catch(()=>{}); } catch(e){} }
+function safePlay(v=video){ if(!v) return; try{ v.play().catch(()=>{});}catch(e){} }
 
-  /* --- Frame progress tracking --- */
-  let lastFrameTime = performance.now();
-  function startFrameWatch(){
-    if (!video) return;
-    if ('requestVideoFrameCallback' in HTMLVideoElement.prototype){
-      const loop = () => { video.requestVideoFrameCallback((now)=>{ lastFrameTime = now; loop(); }); };
-      loop();
-    } else {
-      video.addEventListener('timeupdate', () => { lastFrameTime = performance.now(); });
-    }
-  }
-  function framesStale(ms){ return (performance.now() - lastFrameTime) > ms; }
-
-  /* --- iOS recovery helpers --- */
-  function rewindIOS(){
-    if (!IS_IOS) return;
-    try {
-      const t = video.currentTime || 0;
-      video.currentTime = Math.max(0, t > 12 ? t - 10 : t - 3);
-      safePlay();
-    } catch(e){}
-  }
-
-  function hardRefreshIOS(){
-    if (!IS_IOS) return;
-    try {
-      // capture state
-      const src = video.currentSrc || (video.querySelector('source')?.src) || '';
-      const t   = video.currentTime || 0;
-      const target = Math.max(0, t - 1.0); // resume just before previous time
-
-      if (!src) { video.load(); return safePlay(); }
-
-      // detach <source> plumbing and rebind a direct src
-      video.pause();
-      video.removeAttribute('src'); // in case it was set earlier
-      // Force a pipeline reset
-      video.load();
-
-      // Rebind to a concrete URL (avoids <source> selection cache)
-      video.src = src;
-      video.preload = 'auto';
-
-      const onLoaded = () => {
-        video.removeEventListener('loadeddata', onLoaded);
-        try { video.currentTime = target; } catch(e){}
-        safePlay();
-      };
-      video.addEventListener('loadeddata', onLoaded, { once:true });
-      // kick
-      safePlay();
-    } catch(e){
-      try { video.load(); safePlay(); } catch(_) {}
-    }
-  }
-
-  async function recoverIOSSequence({ reason, firstDelay=350 } = {}){
-    if (!IS_IOS) return;
-    // Step 1: quick resume inline
-    try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e){}
-    safePlay();
-
-    // Step 2: give it a beat; if still stale, rewind once
-    await new Promise(r => setTimeout(r, firstDelay));
-    if (!video.paused && framesStale(700)) {
-      rewindIOS();
-    }
-
-    // Step 3: check again; if still stale, hard refresh pipeline
-    await new Promise(r => setTimeout(r, 500));
-    if (!video.paused && framesStale(1200)) {
-      hardRefreshIOS();
-    }
-  }
-
-  /* --- Boot video & watchers --- */
-  if (video){
-    const onReady = () => { safePlay(); startFrameWatch(); };
-    if (video.readyState >= 2) onReady(); else video.addEventListener('loadeddata', onReady, { once:true });
-
-    // Tap-to-play fallback
-    const onTap = () => {
-      safePlay();
-      if (video.paused) { video.setAttribute('controls', ''); safePlay(); }
+function trackFrames(v){
+  rvfcActive = false;
+  if (!v) return;
+  if ('requestVideoFrameCallback' in HTMLVideoElement.prototype){
+    rvfcActive = true;
+    const tick = () => {
+      v.requestVideoFrameCallback((now/*ms*/)=>{ lastFrameTS = now; lastCT = v.currentTime||0; tick(); });
     };
-    video.addEventListener('touchstart', onTap, { passive:true, once:true });
-    video.addEventListener('click', onTap, { once:true });
+    tick();
+  } else {
+    v.addEventListener('timeupdate', ()=>{ lastFrameTS = performance.now(); lastCT = v.currentTime||0; });
+  }
+}
 
-    video.addEventListener('play', () => { if (video.hasAttribute('controls')) video.removeAttribute('controls'); });
-  }
+function wireVideo(v){
+  video = v; // update global
+  // boot play when ready
+  if (v.readyState >= 2) safePlay(v);
+  else v.addEventListener('loadeddata', ()=> safePlay(v), { once:true });
 
-  /* --- Return from background / screen lock --- */
-  function onReturnToForeground(){
-    // Desktop: keep it simple; iOS: run the recovery sequence
-    if (IS_IOS) recoverIOSSequence({ reason:'foreground', firstDelay:250 });
-    else safePlay();
-  }
-  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') onReturnToForeground(); });
-  window.addEventListener('pageshow', onReturnToForeground);
-  window.addEventListener('focus', onReturnToForeground);
+  // user-gesture fallback
+  const onTap = ()=>{ safePlay(v); if(v.paused){ v.setAttribute('controls',''); safePlay(v);} };
+  v.addEventListener('touchstart', onTap, { passive:true, once:true });
+  v.addEventListener('click', onTap, { once:true });
+  v.addEventListener('play', ()=>{ if(v.hasAttribute('controls')) v.removeAttribute('controls'); });
 
-  /* --- Fullscreen handling --- */
-  function isFullscreen(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
-  async function enterFullscreen(){
-    if (IS_IOS && video && video.webkitEnterFullscreen) { try { return video.webkitEnterFullscreen(); } catch(e){} }
-    if (wrapper && wrapper.requestFullscreen) return wrapper.requestFullscreen();
-    if (wrapper && wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
-  }
-  async function exitFullscreen(){
-    if (document.exitFullscreen) return document.exitFullscreen();
-    if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
-  }
-  function updateFsBtnUI(full){
-    fsBtn.textContent = full ? '⤡' : '⤢';
-    fsBtn.setAttribute('aria-label', full ? 'Exit fullscreen' : 'Enter fullscreen');
-  }
-  fsBtn.addEventListener('click', async () => {
-    if (!isFullscreen()){ await enterFullscreen(); updateFsBtnUI(true); }
-    else { await exitFullscreen(); updateFsBtnUI(false); }
-  });
-  document.addEventListener('fullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
-  document.addEventListener('webkitfullscreenchange', () => updateFsBtnUI(!!isFullscreen()));
+  // track frames/time
+  trackFrames(v);
 
-  // iOS: after exiting native fullscreen (X or swipe), run recovery
-  if (IS_IOS && video){
-    video.addEventListener('webkitendfullscreen', () => {
-      recoverIOSSequence({ reason:'exit-fullscreen', firstDelay:300 });
-    });
+  // iOS fullscreen UI hooks
+  if (IS_IOS){
+    v.addEventListener('webkitbeginfullscreen', ()=>{ /* no-op here; native player */ });
+    v.addEventListener('webkitendfullscreen', ()=>{ scheduleIOSRecovery('exit-fullscreen'); });
   }
+}
 
-  /* ====== Mobile-only delayed nav for CTA (no spinner) ====== */
-  const joinCta = document.getElementById('joinCta');
-  const isMobile = window.matchMedia('(max-width: 979px)');
-  const DELAY_MS = 900;
-  if (joinCta){
-    joinCta.addEventListener('click', (e) => {
-      if (!isMobile.matches) return;
-      if (joinCta.classList.contains('loading')) return;
-      e.preventDefault();
-      joinCta.classList.add('loading');
-      joinCta.setAttribute('aria-busy','true');
-      const href = joinCta.getAttribute('href') || '/';
-      setTimeout(() => {
-        joinCta.classList.remove('loading');
-        joinCta.removeAttribute('aria-busy');
-        window.location.href = href;
-      }, DELAY_MS);
-    }, { passive:false });
-  }
+function buildFreshVideo({ seekTo=null } = {}){
+  const old = video;
+  const fresh = old.cloneNode(true);           // clones attributes + <source> children + poster fallback
+  fresh.removeAttribute('id');                 // avoid duplicate IDs during swap
+  old.parentNode.replaceChild(fresh, old);
+  fresh.id = 'lyloVideo';
+  wireVideo(fresh);
+
+  // seek close to where we left off (after it's ready enough)
+  const target = (seekTo!=null ? seekTo : lastCT);
+  const seekTarget = Math.max(0, target - 1.0);
+  const doSeek = ()=>{
+    try { fresh.currentTime = seekTarget; } catch(e){}
+    safePlay(fresh);
+  };
+  if (fresh.readyState >= 2) doSeek();
+  else fresh.addEventListener('loadeddata', doSeek, { once:true });
+}
+
+function framesStale(ms){ return (performance.now() - lastFrameTS) > ms; }
+
+function hardRebuildIOS(reason){
+  const now = Date.now();
+  if (now - lastRebuildAt < 2500) return; // cooldown to avoid loops
+  lastRebuildAt = now;
+  buildFreshVideo({ seekTo:lastCT });
+}
+
+function scheduleIOSRecovery(reason){
+  if (!IS_IOS) return;
+  // Step 1: ensure inline & try to play
+  try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e){}
+  safePlay();
+
+  // Step 2: quick check after UI settles; if stale, rebuild once.
+  setTimeout(()=>{
+    if (!video.paused && framesStale(700)) {
+      hardRebuildIOS(reason);
+    }
+  }, 300);
+
+  // Step 3: final check; if still stale (rare), one more rebuild attempt won’t run due to cooldown; try a tiny rewind to kick.
+  setTimeout(()=>{
+    if (!video.paused && framesStale(1400)) {
+      try { video.currentTime = Math.max(0, (video.currentTime||0) - 3); } catch(e){}
+      safePlay();
+    }
+  }, 900);
+}
+
+/* initial wiring */
+wireVideo(video);
+
+/* resume & recovery on return/lock */
+function onReturn(){
+  if (IS_IOS) scheduleIOSRecovery('return');
+  else safePlay();
+}
+document.addEventListener('visibilitychange', ()=>{ if (document.visibilityState==='visible') onReturn(); });
+window.addEventListener('pageshow', onReturn);
+window.addEventListener('focus', onReturn);
+
+/* fullscreen controls (native on iOS; wrapper elsewhere) */
+function isFullscreen(){ return document.fullscreenElement || document.webkitFullscreenElement || null; }
+async function enterFullscreen(){
+  if (IS_IOS && video && video.webkitEnterFullscreen) { try { return video.webkitEnterFullscreen(); } catch(e){} }
+  if (wrapper.requestFullscreen) return wrapper.requestFullscreen();
+  if (wrapper.webkitRequestFullscreen) return wrapper.webkitRequestFullscreen();
+}
+async function exitFullscreen(){
+  if (document.exitFullscreen) return document.exitFullscreen();
+  if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+}
+function updateFsBtnUI(full){
+  fsBtn.textContent = full ? '⤡' : '⤢';
+  fsBtn.setAttribute('aria-label', full ? 'Exit fullscreen' : 'Enter fullscreen');
+}
+fsBtn.addEventListener('click', async ()=>{
+  if (!isFullscreen()){ await enterFullscreen(); updateFsBtnUI(true); }
+  else { await exitFullscreen(); updateFsBtnUI(false); }
+});
+document.addEventListener('fullscreenchange', ()=> updateFsBtnUI(!!isFullscreen()));
+document.addEventListener('webkitfullscreenchange', ()=> updateFsBtnUI(!!isFullscreen()));
+
+/* ---------- CTA: mobile-only delay, no spinner ---------- */
+const joinCta = document.getElementById('joinCta');
+const isMobile = window.matchMedia('(max-width: 979px)');
+const DELAY_MS = 900;
+if (joinCta){
+  joinCta.addEventListener('click', (e) => {
+    if (!isMobile.matches) return;
+    if (joinCta.classList.contains('loading')) return;
+    e.preventDefault();
+    joinCta.classList.add('loading');
+    joinCta.setAttribute('aria-busy','true');
+    const href = joinCta.getAttribute('href') || '/';
+    setTimeout(() => {
+      joinCta.classList.remove('loading');
+      joinCta.removeAttribute('aria-busy');
+      window.location.href = href;
+    }, DELAY_MS);
+  }, { passive:false });
+}
 </script>
 
 </body>
