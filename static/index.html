@@ -74,26 +74,19 @@
     padding:calc(64px + 60px) var(--space) clamp(28px,4vh,60px);
     display:grid; justify-items:center; gap:0;
   }
+  @media(max-width:979px){
+    .wrap{
+      grid-template-columns: 1fr;
+      grid-template-areas:"logo" "tagline" "visual" "bullets" "cta" "note";
+      padding:calc(64px + 24px) var(--space) clamp(20px,3vh,40px);
+    }
+    .logo{ margin-bottom:8px; }
+    .tagline{ margin-bottom:22px; }
+  }
   @media(min-width:980px){
     .wrap{
       grid-template-columns: 1fr 1.35fr; align-items:center;
       grid-template-areas:"logo visual" "tagline visual" "bullets visual" "cta visual" "note visual";
-    }
-  }
-  @media(max-width:979px){
-    /* Compact mobile spacing + sizes */
-    :root{
-      --radius:16px;
-      --space:18px;
-      --lm-size:30px;
-      --timeline-h:10px;
-    }
-    header.site-header{ height:56px; }
-    .wrap{
-      grid-template-columns:1fr;
-      grid-template-areas:"logo" "tagline" "visual" "bullets" "cta" "note";
-      padding:calc(56px + 16px) var(--space) 28px;
-      gap:8px;
     }
   }
 
@@ -102,15 +95,7 @@
   .bullets{grid-area:bullets;list-style:none;padding:0;display:grid;gap:12px;justify-content:center;max-width:640px;text-align:center;margin:0 0 20px;}
   .bullet{font-family:var(--font);font-size:17px;line-height:1.55;max-width:440px;margin:0 auto;}
 
-  /* Mobile type scale */
-  @media(max-width:979px){
-    .logo{ font-size:58px; margin-bottom:6px; }
-    .tagline{ font-size:22px; margin-bottom:16px; }
-    .bullets{ gap:10px; margin-bottom:14px; }
-    .bullet{ font-size:16px; line-height:1.5; }
-  }
-
-  /* CTA */
+  /* CTA (kept) */
   .cta{
     grid-area:cta; display:inline-block; padding:12px 20px;
     font-weight:600; font-size:16px; color:var(--text);
@@ -124,105 +109,82 @@
     margin:0 auto 10px; transition: transform .25s, box-shadow .25s, background-position 1.2s, opacity .2s;
   }
   .cta:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);background-position:100% 0;}
-  @media(max-width:979px){
-    .cta{ font-size:15px; padding:11px 16px; border-radius:14px; box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 4px 14px rgba(0,0,0,.38); }
-  }
 
   .note{grid-area:note;color:var(--muted);font-size:13px;margin:4px 0 0;text-align:center;}
-  @media(max-width:979px){ .note{ font-size:12px; } }
 
-  /* Video */
+  /* Video area */
   .visual{grid-area:visual;display:flex;align-items:center;justify-content:center;width:100%;margin:8px 0 20px;}
-  .video-wrapper{
-    position:relative;width:100%;max-width:900px;background:#000;
-    border-radius:calc(var(--radius) - 4px);overflow:hidden;
-    box-shadow:0 20px 50px rgba(0,0,0,.5);
-  }
+  .video-wrapper{position:relative;width:100%;max-width:900px;background:#000;border-radius:calc(var(--radius) - 4px);overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5);}
   .video-wrapper video{position:relative; z-index:1; width:100%;height:auto;max-height:62vh;display:block;object-fit:cover;border-radius:0;}
-  @media(max-width:979px){
-    .video-wrapper{
-      border-radius:14px;
-      box-shadow:0 12px 28px rgba(0,0,0,.45);
-      border:1px solid rgba(245,247,250,0.16);
-    }
-  }
+  @media(max-width:980px){.video-wrapper{border:1px solid rgba(245,247,250,0.22);}}
 
-  /* Controls */
+/* === Controls: unified bottom bar (only interactive when visible) === */
   .control-bar{
-    position:absolute; left:10px; right:10px;
-    bottom:calc(10px + env(safe-area-inset-bottom));
+    position:absolute; left:10px; right:10px; bottom:12px;
     z-index:9999;
     display:flex; align-items:center; gap:10px;
-    opacity:0; pointer-events:none;
+    opacity:0; pointer-events:none;           /* HIDDEN: not clickable */
     transition:opacity .18s ease;
   }
-  .video-wrapper.show-controls .control-bar{ opacity:1; pointer-events:auto; }
+  .video-wrapper.show-controls .control-bar{
+    opacity:1; pointer-events:auto;           /* VISIBLE: clickable */
+  }
   @media (hover:hover){
-    .video-wrapper:not(:fullscreen):hover .control-bar{ opacity:1; pointer-events:auto; }
+    .video-wrapper:not(:fullscreen):hover .control-bar{
+      opacity:1; pointer-events:auto;
+    }
   }
 
   .pause-btn, .fullscreen-btn{
-    background:rgba(17,23,34,.74); color:var(--text);
+    background:rgba(17,23,34,.78); color:var(--text);
     font-size:20px; font-weight:600; line-height:1;
     padding:8px 12px; border:none; border-radius:12px;
     cursor:pointer; transition:background .2s, transform .06s, box-shadow .2s, opacity .18s;
-    border:1px solid rgba(255,255,255,.22);
+    border:1px solid rgba(255,255,255,.26);
     backdrop-filter:blur(6px) saturate(120%); box-shadow:0 6px 22px rgba(0,0,0,.55);
   }
   .pause-btn:hover, .fullscreen-btn:hover{ background:rgba(17,23,34,.92); transform:translateY(-1px); }
-
-  .timeline{
-    flex:1 1 auto; display:flex; align-items:center; height:var(--timeline-h); user-select:none; touch-action:none;
+  @media (hover:none), (pointer:coarse){
+    .pause-btn, .fullscreen-btn{ font-size:16px; padding:7px 10px; border-radius:10px; box-shadow:0 4px 14px rgba(0,0,0,.45); }
   }
+
+  .timeline{ flex:1 1 auto; display:flex; align-items:center; height:var(--timeline-h); user-select:none; touch-action:none; }
   .timeline .track{
     position:relative; width:100%; height:var(--timeline-h); border-radius:999px; overflow:hidden;
-    background:linear-gradient(180deg, rgba(245,247,250,.18), rgba(245,247,250,.12));
-    box-shadow:inset 0 1px 0 rgba(0,0,0,.35);
+    background:var(--timeline-track); box-shadow:inset 0 1px 0 rgba(0,0,0,.35);
   }
-  .timeline .buffer{position:absolute; left:0; top:0; bottom:0; width:0%; background:rgba(245,247,250,.28);}
+  .timeline .buffer{position:absolute; left:0; top:0; bottom:0; width:0%; background:var(--timeline-buffer);}
   .timeline .progress{position:absolute; left:0; top:0; bottom:0; width:0%; background:var(--timeline-progress);}
   .timeline .handle{ display:none; }
 
-  @media(max-width:979px){
-    .pause-btn, .fullscreen-btn{
-      font-size:15px; padding:6px 9px; border-radius:10px; box-shadow:0 4px 14px rgba(0,0,0,.45);
-    }
-    .control-bar{ left:8px; right:8px; gap:8px; }
-  }
-
-  /* "i" pill */
-  .learnmore-btn{
-    position:absolute;top:10px;right:10px;z-index:3;
-    display:inline-flex;align-items:center;justify-content:center;
-    width:var(--lm-size); height:var(--lm-size); padding:0; gap:0;
-    border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;color:var(--text);
-    background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);
-    border:1px solid rgba(84,160,255,0.35);box-shadow:0 0 4px rgba(84,160,255,0.22);
-    transition:width .25s ease,height .25s ease,padding .25s ease,gap .25s ease,background .25s ease;
-  }
-  .learnmore-btn svg{flex:0 0 auto;display:block;opacity:.95}
-  .learnmore-btn .label{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;opacity:0;margin-left:0;transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;}
-  .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{width:auto;height:var(--lm-size);padding:6px 12px;gap:6px;}
-  .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
-  .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
-  @media(max-width:979px){
-    .learnmore-btn{ top:8px; right:8px; }
-  }
-
-  /* Fullscreen */
-  .video-wrapper:fullscreen,.video-wrapper:-webkit-full-screen{width:100vw;height:100vh;max-width:none;border-radius:0;}
-  .video-wrapper:fullscreen video,.video-wrapper:-webkit-full-screen video{width:100%;height:100%;max-height:none;object-fit:contain;border-radius:0;box-shadow:none;}
-  .video-wrapper:fullscreen .learnmore-btn,.video-wrapper:-webkit-full-screen .learnmore-btn{ display:none; }
-
   .video-wrapper:fullscreen::after,
   .video-wrapper:-webkit-full-screen::after{
-    content:""; position:absolute; left:0; right:0; bottom:0; height:120px;
+    content:""; position:absolute; left:0; right:0; bottom:0; height:140px;
     background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0));
     pointer-events:none; z-index:2;
   }
 
+  /* "i" pill */
+  .learnmore-btn{
+    position:absolute;top:12px;right:12px;z-index:3;
+    display:inline-flex;align-items:center;justify-content:center;
+    width:var(--lm-size); height:var(--lm-size); padding:0; gap:0;
+    border-radius:999px;font-size:14px;font-weight:600;text-decoration:none;color:var(--text);
+    background:rgba(17,23,34,0.6);backdrop-filter:blur(4px) saturate(115%);
+    border:1px solid rgba(84,160,255,0.4);box-shadow:0 0 4px rgba(84,160,255,0.25);
+    transition:width .25s ease,height .25s ease,padding .25s ease,gap .25s ease,background .25s ease;
+  }
+  .learnmore-btn svg{flex:0 0 auto;display:block;opacity:.95}
+  .learnmore-btn .label{display:inline-block;overflow:hidden;white-space:nowrap;max-width:0;opacity:0;margin-left:0;transition:max-width .35s ease, opacity .25s ease, margin-left .25s ease;}
+  .learnmore-btn.expanded,.learnmore-btn:hover,.learnmore-btn:focus-visible{width:auto;height:var(--lm-size);padding:8px 14px;gap:6px;}
+  .learnmore-btn.expanded .label,.learnmore-btn:hover .label,.learnmore-btn:focus-visible .label{max-width:120px;opacity:1;margin-left:2px;}
+  .learnmore-btn:hover{background:rgba(17,23,34,0.8);}
+
+  .video-wrapper:fullscreen,.video-wrapper:-webkit-full-screen{width:100vw;height:100vh;max-width:none;border-radius:0;}
+  .video-wrapper:fullscreen video,.video-wrapper:-webkit-full-screen video{width:100%;height:100%;max-height:none;object-fit:contain;border-radius:0;box-shadow:none;}
+  .video-wrapper:fullscreen .learnmore-btn,.video-wrapper:-webkit-full-screen .learnmore-btn{ display:none; }
+
   footer{text-align:center;padding:20px 0;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px;}
-  @media(max-width:979px){ footer{ padding:16px 0; font-size:13px; } }
 </style>
 </head>
 <body>
@@ -309,19 +271,20 @@
   function openLabel(){learnMoreBtn.classList.add('expanded'); const w=learnMoreLabel.scrollWidth; learnMoreLabel.style.maxWidth=w+'px'; learnMoreLabel.style.opacity='1'; learnMoreLabel.style.marginLeft='2px';}
   function closeLabel(){learnMoreLabel.style.maxWidth='0px'; learnMoreLabel.style.opacity='0'; learnMoreLabel.style.marginLeft='0'; learnMoreBtn.classList.remove('expanded');}
   function expandCycle(){openLabel(); setTimeout(()=>{ if(!learnMoreBtn.matches(':hover,:focus,:focus-visible')) closeLabel(); }, 4000);}
-  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 20000); }, 7000);
+  setTimeout(()=>{ expandCycle(); setInterval(expandCycle, 10000); }, 7000);
   learnMoreBtn.addEventListener('mouseenter', openLabel);
   learnMoreBtn.addEventListener('focus', openLabel);
   learnMoreBtn.addEventListener('mouseleave', closeLabel);
   learnMoreBtn.addEventListener('blur', closeLabel);
 
-  /* ===== Video & Controls (unchanged logic) ===== */
+  /* ===== Video & Controls ===== */
   const wrapper = document.getElementById('videoWrapper');
   let video = document.getElementById('lyloVideo');
   const controlBar = document.getElementById('controlBar');
   const pauseBtn = document.getElementById('pauseToggle');
   const fsBtn = document.getElementById('fullscreenToggle');
 
+  // Helpers
   function isFS(){ return !!(document.fullscreenElement || document.webkitFullscreenElement); }
   function showControls(ms = 1500){
     wrapper.classList.add('show-controls');
@@ -334,41 +297,53 @@
     wrapper.classList.remove('show-controls');
     clearTimeout(showControls._t);
   }
+
+  // Initial reveal briefly
   requestAnimationFrame(()=> showControls(1200));
 
+  // Wrapper toggle — use ONLY pointerdown (no click) to avoid double toggling on desktop
   function onWrapperPointerDown(e){
-    if (controlBar.contains(e.target)) return;
+    if (controlBar.contains(e.target)) return; // let controls handle themselves
     if (isFS()){
+      // fullscreen: tap toggles (no auto-hide)
       if (wrapper.classList.contains('show-controls')) hideControls(); else showControls(0);
     } else {
+      // inline: show briefly then hide
       if (wrapper.classList.contains('show-controls')) hideControls(); else showControls(1500);
     }
   }
   wrapper.addEventListener('pointerdown', onWrapperPointerDown, {passive:false});
 
+  // Hide if clicking outside
   document.addEventListener('pointerdown', (e) => {
     if (wrapper.classList.contains('show-controls') && !wrapper.contains(e.target)) hideControls();
   });
 
+  // Pause/Play — run on pointerdown so it wins the event race on desktop
   function updatePause(){
     pauseBtn.textContent = video.paused ? '▶' : '❚❚';
     pauseBtn.setAttribute('aria-label', video.paused ? 'Play' : 'Pause');
   }
   function onPauseToggle(e){
-    e.stopPropagation();
+    e.stopPropagation(); // prevent bubbling to wrapper
     if (video.paused) { video.play().catch(()=>{}); }
     else { video.pause(); }
     updatePause();
   }
   pauseBtn.addEventListener('pointerdown', onPauseToggle);
-  pauseBtn.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); onPauseToggle(e); }});
 
+  // Keyboard fallback for pause (space/enter when button focused)
+  pauseBtn.addEventListener('keydown', (e) => {
+    if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); onPauseToggle(e); }
+  });
+
+  // Fullscreen toggle
   function updateFSBtn(){
     fsBtn.textContent = isFS() ? '⤡' : '⤢';
     fsBtn.setAttribute('aria-label', isFS() ? 'Exit fullscreen' : 'Enter fullscreen');
   }
   async function onFSToggle(e){
-    e.stopPropagation();
+    e.stopPropagation(); // don’t toggle controls underneath
     try{
       if (isFS()){
         if (document.exitFullscreen) await document.exitFullscreen();
@@ -380,23 +355,39 @@
       }
     }catch(_){}
     updateFSBtn();
-    hideControls();
+    hideControls(); // start hidden in FS
   }
   fsBtn.addEventListener('pointerdown', onFSToggle);
+
   document.addEventListener('fullscreenchange', () => { updateFSBtn(); hideControls(); });
   document.addEventListener('webkitfullscreenchange', () => { updateFSBtn(); hideControls(); });
-  video.addEventListener('webkitbeginfullscreen', () => { updateFSBtn(); hideControls(); });
-  video.addEventListener('webkitendfullscreen',   () => { updateFSBtn(); hideControls(); });
 
+  // Keep pause icon in sync with media state
+  video.addEventListener('play', updatePause);
+  video.addEventListener('pause', updatePause);
+
+  // === Timeline ===
   const tl = document.getElementById('videoTimeline');
   const tlTrack = document.getElementById('tlTrack');
   const tlBuffer = document.getElementById('tlBuffer');
   const tlProgress = document.getElementById('tlProgress');
 
   function dur(){ const d = video.duration; return (Number.isFinite(d) && d > 0) ? d : 0; }
-  function setProgressFromTime(t){ const d = dur(); const pct = d ? Math.max(0, Math.min(1, t/d)) : 0; tlProgress.style.width = (pct*100) + '%'; tl.setAttribute('aria-valuenow', Math.round(pct*100)); }
-  function updateBuffer(){ try{ const d = dur(); if (!d || !video.buffered || video.buffered.length === 0){ tlBuffer.style.width='0%'; return; } let end = 0; for (let i=0;i<video.buffered.length;i++){ end = Math.max(end, video.buffered.end(i)); } tlBuffer.style.width = (Math.max(0, Math.min(1, end/d)) * 100) + '%'; }catch(_){ } }
+  function setProgressFromTime(t){
+    const d = dur(); const pct = d ? Math.max(0, Math.min(1, t/d)) : 0;
+    tlProgress.style.width = (pct*100) + '%';
+    tl.setAttribute('aria-valuenow', Math.round(pct*100));
+  }
+  function updateBuffer(){
+    try{
+      const d = dur();
+      if (!d || !video.buffered || video.buffered.length === 0){ tlBuffer.style.width='0%'; return; }
+      let end = 0; for (let i=0;i<video.buffered.length;i++){ end = Math.max(end, video.buffered.end(i)); }
+      tlBuffer.style.width = (Math.max(0, Math.min(1, end/d)) * 100) + '%';
+    }catch(_){}
+  }
 
+  // Smooth progress
   let rafId = null;
   function tick(){ setProgressFromTime(video.currentTime || 0); rafId = requestAnimationFrame(tick); }
   function startTick(){ if (!rafId) rafId = requestAnimationFrame(tick); }
@@ -410,10 +401,12 @@
   video.addEventListener('pause', stopTick);
   if (video.readyState >= 2) startTick(); else video.addEventListener('loadeddata', startTick, {once:true});
 
+  // Scrubbing
   let scrubbing = false;
   function clientX(e){ if (e.touches?.length) return e.touches[0].clientX; if (e.changedTouches?.length) return e.changedTouches[0].clientX; return e.clientX; }
   function pctAt(e){ const r = tlTrack.getBoundingClientRect(); const x = Math.max(0, Math.min(r.width, clientX(e)-r.left)); return r.width ? x/r.width : 0; }
   function seekTo(p){ const d = dur(); if (!d) return; try{ video.currentTime = p * d; }catch(_){} }
+
   function onScrubStart(e){ e.preventDefault?.(); scrubbing = true; stopTick(); seekTo(pctAt(e)); showControls(0); }
   function onScrubMove(e){ if (!scrubbing) return; e.preventDefault?.(); seekTo(pctAt(e)); }
   function onScrubEnd(){ if (!scrubbing) return; scrubbing = false; startTick(); }
@@ -426,9 +419,10 @@
   window.addEventListener('touchend', onScrubEnd);
   window.addEventListener('touchcancel', onScrubEnd);
 
+  // Try autoplay once ready
   (function bootPlay(){ const go=()=>video.play().catch(()=>{}); if (video.readyState>=2) go(); else video.addEventListener('loadeddata', go, {once:true}); })();
 
-  /* CTA delay (mobile) — unchanged */
+  /* ===== CTA delay (mobile) kept from earlier if needed ===== */
   const joinCta = document.getElementById('joinCta');
   const isMobile = window.matchMedia('(max-width: 979px)');
   const DELAY_MS = 900;
