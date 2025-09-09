@@ -139,7 +139,7 @@
   .bullets{grid-area:bullets;list-style:none;padding:0;display:grid;gap:12px;justify-content:center;max-width:640px;text-align:center;margin:0 0 20px;}
   .bullet{font-family:var(--font);font-size:17px;line-height:1.55;max-width:440px;margin:0 auto;}
 
-  /* CTA with shimmer hover */
+  /* CTA with shimmer hover + mobile loading state (no spinner) */
   .cta{
     grid-area:cta; display:inline-block; width:auto; padding:12px 20px;
     text-align:center; font-weight:600; font-size:16px; color:var(--text);
@@ -152,12 +152,24 @@
     outline:2px solid rgba(84,160,255,.18); outline-offset:2px;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 6px 20px rgba(0,0,0,.45);
     margin:0 auto 10px;
-    transition: transform .25s ease, box-shadow .25s ease, background-position 1.2s ease;
+    transition: transform .25s ease, box-shadow .25s ease, background-position 1.2s ease, opacity .2s ease;
   }
   .cta:hover{
     transform:translateY(-1px);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 10px 28px rgba(0,0,0,.5);
-    background-position:100% 0;
+    background-position:100% 0; /* shimmer sweep */
+  }
+
+  /* Loading state (mobile): just a quicker shimmer + slight opacity change */
+  .cta.loading{
+    pointer-events:none;
+    cursor:wait;
+    opacity:0.95;
+    animation: ctaShimmer 0.9s linear infinite;
+  }
+  @keyframes ctaShimmer {
+    0%   { background-position: 0% 0; }
+    100% { background-position: 100% 0; }
   }
 
   .note{grid-area:note;color:var(--muted);font-size:13px;margin:4px 0 0;text-align:center;}
@@ -284,7 +296,8 @@
       <li class="bullet">Retrieval based chat system, featuring specialist modules for Employment Law to support drafting Statements of Fact, ET1s, and Schedules of Loss.</li>
     </ul>
 
-    <a href="/research" class="cta">Join the waitlist</a>
+    <!-- Add id for JS hook -->
+    <a href="/research" class="cta" id="joinCta">Join the waitlist</a>
     <div class="note">In development stages. Register interest.</div>
   </div>
 </main>
@@ -347,9 +360,8 @@
   function tryPlaySequence({ forceReload = false, nudge = false } = {}) {
     if (!video) return;
     try { if (video.webkitSetPresentationMode) video.webkitSetPresentationMode('inline'); } catch(e) {}
-    if (forceReload) {
-      try { video.load(); } catch(e) {}
-    } else if (nudge) {
+    if (forceReload) { try { video.load(); } catch(e) {} }
+    else if (nudge) {
       try {
         const t = video.currentTime || 0;
         video.pause();
@@ -446,6 +458,31 @@
   if (video){
     video.addEventListener('webkitbeginfullscreen', () => updateFsBtnUI(true));
     video.addEventListener('webkitendfullscreen',   () => updateFsBtnUI(false));
+  }
+
+  /* ----- Mobile-only delayed navigation for CTA (no spinner) ----- */
+  const joinCta = document.getElementById('joinCta');
+  const isMobile = window.matchMedia('(max-width: 979px)');
+  const DELAY_MS = 900; // tweak as you like (700–1200ms feels good)
+
+  if (joinCta){
+    joinCta.addEventListener('click', (e) => {
+      if (!isMobile.matches) return;                     // desktop: navigate immediately
+      if (joinCta.classList.contains('loading')) return; // debounce double taps
+      e.preventDefault();
+
+      // Enter loading state: faster shimmer, slight opacity
+      joinCta.classList.add('loading');
+      joinCta.setAttribute('aria-busy','true');
+
+      const href = joinCta.getAttribute('href') || '/';
+      setTimeout(() => {
+        // Remove loading state just before navigating (optional, harmless if not seen)
+        joinCta.classList.remove('loading');
+        joinCta.removeAttribute('aria-busy');
+        window.location.href = href;
+      }, DELAY_MS);
+    }, { passive:false });
   }
 </script>
 
