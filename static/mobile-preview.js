@@ -2,16 +2,47 @@
   const mq = window.matchMedia('(max-width: 979px)');
   const isMobile = () => mq.matches;
 
-  const init = () => {
-    if (!isMobile()) return;
+  const playWhenReady = (video) => {
+    const tryPlay = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
 
+      const attempt = video.play();
+      if (attempt && typeof attempt.catch === 'function') {
+        attempt.catch(() => {
+          if (video.readyState < 2) {
+            video.addEventListener('canplay', tryPlay, { once: true });
+          }
+        });
+      }
+    };
+
+    tryPlay();
+  };
+
+  const init = () => {
     const videos = Array.from(document.querySelectorAll('.demo-media video'));
+
+    // Desktop: all visual demos behave like the first demo — muted, looping and playing automatically.
+    if (!isMobile()) {
+      videos.forEach((video) => {
+        video.autoplay = true;
+        video.setAttribute('autoplay', '');
+        video.controls = true;
+        playWhenReady(video);
+      });
+      return;
+    }
 
     // Mobile: remove native autoplay races. One controller decides which demo plays.
     videos.forEach((video) => {
       video.autoplay = false;
       video.removeAttribute('autoplay');
       video.muted = true;
+      video.defaultMuted = true;
       video.playsInline = true;
       video.setAttribute('playsinline', '');
       video.controls = false;
