@@ -52,6 +52,10 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 def home():
     return FileResponse("static/index.html")
 
+@app.get("/preview", response_class=FileResponse)
+def preview():
+    return FileResponse("static/preview/index.html")
+
 @app.get("/research", response_class=FileResponse)
 def research():
     return FileResponse("static/research.html")
