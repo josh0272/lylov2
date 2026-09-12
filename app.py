@@ -9,30 +9,24 @@ from fastapi.middleware.cors import CORSMiddleware
 from faster_whisper import WhisperModel
 import uvicorn
 
-# --- Make local ffmpeg visible without touching system PATH (harmless if folder doesn't exist)
 ffmpeg_bin = os.path.join(os.path.dirname(__file__), "ffmpeg", "bin")
 if os.path.isdir(ffmpeg_bin) and ffmpeg_bin not in os.environ.get("PATH", ""):
     os.environ["PATH"] = ffmpeg_bin + os.pathsep + os.environ.get("PATH", "")
 
 app = FastAPI(title="Lylo — Local Transcription + Research Form")
 
-# === Config (override via environment variables) ===
-# Whisper
-MODEL_SIZE   = os.environ.get("WHISPER_MODEL", "tiny")     # tiny/base/small
-COMPUTE_TYPE = os.environ.get("WHISPER_COMPUTE", "int8")   # int8 (CPU), float16 (GPU), etc.
+MODEL_SIZE = os.environ.get("WHISPER_MODEL", "tiny")
+COMPUTE_TYPE = os.environ.get("WHISPER_COMPUTE", "int8")
 
-# Email (SMTP)
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))      # 587 = STARTTLS
+EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
 EMAIL_USER = os.environ.get("EMAIL_USER", "")
 EMAIL_PASS = os.environ.get("EMAIL_PASS", "")
-EMAIL_TO   = os.environ.get("EMAIL_TO", EMAIL_USER or "")
+EMAIL_TO = os.environ.get("EMAIL_TO", EMAIL_USER or "")
 
-# CORS (if you later host the frontend elsewhere, add that origin here)
 ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:5500",
-    # "https://your-frontend.example.com",
 ]
 app.add_middleware(
     CORSMiddleware,
@@ -42,47 +36,45 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- Load Whisper once at startup (cold start will pay this cost; /healthz can prewarm)
 model = WhisperModel(MODEL_SIZE, compute_type=COMPUTE_TYPE)
 
-# --- Static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 @app.get("/", response_class=FileResponse)
 def home():
     return FileResponse("static/index.html")
+
 
 @app.get("/preview", response_class=HTMLResponse)
 def preview():
     with open("static/preview/index.html", "r", encoding="utf-8") as f:
         html = f.read()
 
-    # Make the Schedule of Loss demo preload fully and autoplay immediately.
+    # Keep these videos fully preloadable. Mobile playback itself is controlled by mobile-preview.js.
     html = html.replace(
         '<video controls playsinline preload="metadata" aria-label="Schedule of Loss demo"><source src="/static/schedule-of-loss.mp4" type="video/mp4"></video>',
-        '<video autoplay muted loop playsinline controls preload="auto" aria-label="Schedule of Loss demo"><source src="/static/schedule-of-loss.mp4" type="video/mp4"></video>'
+        '<video muted loop playsinline controls preload="auto" aria-label="Schedule of Loss demo"><source src="/static/schedule-of-loss.mp4" type="video/mp4"></video>'
     )
 
-    # Replace the ET1 placeholder with the real ET1 demo once /static/et1.mp4 is present.
     html = html.replace(
         '<div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div>',
-        '<div class="demo-media"><video autoplay muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
+        '<div class="demo-media"><video muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
     )
 
-    # Make the displayed phone number explicitly callable rather than relying on iOS auto-linking.
     html = html.replace(
         '<div class="call-number">07700 900 642</div>',
         '<div class="call-number"><a class="call-number-link" href="tel:07700900642">07700 900 642</a></div>'
     )
 
-    # Mobile carousel uses native finger scrolling. Keep the custom pointer drag for mouse only.
+    # Native touch scrolling on mobile; keep desktop mouse drag logic from taking touch pointers.
     html = html.replace("touch-action:pan-y", "touch-action:pan-x pan-y")
     html = html.replace(
         "if(e.pointerType==='mouse'&&e.button!==0)return;isDragging=true;",
         "if(e.pointerType!=='mouse'||e.button!==0)return;isDragging=true;"
     )
 
-    # The original auto-scroll remains desktop-only. Mobile gets its own independent loop below.
+    # Desktop keeps the page's original carousel animation. Mobile uses mobile-preview.js instead.
     html = html.replace(
         "if(!isDragging&&now>interactionUntil){regCarousel.scrollLeft+=dt*.032;wrapPosition()}",
         "if(window.innerWidth>979&&!isDragging&&now>interactionUntil){regCarousel.scrollLeft+=dt*.032;wrapPosition()}"
@@ -125,7 +117,6 @@ def preview():
           -webkit-text-fill-color: #dce5ef !important;
         }
 
-        /* PHONE DEMO: compact before play, then open room only when transcript appears. */
         .phone-section .audio-stage {
           order: 1 !important;
           width: 100% !important;
@@ -174,7 +165,6 @@ def preview():
           max-width: 100% !important;
         }
 
-        /* MOBILE TRUST CAROUSEL */
         .reg-cards {
           width: calc(100vw - 24px) !important;
           max-width: none !important;
@@ -254,90 +244,29 @@ def preview():
     """
     html = html.replace("</head>", mobile_overrides + "</head>")
 
-    mobile_behavior = """
-    <script id="lylo-mobile-behavior">
-    (() => {
-      const isMobile = () => window.matchMedia('(max-width: 979px)').matches;
-
-      const initMobile = () => {
-        if (!isMobile()) return;
-
-        /* Hide native video controls until the visitor taps the video once. */
-        document.querySelectorAll('.demo-media video').forEach(video => {
-          if (video.dataset.mobileControlsInit) return;
-          video.dataset.mobileControlsInit = '1';
-          video.controls = false;
-
-          const revealControls = () => {
-            video.controls = true;
-            video.removeEventListener('touchstart', revealControls);
-            video.removeEventListener('click', revealControls);
-          };
-
-          video.addEventListener('touchstart', revealControls, { passive: true });
-          video.addEventListener('click', revealControls);
-        });
-
-        /* Dedicated mobile carousel auto-scroll. It pauses while touched, then resumes. */
-        const carousel = document.querySelector('.reg-cards');
-        if (carousel && !carousel.dataset.mobileAutoInit) {
-          carousel.dataset.mobileAutoInit = '1';
-          let pauseUntil = 0;
-          let last = performance.now();
-
-          const pauseFor = ms => { pauseUntil = performance.now() + ms; };
-          carousel.addEventListener('touchstart', () => pauseFor(6000), { passive: true });
-          carousel.addEventListener('touchend', () => pauseFor(900), { passive: true });
-          carousel.addEventListener('touchcancel', () => pauseFor(900), { passive: true });
-
-          const loopWidth = () => {
-            const cards = Array.from(carousel.children);
-            const firstClone = cards.find(card => card.getAttribute('aria-hidden') === 'true');
-            if (firstClone && cards[0]) return firstClone.offsetLeft - cards[0].offsetLeft;
-            return carousel.scrollWidth / 2;
-          };
-
-          const animate = now => {
-            const dt = Math.min(now - last, 50);
-            last = now;
-
-            if (isMobile() && now > pauseUntil) {
-              carousel.scrollLeft += dt * 0.042;
-              const width = loopWidth();
-              if (width && carousel.scrollLeft >= width) carousel.scrollLeft -= width;
-            }
-
-            requestAnimationFrame(animate);
-          };
-
-          requestAnimationFrame(animate);
-        }
-      };
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMobile, { once: true });
-      } else {
-        initMobile();
-      }
-    })();
-    </script>
-    """
-    html = html.replace("</body>", mobile_behavior + "</body>")
+    # One mobile controller only: deterministic video playback + carousel timer.
+    html = html.replace(
+        "</body>",
+        '<script src="/static/mobile-preview.js?v=2" defer></script></body>'
+    )
 
     return HTMLResponse(content=html)
+
 
 @app.get("/research", response_class=FileResponse)
 def research():
     return FileResponse("static/research.html")
 
+
 @app.get("/healthz")
 def healthz():
     return {"ok": True, "model": MODEL_SIZE, "compute": COMPUTE_TYPE}
 
-# --- Email helper
+
 def send_email(subject: str, body: str):
     if not (EMAIL_HOST and EMAIL_PORT and EMAIL_USER and EMAIL_PASS and EMAIL_TO):
         raise RuntimeError("Email is not configured (missing EMAIL_* env vars).")
+
     msg = EmailMessage()
     msg["From"] = EMAIL_USER
     msg["To"] = EMAIL_TO
@@ -350,13 +279,13 @@ def send_email(subject: str, body: str):
         server.login(EMAIL_USER, EMAIL_PASS)
         server.send_message(msg)
 
-# --- API: questionnaire submit -> email
+
 @app.post("/api/submit")
 async def submit_questionnaire(
     name: str = Form(""),
     email: str = Form(""),
-    answers: str = Form(""),      # JSON string from the frontend
-    transcript: str = Form(""),   # optional combined transcript
+    answers: str = Form(""),
+    transcript: str = Form(""),
 ):
     body = f"""New questionnaire submission
 
@@ -375,22 +304,20 @@ Transcript:
     except Exception as e:
         return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
 
-# --- API: transcribe audio/video
+
 @app.post("/api/transcribe")
 async def transcribe(file: UploadFile = File(...), question_id: str = Form(None)):
-    # Basic content-type guard (optional)
     if file.content_type and not any(file.content_type.startswith(p) for p in ("audio/", "video/")):
         raise HTTPException(status_code=400, detail=f"Unsupported content type: {file.content_type}")
 
     suffix = os.path.splitext(file.filename or "")[1] or ".webm"
     tmp_path = None
+
     try:
-        # Save upload to a temp file
         with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
             shutil.copyfileobj(file.file, tmp)
             tmp_path = tmp.name
 
-        # Transcribe (English; VAD trims silence). beam_size=1 is faster on small CPUs.
         segments, info = model.transcribe(
             tmp_path,
             vad_filter=True,
@@ -408,6 +335,6 @@ async def transcribe(file: UploadFile = File(...), question_id: str = Form(None)
             except Exception:
                 pass
 
+
 if __name__ == "__main__":
-    # Use $PORT if provided by the platform (Render sets this); default to 8000 locally.
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8000")))
