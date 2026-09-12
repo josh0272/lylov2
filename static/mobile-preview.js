@@ -2,42 +2,66 @@
   const mq = window.matchMedia('(max-width: 979px)');
   const isMobile = () => mq.matches;
 
-  const playWhenReady = (video) => {
-    const tryPlay = () => {
+  const safePlay = (video) => {
+    video.muted = true;
+    video.defaultMuted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+
+    const attempt = video.play();
+    if (attempt && typeof attempt.catch === 'function') {
+      attempt.catch(() => {
+        if (video.readyState < 2) {
+          video.addEventListener('canplay', () => safePlay(video), { once: true });
+        }
+      });
+    }
+  };
+
+  const initDesktopVideos = (videos) => {
+    videos.forEach((video) => {
+      video.autoplay = false;
+      video.removeAttribute('autoplay');
       video.muted = true;
       video.defaultMuted = true;
       video.loop = true;
-      video.playsInline = true;
-      video.setAttribute('playsinline', '');
+      video.controls = true;
+      video.pause();
+    });
 
-      const attempt = video.play();
-      if (attempt && typeof attempt.catch === 'function') {
-        attempt.catch(() => {
-          if (video.readyState < 2) {
-            video.addEventListener('canplay', tryPlay, { once: true });
-          }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.35 && !document.hidden) {
+          safePlay(video);
+        } else if (!video.paused) {
+          video.pause();
+        }
+      });
+    }, {
+      threshold: [0, 0.35, 0.6, 1]
+    });
+
+    videos.forEach((video) => observer.observe(video));
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        videos.forEach((video) => video.pause());
+      } else {
+        videos.forEach((video) => {
+          const rect = video.getBoundingClientRect();
+          const vh = window.innerHeight || document.documentElement.clientHeight;
+          const visiblePx = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
+          const ratio = rect.height ? visiblePx / rect.height : 0;
+          if (ratio >= 0.35) safePlay(video);
         });
       }
-    };
-
-    tryPlay();
+    });
   };
 
-  const init = () => {
-    const videos = Array.from(document.querySelectorAll('.demo-media video'));
-
-    // Desktop: all visual demos behave like the first demo — muted, looping and playing automatically.
-    if (!isMobile()) {
-      videos.forEach((video) => {
-        video.autoplay = true;
-        video.setAttribute('autoplay', '');
-        video.controls = true;
-        playWhenReady(video);
-      });
-      return;
-    }
-
-    // Mobile: remove native autoplay races. One controller decides which demo plays.
+  const initMobileVideos = (videos) => {
     videos.forEach((video) => {
       video.autoplay = false;
       video.removeAttribute('autoplay');
@@ -97,19 +121,8 @@
           return;
         }
 
-        // Once a user has taken control, respect a manual pause while it remains active.
         if (video.dataset.userControlled === '1' && video.paused) return;
-
-        if (video.paused) {
-          const playAttempt = video.play();
-          if (playAttempt && typeof playAttempt.catch === 'function') {
-            playAttempt.catch(() => {
-              if (video.readyState < 2) {
-                video.addEventListener('canplay', updateActiveVideo, { once: true });
-              }
-            });
-          }
-        }
+        if (video.paused) safePlay(video);
       });
     };
 
@@ -123,42 +136,54 @@
     window.addEventListener('resize', queueVideoUpdate, { passive: true });
     document.addEventListener('visibilitychange', queueVideoUpdate);
     queueVideoUpdate();
+  };
 
-    // Mobile carousel: simple continuous timer, independent from desktop drag code.
+  const initMobileCarousel = () => {
     const carousel = document.querySelector('.reg-cards');
-    if (carousel && !carousel.dataset.mobileTimerInit) {
-      carousel.dataset.mobileTimerInit = '1';
-      let paused = false;
-      let resumeTimer = null;
+    if (!carousel || carousel.dataset.mobileTimerInit) return;
 
-      const pause = () => {
-        paused = true;
-        if (resumeTimer) clearTimeout(resumeTimer);
-      };
+    carousel.dataset.mobileTimerInit = '1';
+    let paused = false;
+    let resumeTimer = null;
 
-      const resumeSoon = () => {
-        if (resumeTimer) clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(() => {
-          paused = false;
-        }, 900);
-      };
+    const pause = () => {
+      paused = true;
+      if (resumeTimer) clearTimeout(resumeTimer);
+    };
 
-      carousel.addEventListener('touchstart', pause, { passive: true });
-      carousel.addEventListener('touchmove', pause, { passive: true });
-      carousel.addEventListener('touchend', resumeSoon, { passive: true });
-      carousel.addEventListener('touchcancel', resumeSoon, { passive: true });
+    const resumeSoon = () => {
+      if (resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => {
+        paused = false;
+      }, 900);
+    };
 
-      setInterval(() => {
-        if (!isMobile() || paused || document.hidden) return;
-        const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-        if (maxScroll <= 2) return;
+    carousel.addEventListener('touchstart', pause, { passive: true });
+    carousel.addEventListener('touchmove', pause, { passive: true });
+    carousel.addEventListener('touchend', resumeSoon, { passive: true });
+    carousel.addEventListener('touchcancel', resumeSoon, { passive: true });
 
-        if (carousel.scrollLeft >= maxScroll - 2) {
-          carousel.scrollLeft = 0;
-        } else {
-          carousel.scrollLeft += 1;
-        }
-      }, 32);
+    setInterval(() => {
+      if (!isMobile() || paused || document.hidden) return;
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+      if (maxScroll <= 2) return;
+
+      if (carousel.scrollLeft >= maxScroll - 2) {
+        carousel.scrollLeft = 0;
+      } else {
+        carousel.scrollLeft += 1;
+      }
+    }, 32);
+  };
+
+  const init = () => {
+    const videos = Array.from(document.querySelectorAll('.demo-media video'));
+
+    if (isMobile()) {
+      initMobileVideos(videos);
+      initMobileCarousel();
+    } else {
+      initDesktopVideos(videos);
     }
   };
 
