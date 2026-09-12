@@ -45,21 +45,23 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;ba
 .cta{grid-area:cta;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;color:#fff;text-decoration:none;font-weight:600;font-size:16px;border-radius:18px;border:1px solid transparent;background:linear-gradient(180deg,#111722,#0c1423) padding-box,conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;box-shadow:0 10px 26px rgba(0,0,0,.32);margin:0 auto 10px;transition:.2s ease}.cta:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.42)}
 .note{grid-area:note;color:var(--muted);font-size:13px;font-weight:400;text-align:center;margin-top:4px}
 
-/* INTRO */
-.demo-intro{padding:110px var(--gutter) 64px;text-align:center;border-top:1px solid var(--line)}
+/* INTRO + SRA TRUST */
+.demo-intro{padding:110px var(--gutter) 72px;text-align:center;border-top:1px solid var(--line)}
 .demo-intro>div{max-width:var(--container);margin:auto}
 .demo-intro h2{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(50px,6.5vw,78px);line-height:1;letter-spacing:-.032em;margin:0 auto 18px;max-width:850px}
 .demo-intro>div>p{color:var(--muted);font-size:18px;line-height:1.62;font-weight:400;max-width:600px;margin:auto}
-.reg-trust{max-width:980px;margin:54px auto 0;padding-top:42px;border-top:1px solid rgba(255,255,255,.06)}
-.reg-question{color:var(--text)!important;font-size:24px!important;line-height:1.35!important;font-weight:500!important;max-width:720px!important;margin:0 auto 8px!important}
+.reg-trust{max-width:1040px;margin:56px auto 0;padding-top:44px;border-top:1px solid rgba(255,255,255,.06)}
+.reg-question{color:var(--text)!important;font-size:26px!important;line-height:1.34!important;font-weight:500!important;max-width:760px!important;margin:0 auto 8px!important}
 .reg-date{color:#8fbfff;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
-.reg-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:28px auto 0;max-width:900px}
-.reg-card{position:relative;isolation:isolate;overflow:hidden;min-height:138px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 20px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(155deg,rgba(255,255,255,.024),rgba(255,255,255,.012));box-shadow:0 18px 45px rgba(0,0,0,.11);animation:floatMagicOne 7.2s cubic-bezier(.45,.05,.55,.95) infinite}
+.reg-lead{color:#9eabba;font-size:14px;line-height:1.55;max-width:700px;margin:15px auto 0}
+.reg-cards{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;margin:30px auto 0;max-width:1000px}
+.reg-card{grid-column:span 2;position:relative;isolation:isolate;overflow:hidden;min-height:178px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 21px;border-radius:18px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(155deg,rgba(255,255,255,.024),rgba(255,255,255,.012));box-shadow:0 18px 45px rgba(0,0,0,.11);animation:floatMagicOne 7.2s cubic-bezier(.45,.05,.55,.95) infinite}
+.reg-card:nth-child(4){grid-column:2/span 2}.reg-card:nth-child(5){grid-column:4/span 2}
 .reg-card::before{content:"";position:absolute;z-index:-1;width:150px;height:150px;border-radius:50%;top:-100px;right:-68px;background:radial-gradient(circle,rgba(100,169,255,.14),transparent 68%);animation:orbDrift 8s ease-in-out infinite alternate}
-.reg-card:nth-child(2){animation-name:floatMagicTwo;animation-delay:-2.4s}.reg-card:nth-child(2)::before{background:radial-gradient(circle,rgba(106,217,176,.12),transparent 68%);animation-delay:-2s}
-.reg-card:nth-child(3){animation-name:floatMagicThree;animation-delay:-4.8s}.reg-card:nth-child(3)::before{background:radial-gradient(circle,rgba(151,122,255,.12),transparent 68%);animation-delay:-4s}
-.reg-card strong{font-size:16px;font-weight:600;margin-bottom:8px}.reg-card span{color:#8997aa;font-size:13px;line-height:1.5;max-width:220px}
-.reg-line{margin-top:22px;color:#c8d2df;font-size:14px;font-weight:500}
+.reg-card:nth-child(2),.reg-card:nth-child(5){animation-name:floatMagicTwo;animation-delay:-2.4s}.reg-card:nth-child(2)::before,.reg-card:nth-child(5)::before{background:radial-gradient(circle,rgba(106,217,176,.12),transparent 68%);animation-delay:-2s}
+.reg-card:nth-child(3),.reg-card:nth-child(4){animation-name:floatMagicThree;animation-delay:-4.8s}.reg-card:nth-child(3)::before,.reg-card:nth-child(4)::before{background:radial-gradient(circle,rgba(151,122,255,.12),transparent 68%);animation-delay:-4s}
+.reg-card strong{font-size:16px;font-weight:600;margin-bottom:8px}.reg-card span{color:#8997aa;font-size:13px;line-height:1.5;max-width:240px}.reg-card em{display:block;color:#dce8f7;font-size:12px;line-height:1.5;font-style:normal;font-weight:500;max-width:245px;margin-top:11px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
+.reg-line{margin-top:24px;color:#b9c5d5;font-size:13px;line-height:1.55;font-weight:500}.reg-built{display:block;margin-top:6px;color:#eef4fb;font-size:14px}.reg-sources{margin-top:14px;font-size:11px;color:#6f8096}.reg-sources a{color:#8fa8c7;text-decoration:none;border-bottom:1px solid rgba(143,168,199,.28)}.reg-sources a:hover{color:#c7dcf5}
 
 /* DEMOS */
 .demo-section{position:relative;padding:120px var(--gutter);border-top:1px solid rgba(255,255,255,.055);overflow:hidden}
@@ -94,7 +96,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;ba
 .privacy{padding:145px var(--gutter);border-top:1px solid rgba(255,255,255,.055)}
 .privacy-inner{width:100%;max-width:var(--container);margin:auto;text-align:center}
 .privacy h3{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(52px,6.2vw,78px);line-height:1;letter-spacing:-.032em;margin:0 auto 22px;max-width:900px}
-.privacy-main{color:var(--muted);font-size:18px;line-height:1.65;font-weight:400;max-width:690px;margin:0 auto}
+.privacy-main{color:var(--muted);font-size:18px;line-height:1.65;font-weight:400;max-width:720px;margin:0 auto}
 .privacy-visual{width:min(100%,960px);margin:58px auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch}
 .privacy-node{position:relative;isolation:isolate;overflow:hidden;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;border-radius:20px;border:1px solid rgba(255,255,255,.085);background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(255,255,255,.012));box-shadow:0 20px 52px rgba(0,0,0,.12),0 0 0 rgba(99,168,255,0);animation:floatMagicOne 7.2s cubic-bezier(.45,.05,.55,.95) infinite;will-change:transform,box-shadow}
 .privacy-node::before{content:"";position:absolute;z-index:-1;width:180px;height:180px;border-radius:50%;top:-118px;right:-82px;background:radial-gradient(circle,rgba(100,169,255,.15),transparent 67%);filter:blur(2px);animation:orbDrift 8s ease-in-out infinite alternate}
@@ -102,7 +104,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;ba
 .privacy-node:nth-child(2){animation-name:floatMagicTwo;animation-delay:-2.4s}.privacy-node:nth-child(2)::before{background:radial-gradient(circle,rgba(106,217,176,.13),transparent 67%);animation-delay:-2s}.privacy-node:nth-child(2)::after{animation-delay:-3s}
 .privacy-node:nth-child(3){animation-name:floatMagicThree;animation-delay:-4.8s}.privacy-node:nth-child(3)::before{background:radial-gradient(circle,rgba(151,122,255,.13),transparent 67%);animation-delay:-4s}.privacy-node:nth-child(3)::after{animation-delay:-5.5s}
 .privacy-node strong{font-size:17px;font-weight:600;margin-bottom:10px}.privacy-node span{color:#8997aa;font-size:13px;font-weight:400;line-height:1.58;max-width:225px}
-.privacy-note{color:#718094;font-size:12px;font-weight:400;line-height:1.6;max-width:720px;margin:32px auto 0}
+.privacy-note{color:#718094;font-size:12px;font-weight:400;line-height:1.6;max-width:760px;margin:32px auto 0}
 @keyframes floatMagicOne{0%,100%{transform:translate3d(0,0,0) rotate(0deg);box-shadow:0 20px 52px rgba(0,0,0,.12),0 0 0 rgba(99,168,255,0)}28%{transform:translate3d(3px,-10px,0) rotate(.35deg);box-shadow:0 28px 62px rgba(0,0,0,.16),0 0 30px rgba(99,168,255,.055)}58%{transform:translate3d(-2px,-5px,0) rotate(-.25deg)}78%{transform:translate3d(2px,-13px,0) rotate(.18deg);box-shadow:0 30px 66px rgba(0,0,0,.17),0 0 38px rgba(99,168,255,.07)}}
 @keyframes floatMagicTwo{0%,100%{transform:translate3d(0,-3px,0) rotate(0deg)}22%{transform:translate3d(-3px,-12px,0) rotate(-.3deg);box-shadow:0 29px 64px rgba(0,0,0,.16),0 0 34px rgba(106,217,176,.06)}52%{transform:translate3d(2px,-6px,0) rotate(.28deg)}76%{transform:translate3d(-1px,-15px,0) rotate(-.15deg);box-shadow:0 31px 68px rgba(0,0,0,.17),0 0 40px rgba(106,217,176,.065)}}
 @keyframes floatMagicThree{0%,100%{transform:translate3d(0,-5px,0) rotate(0deg)}30%{transform:translate3d(2px,-14px,0) rotate(.28deg);box-shadow:0 30px 66px rgba(0,0,0,.17),0 0 38px rgba(151,122,255,.06)}60%{transform:translate3d(-3px,-7px,0) rotate(-.32deg)}82%{transform:translate3d(1px,-12px,0) rotate(.16deg)}}
@@ -116,7 +118,7 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
 
 @media(max-width:979px){
   .site-header{height:56px}.wrap{grid-template-columns:1fr;grid-template-areas:"logo" "tagline" "visual" "bullets" "cta" "note";padding:76px 18px 46px;gap:8px}.hero{min-height:auto}.logo{font-size:58px;margin-bottom:6px}.tagline{font-size:22px;margin-bottom:16px}.bullet{font-size:15px;line-height:1.5}.visual{margin:0 0 12px}.hero-frame{border-radius:15px}.note{font-size:12px}
-  .demo-intro{padding:90px 18px 52px}.demo-intro h2{font-size:clamp(46px,12vw,64px)}.demo-intro>div>p{font-size:16px}.reg-trust{margin-top:42px;padding-top:32px}.reg-question{font-size:20px!important}.reg-cards{grid-template-columns:1fr;gap:14px;max-width:520px}.reg-card{min-height:118px}.reg-line{font-size:13px}
+  .demo-intro{padding:90px 18px 58px}.demo-intro h2{font-size:clamp(46px,12vw,64px)}.demo-intro>div>p{font-size:16px}.reg-trust{margin-top:42px;padding-top:32px}.reg-question{font-size:21px!important}.reg-lead{font-size:13px}.reg-cards{grid-template-columns:1fr;gap:14px;max-width:520px}.reg-card,.reg-card:nth-child(4),.reg-card:nth-child(5){grid-column:auto;min-height:142px}.reg-line{font-size:12px}.reg-built{font-size:13px}
   .demo-section{padding:82px 18px}.demo-grid,.demo-section.alt .demo-grid{grid-template-columns:1fr;gap:36px}.demo-section.alt .demo-copy,.demo-section.alt .demo-media{order:initial}.demo-copy h3{font-size:clamp(40px,10.5vw,54px);max-width:620px}.demo-copy p{font-size:16px;max-width:560px}.demo-media{border-radius:17px}.call-box{margin-top:26px;padding:20px}.call-number{font-size:21px}.demo-cta{margin-top:24px;min-height:48px}
   .privacy{padding:105px 18px}.privacy h3{font-size:clamp(46px,11.5vw,64px)}.privacy-main{font-size:16px}.privacy-visual{grid-template-columns:1fr;gap:20px;margin-top:42px;max-width:520px}.privacy-node{min-height:160px}.final{padding:95px 18px 105px}.final h3{font-size:clamp(44px,11vw,60px)}.final p{font-size:16px}
 }
@@ -142,17 +144,43 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
 <section class="demo-intro" id="demos">
   <div class="reveal">
     <h2>See how Lylo works.</h2>
-    <p>Four simple demos. Each one shows a real task Lylo can help with.</p>
+    <p>Four simple demos. Each one shows a real task Lylo helps with.</p>
 
     <div class="reg-trust">
-      <p class="reg-question">AI expectations for law firms are changing. Are you ready?</p>
-      <div class="reg-date">17 Aug 2026 · SRA warning notice</div>
+      <p class="reg-question">AI use in law is changing. Is your firm ready?</p>
+      <div class="reg-date">17 Aug 2026 · SRA Misuse of AI warning notice</div>
+      <div class="reg-lead">The SRA warns firms about inaccurate AI output, confidentiality, supervision and professional responsibility. Lylo is built around those risks.</div>
+
       <div class="reg-cards">
-        <div class="reg-card"><strong>Accountability</strong><span>Solicitors remain responsible for AI-assisted work.</span></div>
-        <div class="reg-card"><strong>Human review</strong><span>AI output should be checked before it reaches a client or court.</span></div>
-        <div class="reg-card"><strong>UK GDPR</strong><span>Keep personal data secure and use only what is needed.</span></div>
+        <div class="reg-card">
+          <strong>Hallucinations</strong>
+          <span>AI can invent cases, citations and facts that sound real.</span>
+          <em>Lylo is built around source-grounded answers from the firm’s own documents.</em>
+        </div>
+        <div class="reg-card">
+          <strong>Client confidentiality</strong>
+          <span>Sensitive client information needs careful handling when AI is used.</span>
+          <em>Lylo’s private legal AI is designed to keep case work inside the firm.</em>
+        </div>
+        <div class="reg-card">
+          <strong>Human verification</strong>
+          <span>AI output must not be treated as automatically correct.</span>
+          <em>Lylo keeps the solicitor in control, with review built into the workflow.</em>
+        </div>
+        <div class="reg-card">
+          <strong>Governance & supervision</strong>
+          <span>Firms need clear control over how AI is used and supervised.</span>
+          <em>Lylo is built as defined legal workflows with controlled access and review points.</em>
+        </div>
+        <div class="reg-card">
+          <strong>Professional responsibility</strong>
+          <span>The solicitor and firm remain responsible for the final legal work.</span>
+          <em>Lylo is an assistant to legal judgement, not a replacement for it.</em>
+        </div>
       </div>
-      <div class="reg-line">Lylo is being built with these duties in mind.</div>
+
+      <div class="reg-line">UK GDPR sits alongside this: data protection by design, data minimisation and security still apply.<span class="reg-built">Lylo is built with these duties in mind from the start.</span></div>
+      <div class="reg-sources"><a href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/" target="_blank" rel="noopener">SRA warning notice</a> &nbsp;·&nbsp; <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/data-protection-by-design-and-by-default/" target="_blank" rel="noopener">ICO: UK GDPR by design</a></div>
     </div>
   </div>
 </section>
@@ -172,7 +200,7 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
   <div class="demo-grid reveal">
     <div class="demo-copy">
       <h3>Turn case files into a completed form.</h3>
-      <p>Lylo can pull names, dates and case details from uploaded documents, fill the ET1 and send the information to the relevant department. You review it before anything is sent.</p>
+      <p>Lylo pulls names, dates and case details from uploaded documents, fills the ET1 and prepares the information for review. You stay in control before it is used.</p>
       <a class="demo-cta" href="/research">Automate a form</a>
     </div>
     <div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div>
@@ -184,7 +212,7 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
     <div class="demo-media"><div class="blank-video" aria-label="Schedule of Loss demo video space"></div></div>
     <div class="demo-copy">
       <h3>Know what the claim is worth.</h3>
-      <p>Lylo’s Schedule of Loss calculator uses the claimant’s pay, dates and losses to work out an accurate figure and build a clear schedule for review.</p>
+      <p>Lylo’s Schedule of Loss calculator uses the claimant’s pay, dates and losses to calculate the figure and build a clear schedule for review.</p>
       <a class="demo-cta" href="/research">Register interest</a>
     </div>
   </div>
@@ -194,7 +222,7 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
   <div class="demo-grid reveal">
     <div class="demo-copy">
       <h3>Let Lylo answer the phone.</h3>
-      <p>This is one example of what general AI can do. Lylo can answer after hours, speak to callers in a natural voice, collect the first details and pass the message to your team.</p>
+      <p>Lylo answers after hours, speaks to callers in a natural voice, collects the first details and passes the message to your team.</p>
       <div class="call-box">
         <div class="call-label">Try speaking to Lylo</div>
         <div class="call-number">07700 900 642</div>
@@ -209,13 +237,13 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
 <section class="privacy" id="privacy">
   <div class="privacy-inner reveal">
     <h3>Private AI, inside your firm.</h3>
-    <p class="privacy-main">For sensitive legal work, Lylo can be developed to run on a computer inside your office. Case files can stay on your own network instead of being sent to a cloud AI.</p>
+    <p class="privacy-main">Lylo is designed so sensitive legal work stays inside the firm’s environment. Case files stay on the firm’s own network instead of being sent to a public AI service.</p>
     <div class="privacy-visual">
-      <div class="privacy-node"><strong>On-premise</strong><span>Run Lylo on hardware inside the firm, keeping sensitive work closer to your own systems.</span></div>
-      <div class="privacy-node"><strong>UK GDPR in mind</strong><span>Designed around data minimisation, access control and privacy by design.</span></div>
-      <div class="privacy-node"><strong>Human review</strong><span>Staff stay in control, with review before AI output is used in legal work.</span></div>
+      <div class="privacy-node"><strong>On-premise AI</strong><span>The private legal AI runs on hardware inside the firm.</span></div>
+      <div class="privacy-node"><strong>Local case files</strong><span>Sensitive documents stay on the firm’s own network.</span></div>
+      <div class="privacy-node"><strong>Clear cloud boundary</strong><span>Private legal work stays local. Phone and voice services stay separate.</span></div>
     </div>
-    <p class="privacy-note">Built with UK GDPR principles in mind. Final compliance depends on each firm’s setup, policies and use. The AI receptionist can still use cloud phone and voice services.</p>
+    <p class="privacy-note">Lylo’s architecture is built around UK GDPR principles including privacy by design, data minimisation and controlled access. Final compliance still depends on each firm’s deployment, policies and use.</p>
   </div>
 </section>
 
