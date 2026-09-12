@@ -69,22 +69,34 @@ def preview():
         '<div class="demo-media"><video autoplay muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
     )
 
-    # Mobile carousel: let touch devices use the browser's native horizontal scrolling.
-    # The original custom pointer drag remains available for desktop mouse dragging only.
+    # Make the displayed phone number explicitly callable rather than relying on iOS auto-linking.
+    html = html.replace(
+        '<div class="call-number">07700 900 642</div>',
+        '<div class="call-number"><a class="call-number-link" href="tel:07700900642">07700 900 642</a></div>'
+    )
+
+    # Mobile carousel uses native finger scrolling. Keep the custom pointer drag for mouse only.
     html = html.replace("touch-action:pan-y", "touch-action:pan-x pan-y")
     html = html.replace(
         "if(e.pointerType==='mouse'&&e.button!==0)return;isDragging=true;",
         "if(e.pointerType!=='mouse'||e.button!==0)return;isDragging=true;"
     )
+
+    # The original auto-scroll remains desktop-only. Mobile gets its own independent loop below.
     html = html.replace(
-        "const autoScroll=now=>",
-        "regCarousel.addEventListener('touchstart',()=>interact(5000),{passive:true});regCarousel.addEventListener('touchend',()=>interact(650),{passive:true});regCarousel.addEventListener('touchcancel',()=>interact(650),{passive:true});const autoScroll=now=>"
+        "if(!isDragging&&now>interactionUntil){regCarousel.scrollLeft+=dt*.032;wrapPosition()}",
+        "if(window.innerWidth>979&&!isDragging&&now>interactionUntil){regCarousel.scrollLeft+=dt*.032;wrapPosition()}"
     )
 
-    # Keep the desktop alternating layout, but make every demo use the same order on mobile.
-    # Compact the carousel/privacy section and let the phone demo grow only after play is pressed.
     mobile_overrides = """
     <style id="lylo-mobile-overrides">
+      .call-number-link {
+        color: inherit;
+        text-decoration: none;
+        font: inherit;
+        letter-spacing: inherit;
+      }
+
       @media (max-width: 979px) {
         .demo-grid,
         .demo-section.alt .demo-grid,
@@ -103,7 +115,17 @@ def preview():
           order: 2 !important;
         }
 
-        /* PHONE DEMO: compact before play, then open enough room for the transcript. */
+        .call-number-link,
+        .call-number-link:link,
+        .call-number-link:visited,
+        .call-number-link:hover,
+        .call-number-link:active {
+          color: #dce5ef !important;
+          text-decoration: none !important;
+          -webkit-text-fill-color: #dce5ef !important;
+        }
+
+        /* PHONE DEMO: compact before play, then open room only when transcript appears. */
         .phone-section .audio-stage {
           order: 1 !important;
           width: 100% !important;
@@ -232,8 +254,75 @@ def preview():
     """
     html = html.replace("</head>", mobile_overrides + "</head>")
 
-    # Keep the automatic drift clearly visible after touch interaction ends.
-    html = html.replace("regCarousel.scrollLeft+=dt*.032", "regCarousel.scrollLeft+=dt*.050")
+    mobile_behavior = """
+    <script id="lylo-mobile-behavior">
+    (() => {
+      const isMobile = () => window.matchMedia('(max-width: 979px)').matches;
+
+      const initMobile = () => {
+        if (!isMobile()) return;
+
+        /* Hide native video controls until the visitor taps the video once. */
+        document.querySelectorAll('.demo-media video').forEach(video => {
+          if (video.dataset.mobileControlsInit) return;
+          video.dataset.mobileControlsInit = '1';
+          video.controls = false;
+
+          const revealControls = () => {
+            video.controls = true;
+            video.removeEventListener('touchstart', revealControls);
+            video.removeEventListener('click', revealControls);
+          };
+
+          video.addEventListener('touchstart', revealControls, { passive: true });
+          video.addEventListener('click', revealControls);
+        });
+
+        /* Dedicated mobile carousel auto-scroll. It pauses while touched, then resumes. */
+        const carousel = document.querySelector('.reg-cards');
+        if (carousel && !carousel.dataset.mobileAutoInit) {
+          carousel.dataset.mobileAutoInit = '1';
+          let pauseUntil = 0;
+          let last = performance.now();
+
+          const pauseFor = ms => { pauseUntil = performance.now() + ms; };
+          carousel.addEventListener('touchstart', () => pauseFor(6000), { passive: true });
+          carousel.addEventListener('touchend', () => pauseFor(900), { passive: true });
+          carousel.addEventListener('touchcancel', () => pauseFor(900), { passive: true });
+
+          const loopWidth = () => {
+            const cards = Array.from(carousel.children);
+            const firstClone = cards.find(card => card.getAttribute('aria-hidden') === 'true');
+            if (firstClone && cards[0]) return firstClone.offsetLeft - cards[0].offsetLeft;
+            return carousel.scrollWidth / 2;
+          };
+
+          const animate = now => {
+            const dt = Math.min(now - last, 50);
+            last = now;
+
+            if (isMobile() && now > pauseUntil) {
+              carousel.scrollLeft += dt * 0.042;
+              const width = loopWidth();
+              if (width && carousel.scrollLeft >= width) carousel.scrollLeft -= width;
+            }
+
+            requestAnimationFrame(animate);
+          };
+
+          requestAnimationFrame(animate);
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobile, { once: true });
+      } else {
+        initMobile();
+      }
+    })();
+    </script>
+    """
+    html = html.replace("</body>", mobile_behavior + "</body>")
 
     return HTMLResponse(content=html)
 
