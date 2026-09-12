@@ -3,7 +3,7 @@
 import os, sys, tempfile, shutil, smtplib, ssl
 from email.message import EmailMessage
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from faster_whisper import WhisperModel
@@ -52,9 +52,24 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 def home():
     return FileResponse("static/index.html")
 
-@app.get("/preview", response_class=FileResponse)
+@app.get("/preview", response_class=HTMLResponse)
 def preview():
-    return FileResponse("static/preview/index.html")
+    with open("static/preview/index.html", "r", encoding="utf-8") as f:
+        html = f.read()
+
+    # Make the Schedule of Loss demo preload fully and autoplay immediately.
+    html = html.replace(
+        '<video controls playsinline preload="metadata" aria-label="Schedule of Loss demo"><source src="/static/schedule-of-loss.mp4" type="video/mp4"></video>',
+        '<video autoplay muted loop playsinline controls preload="auto" aria-label="Schedule of Loss demo"><source src="/static/schedule-of-loss.mp4" type="video/mp4"></video>'
+    )
+
+    # Replace the ET1 placeholder with the real ET1 demo once /static/et1.mp4 is present.
+    html = html.replace(
+        '<div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div>',
+        '<div class="demo-media"><video autoplay muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
+    )
+
+    return HTMLResponse(content=html)
 
 @app.get("/research", response_class=FileResponse)
 def research():
