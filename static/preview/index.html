@@ -83,14 +83,15 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;ba
 .demo-cta:hover::before{left:105%}
 
 /* PHONE CTA */
-.call-box{position:relative;isolation:isolate;overflow:hidden;width:min(100%,370px);margin:30px auto 0;padding:22px 24px 20px;text-align:center;border-radius:24px;border:1px solid transparent;background:linear-gradient(155deg,rgba(13,27,47,.96),rgba(7,15,27,.98)) padding-box,linear-gradient(130deg,rgba(99,168,255,.72),rgba(106,217,176,.36),rgba(151,122,255,.50)) border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 22px 60px rgba(0,0,0,.28),0 0 45px rgba(68,139,239,.10)}
-.call-box::before{content:"";position:absolute;z-index:-1;width:220px;height:220px;border-radius:50%;left:50%;top:-145px;transform:translateX(-50%);background:radial-gradient(circle,rgba(98,169,255,.23),rgba(98,169,255,.06) 42%,transparent 70%);animation:callGlow 4.6s ease-in-out infinite}
-.call-label{font-size:14px;font-weight:500;color:#dce9f9;margin-bottom:14px;letter-spacing:.01em}
-.call-number{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:56px;padding:0 21px;border-radius:17px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.045);font-size:24px;font-weight:600;letter-spacing:.025em;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 10px 26px rgba(0,0,0,.20)}
-.call-number::before{content:"✦";display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,rgba(106,217,176,.22),rgba(99,168,255,.08));border:1px solid rgba(123,217,186,.24);font-size:14px;color:#d8fff1;box-shadow:0 0 0 0 rgba(123,217,186,.18);animation:phonePulse 2.8s ease-out infinite}
-.call-note{display:block;color:#77869a;font-size:11px;font-weight:400;margin-top:11px}
-@keyframes callGlow{0%,100%{opacity:.65;transform:translateX(-50%) scale(.94)}50%{opacity:1;transform:translateX(-50%) scale(1.08)}}
-@keyframes phonePulse{0%,55%{box-shadow:0 0 0 0 rgba(123,217,186,.18)}85%{box-shadow:0 0 0 10px rgba(123,217,186,0)}100%{box-shadow:0 0 0 0 rgba(123,217,186,0)}}
+.call-box{position:relative;isolation:isolate;width:min(100%,390px);margin:30px auto 0;padding:0;text-align:center}
+.call-box::before{content:"";position:absolute;z-index:-1;left:50%;top:52px;width:290px;height:90px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(99,168,255,.17),rgba(106,217,176,.07) 42%,transparent 72%);filter:blur(8px);animation:callGlow 4.8s ease-in-out infinite}
+.call-label{font-size:13px;font-weight:500;color:#dce9f9;margin-bottom:12px;letter-spacing:.02em}
+.call-number{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:60px;padding:0 25px;border-radius:999px;border:1px solid rgba(133,194,255,.30);background:linear-gradient(135deg,rgba(19,38,63,.96),rgba(9,21,37,.98));font-size:25px;font-weight:650;letter-spacing:.025em;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 14px 38px rgba(34,104,204,.20),0 0 34px rgba(99,168,255,.08)}
+.call-number::before{content:"✦";display:inline-flex;align-items:center;justify-content:center;width:31px;height:31px;border-radius:50%;background:linear-gradient(145deg,rgba(106,217,176,.24),rgba(99,168,255,.10));border:1px solid rgba(123,217,186,.26);font-size:13px;color:#d8fff1;box-shadow:0 0 0 0 rgba(123,217,186,.20);animation:phonePulse 2.8s ease-out infinite}
+.call-number::after{content:"";position:absolute;top:-80%;left:-34%;width:30%;height:260%;transform:rotate(24deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.09),transparent);animation:numberShine 5.6s ease-in-out infinite;pointer-events:none}
+@keyframes callGlow{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(.94)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
+@keyframes phonePulse{0%,55%{box-shadow:0 0 0 0 rgba(123,217,186,.20)}85%{box-shadow:0 0 0 10px rgba(123,217,186,0)}100%{box-shadow:0 0 0 0 rgba(123,217,186,0)}}
+@keyframes numberShine{0%,64%,100%{left:-34%;opacity:0}70%{opacity:.75}84%{left:112%;opacity:0}}
 
 /* ON PREMISE */
 .privacy{padding:145px var(--gutter);border-top:1px solid rgba(255,255,255,.055)}
@@ -119,10 +120,10 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
 @media(max-width:979px){
   .site-header{height:56px}.wrap{grid-template-columns:1fr;grid-template-areas:"logo" "tagline" "visual" "bullets" "cta" "note";padding:76px 18px 46px;gap:8px}.hero{min-height:auto}.logo{font-size:58px;margin-bottom:6px}.tagline{font-size:22px;margin-bottom:16px}.bullet{font-size:15px;line-height:1.5}.visual{margin:0 0 12px}.hero-frame{border-radius:15px}.note{font-size:12px}
   .demo-intro{padding:90px 18px 58px}.demo-intro h2{font-size:clamp(46px,12vw,64px)}.demo-intro>div>p{font-size:16px}.reg-trust{margin-top:42px;padding-top:32px}.reg-question{font-size:21px!important}.reg-lead{font-size:13px}.reg-cards{grid-template-columns:1fr;gap:14px;max-width:520px}.reg-card,.reg-card:nth-child(4),.reg-card:nth-child(5){grid-column:auto;min-height:142px}.reg-line{font-size:12px}.reg-built{font-size:13px}
-  .demo-section{padding:82px 18px}.demo-grid,.demo-section.alt .demo-grid{grid-template-columns:1fr;gap:36px}.demo-section.alt .demo-copy,.demo-section.alt .demo-media{order:initial}.demo-copy h3{font-size:clamp(40px,10.5vw,54px);max-width:620px}.demo-copy p{font-size:16px;max-width:560px}.demo-media{border-radius:17px}.call-box{margin-top:26px;padding:20px}.call-number{font-size:21px}.demo-cta{margin-top:24px;min-height:48px}
+  .demo-section{padding:82px 18px}.demo-grid,.demo-section.alt .demo-grid{grid-template-columns:1fr;gap:36px}.demo-section.alt .demo-copy,.demo-section.alt .demo-media{order:initial}.demo-copy h3{font-size:clamp(40px,10.5vw,54px);max-width:620px}.demo-copy p{font-size:16px;max-width:560px}.demo-media{border-radius:17px}.call-box{margin-top:26px}.call-number{font-size:21px;min-height:56px;padding:0 20px}.demo-cta{margin-top:24px;min-height:48px}
   .privacy{padding:105px 18px}.privacy h3{font-size:clamp(46px,11.5vw,64px)}.privacy-main{font-size:16px}.privacy-visual{grid-template-columns:1fr;gap:20px;margin-top:42px;max-width:520px}.privacy-node{min-height:160px}.final{padding:95px 18px 105px}.final h3{font-size:clamp(44px,11vw,60px)}.final p{font-size:16px}
 }
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.privacy-node,.privacy-node::before,.privacy-node::after,.reg-card,.reg-card::before,.call-box::before,.call-number::before{animation:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.privacy-node,.privacy-node::before,.privacy-node::after,.reg-card,.reg-card::before,.call-box::before,.call-number::before,.call-number::after{animation:none}}
 </style>
 </head>
 <body>
@@ -226,7 +227,6 @@ footer{text-align:center;padding:22px var(--gutter);border-top:1px solid rgba(25
       <div class="call-box">
         <div class="call-label">Try speaking to Lylo</div>
         <div class="call-number">07700 900 642</div>
-        <span class="call-note">Demo placeholder — live number will be added later</span>
       </div>
       <a class="demo-cta" href="/research">Register interest</a>
     </div>
