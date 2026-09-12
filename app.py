@@ -69,8 +69,20 @@ def preview():
         '<div class="demo-media"><video autoplay muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
     )
 
-    # Keep the desktop alternating layout, but make every demo use the same order on mobile:
-    # visual first, then copy. Also make the trust carousel and privacy cards lighter on phones.
+    # Mobile carousel: let touch devices use the browser's native horizontal scrolling.
+    # The original custom pointer drag remains available for desktop mouse dragging only.
+    html = html.replace("touch-action:pan-y", "touch-action:pan-x pan-y")
+    html = html.replace(
+        "if(e.pointerType==='mouse'&&e.button!==0)return;isDragging=true;",
+        "if(e.pointerType!=='mouse'||e.button!==0)return;isDragging=true;"
+    )
+    html = html.replace(
+        "const autoScroll=now=>",
+        "regCarousel.addEventListener('touchstart',()=>interact(5000),{passive:true});regCarousel.addEventListener('touchend',()=>interact(650),{passive:true});regCarousel.addEventListener('touchcancel',()=>interact(650),{passive:true});const autoScroll=now=>"
+    )
+
+    # Keep the desktop alternating layout, but make every demo use the same order on mobile.
+    # Compact the carousel/privacy section and let the phone demo grow only after play is pressed.
     mobile_overrides = """
     <style id="lylo-mobile-overrides">
       @media (max-width: 979px) {
@@ -91,11 +103,47 @@ def preview():
           order: 2 !important;
         }
 
+        /* PHONE DEMO: compact before play, then open enough room for the transcript. */
         .phone-section .audio-stage {
           order: 1 !important;
           width: 100% !important;
           max-width: 100% !important;
-          height: 430px !important;
+          height: 210px !important;
+          min-height: 0 !important;
+          padding: 8px 0 0 !important;
+          align-items: flex-start !important;
+          overflow: visible !important;
+          transition: height .48s cubic-bezier(.22,.78,.24,1) !important;
+        }
+
+        .phone-section .audio-stage:has(.audio-demo.started) {
+          height: 445px !important;
+        }
+
+        .phone-section .audio-demo {
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 0 8px !important;
+          transition: transform .48s cubic-bezier(.22,.78,.24,1) !important;
+        }
+
+        .phone-section .audio-demo.started {
+          transform: translateY(-8px) !important;
+        }
+
+        .phone-section .audio-wave {
+          height: 66px !important;
+          margin-bottom: 18px !important;
+        }
+
+        .phone-section .audio-title {
+          margin-bottom: 10px !important;
+        }
+
+        .phone-section .transcript {
+          top: calc(100% + 18px) !important;
+          height: 190px !important;
+          width: min(94%, 430px) !important;
         }
 
         .phone-section .demo-copy {
@@ -104,17 +152,29 @@ def preview():
           max-width: 100% !important;
         }
 
+        /* MOBILE TRUST CAROUSEL */
         .reg-cards {
-          width: calc(100vw - 32px) !important;
+          width: calc(100vw - 24px) !important;
           max-width: none !important;
           gap: 12px !important;
-          padding: 6px 2px 8px !important;
+          padding: 6px 8px 10px !important;
+          overflow-x: auto !important;
+          overflow-y: hidden !important;
+          -webkit-overflow-scrolling: touch !important;
+          overscroll-behavior-x: contain !important;
+          touch-action: pan-x pan-y !important;
+          scroll-behavior: auto !important;
+          cursor: default !important;
+        }
+
+        .reg-cards.dragging {
+          cursor: default !important;
         }
 
         .reg-card {
-          flex: 0 0 min(74vw, 245px) !important;
-          min-height: 142px !important;
-          padding: 18px 16px !important;
+          flex: 0 0 min(72vw, 238px) !important;
+          min-height: 138px !important;
+          padding: 17px 15px !important;
           border-radius: 15px !important;
         }
 
@@ -126,7 +186,7 @@ def preview():
         .reg-card span {
           font-size: 12px !important;
           line-height: 1.4 !important;
-          max-width: 205px !important;
+          max-width: 202px !important;
         }
 
         .reg-card em {
@@ -134,7 +194,7 @@ def preview():
           line-height: 1.4 !important;
           margin-top: 8px !important;
           padding-top: 8px !important;
-          max-width: 210px !important;
+          max-width: 205px !important;
         }
 
         .privacy-visual {
@@ -172,9 +232,8 @@ def preview():
     """
     html = html.replace("</head>", mobile_overrides + "</head>")
 
-    # The original carousel drift is deliberately subtle. Speed it up so the movement is
-    # clearly visible on phones while remaining calm/premium.
-    html = html.replace("regCarousel.scrollLeft+=dt*.032", "regCarousel.scrollLeft+=dt*.058")
+    # Keep the automatic drift clearly visible after touch interaction ends.
+    html = html.replace("regCarousel.scrollLeft+=dt*.032", "regCarousel.scrollLeft+=dt*.050")
 
     return HTMLResponse(content=html)
 
