@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Lylo. — AI for solicitors</title>
+<meta name="description" content="Secure AI tools for solicitors. Read case files, fill ET1 forms, build Schedules of Loss and answer calls.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0A1220; --bg-soft:#0D1729; --bg-deep:#070c15;
+    --text:#F5F7FA; --muted:#C7CCD7; --line:rgba(255,255,255,.09);
+    --panel:rgba(255,255,255,.035); --accent:#54a0ff; --green:#57d5a5;
+    --radius:20px; --space:22px; --container:1360px;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif;
+    --noise:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO0WQ8AAW0B8w1i6b0AAAAASUVORK5CYII=");
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{min-height:100%}
+  body{
+    margin:0;font-family:var(--font);color:var(--text);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    background:var(--bg);position:relative;overflow-x:hidden;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
+    background:
+      radial-gradient(1200px 700px at 70% -10%,rgba(84,160,255,.08),transparent 70%),
+      radial-gradient(900px 600px at -10% 30%,rgba(25,195,125,.07),transparent 70%),
+      linear-gradient(to bottom,#0A1220 0%,#0A1220 28%,#080D18 62%,#070b13 100%);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+    background-image:var(--noise);opacity:.05;mix-blend-mode:soft-light;
+  }
+
+  header.site-header{
+    position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;
+    background:linear-gradient(180deg,var(--bg-soft) 0%,#0B1526 100%);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 1px 0 rgba(255,255,255,.06);
+  }
+  .header-inner{
+    width:100%;max-width:var(--container);padding:0 16px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .logo-small{
+    font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;
+    letter-spacing:-.02em;color:var(--text);text-decoration:none;
+  }
+  .hamburger{
+    width:40px;height:36px;position:relative;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;border:none;background:none;padding:0;
+  }
+  .hamburger:focus-visible{outline:2px solid rgba(84,160,255,.45);border-radius:8px}
+  .hamburger .line{
+    position:absolute;width:22px;height:2px;background:var(--text);border-radius:2px;
+    transition:transform .25s ease,opacity .2s ease;
+  }
+  .hamburger .line.top{transform:translateY(-6px)}
+  .hamburger .line.middle{transform:translateY(0)}
+  .hamburger .line.bottom{transform:translateY(6px)}
+  .hamburger[aria-expanded="true"] .line.top{transform:rotate(45deg)}
+  .hamburger[aria-expanded="true"] .line.middle{opacity:0}
+  .hamburger[aria-expanded="true"] .line.bottom{transform:rotate(-45deg)}
+
+  .nav-panel{
+    position:fixed;inset:0;z-index:999;background:rgba(10,18,32,.98);
+    backdrop-filter:blur(18px);display:none;
+  }
+  .nav-panel.open{display:block}
+  .panel-inner{
+    max-width:var(--container);margin:0 auto;height:100%;padding:88px 20px 24px;
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .nav-panel a{
+    color:var(--text);text-decoration:none;font-weight:600;font-size:22px;
+    padding:18px 2px;border-bottom:1px solid rgba(255,255,255,.08);
+  }
+
+  /* HERO: same structure as your current first screen, but now a still image */
+  .hero{min-height:100svh;display:flex;align-items:center}
+  .wrap{
+    width:100%;max-width:var(--container);margin:auto;
+    padding:calc(64px + 60px) var(--space) clamp(28px,4vh,60px);
+    display:grid;justify-items:center;gap:0;
+  }
+  @media(min-width:980px){
+    .wrap{
+      grid-template-columns:1fr 1.35fr;align-items:center;
+      grid-template-areas:"logo visual" "tagline visual" "bullets visual" "cta visual" "note visual";
+    }
+  }
+  .logo{
+    grid-area:logo;font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:88px;letter-spacing:-.03em;line-height:1;text-align:center;margin:0 0 12px;
+  }
+  .tagline{
+    grid-area:tagline;font-size:28px;line-height:1.4;letter-spacing:-.01em;
+    font-weight:400;text-align:center;margin:0 0 30px;
+  }
+  .bullets{
+    grid-area:bullets;list-style:none;padding:0;display:grid;gap:12px;
+    justify-content:center;max-width:640px;text-align:center;margin:0 0 20px;
+  }
+  .bullet{font-size:17px;line-height:1.55;max-width:440px;margin:0 auto}
+  .visual{
+    grid-area:visual;display:flex;align-items:center;justify-content:center;
+    width:100%;margin:8px 0 20px;
+  }
+  .hero-frame{
+    position:relative;width:100%;max-width:900px;background:#000;
+    border-radius:calc(var(--radius) - 4px);overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+  }
+  .hero-frame img{
+    width:100%;height:auto;max-height:62vh;display:block;object-fit:cover;
+  }
+  .hero-frame::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.03);
+  }
+
+  .cta{
+    grid-area:cta;display:inline-block;padding:12px 20px;font-weight:600;font-size:16px;
+    color:var(--text);border:1px solid transparent;border-radius:var(--radius);
+    background:
+      linear-gradient(180deg,#111722 0%,#0C1423 100%) padding-box,
+      conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;
+    background-size:200% 200%;text-decoration:none;cursor:pointer;
+    outline:2px solid rgba(84,160,255,.18);outline-offset:2px;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 6px 20px rgba(0,0,0,.45);
+    margin:0 auto 10px;transition:transform .25s,box-shadow .25s,background-position 1.2s;
+  }
+  .cta:hover{
+    transform:translateY(-1px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 10px 28px rgba(0,0,0,.5);
+    background-position:100% 0;
+  }
+  .note{grid-area:note;color:var(--muted);font-size:13px;margin:4px 0 0;text-align:center}
+
+  /* DEMOS */
+  .demos{
+    position:relative;border-top:1px solid var(--line);
+    padding:110px 22px 60px;
+  }
+  .demos::before{
+    content:"";position:absolute;top:0;left:50%;width:min(900px,90vw);height:360px;
+    transform:translateX(-50%);
+    background:radial-gradient(circle,rgba(84,160,255,.10),transparent 68%);
+    pointer-events:none;
+  }
+  .section-head{
+    position:relative;max-width:760px;margin:0 auto 82px;text-align:center;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;
+    border:1px solid rgba(84,160,255,.22);background:rgba(84,160,255,.06);
+    color:#bad8ff;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .section-head h2,.privacy-copy h2,.final-cta h2{
+    margin:20px 0 14px;font-family:'Cormorant Garamond',serif;font-weight:600;
+    font-size:clamp(46px,6vw,72px);line-height:.98;letter-spacing:-.035em;
+  }
+  .section-head p,.privacy-copy>p,.final-cta p{
+    margin:0 auto;color:var(--muted);font-size:18px;line-height:1.65;max-width:610px;
+  }
+
+  .demo-stack{max-width:1180px;margin:0 auto;display:grid;gap:118px}
+  .demo{display:grid;justify-items:center;text-align:center}
+  .demo-copy{max-width:720px;margin:0 auto 30px}
+  .demo-copy h3{
+    margin:0 0 12px;font-size:clamp(31px,4vw,48px);line-height:1.08;
+    letter-spacing:-.035em;font-weight:650;
+  }
+  .demo-copy p{
+    margin:0 auto;color:var(--muted);font-size:17px;line-height:1.6;max-width:590px;
+  }
+  .mini-badge{
+    display:inline-flex;align-items:center;justify-content:center;margin:0 0 13px;
+    padding:6px 10px;border-radius:999px;background:rgba(87,213,165,.08);
+    border:1px solid rgba(87,213,165,.18);color:#9ce8c8;font-size:12px;font-weight:700;
+    letter-spacing:.07em;text-transform:uppercase;
+  }
+
+  .demo-media{
+    width:100%;max-width:1120px;aspect-ratio:16/9;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;background:#070b12;
+    border:1px solid rgba(255,255,255,.10);border-radius:22px;
+    box-shadow:0 30px 80px rgba(0,0,0,.42);
+  }
+  .demo-media::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:3;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);
+    border-radius:inherit;
+  }
+  .demo-video{
+    display:none;width:100%;height:100%;object-fit:contain;background:#030507;position:relative;z-index:2;
+  }
+  .demo-video.is-ready{display:block}
+  .fallback{
+    position:absolute;inset:0;z-index:1;padding:40px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:
+      radial-gradient(500px 260px at 50% 42%,rgba(84,160,255,.11),transparent 72%),
+      linear-gradient(150deg,#0c1524,#080d16);
+  }
+  .fallback.hidden{display:none}
+  .mock-window{
+    width:min(780px,90%);height:min(390px,72%);border-radius:15px;overflow:hidden;
+    background:#0d1725;border:1px solid rgba(255,255,255,.11);
+    box-shadow:0 22px 50px rgba(0,0,0,.38);
+  }
+  .mock-bar{
+    height:38px;display:flex;align-items:center;gap:6px;padding:0 14px;
+    border-bottom:1px solid rgba(255,255,255,.08);background:#101b2c;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.27)}
+  .mock-body{height:calc(100% - 38px);padding:24px;display:grid;gap:12px;align-content:start}
+  .mock-line{height:12px;border-radius:999px;background:rgba(255,255,255,.07)}
+  .mock-line.bright{background:rgba(84,160,255,.22)}
+  .mock-line.green{background:rgba(87,213,165,.18)}
+  .w95{width:95%}.w82{width:82%}.w70{width:70%}.w58{width:58%}.w46{width:46%}
+  .fallback-label{margin-top:20px;color:#e9f2ff;font-size:14px;font-weight:650}
+  .fallback-note{margin-top:7px;color:#8f9aab;font-size:12px}
+
+  .loss-result{
+    width:min(760px,90%);display:grid;grid-template-columns:1fr 1fr;gap:14px;
+  }
+  .loss-card{
+    padding:24px;border-radius:16px;text-align:left;background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.09);
+  }
+  .loss-card small{display:block;color:#8f9aab;font-size:12px;margin-bottom:8px}
+  .loss-card strong{display:block;font-size:clamp(25px,4vw,42px);letter-spacing:-.03em}
+  .loss-card.total{
+    grid-column:1/-1;background:linear-gradient(135deg,rgba(84,160,255,.12),rgba(87,213,165,.07));
+    border-color:rgba(84,160,255,.24);
+  }
+
+  .phone-card{
+    width:min(490px,90%);padding:36px 28px;border-radius:28px;
+    border:1px solid rgba(255,255,255,.11);background:rgba(9,16,28,.90);
+    box-shadow:0 24px 60px rgba(0,0,0,.42);
+  }
+  .phone-orb{
+    width:76px;height:76px;margin:0 auto 22px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#9ed0ff,#54a0ff 38%,#285fa5 72%,#17304f);
+    box-shadow:0 0 0 10px rgba(84,160,255,.06),0 0 60px rgba(84,160,255,.25);
+  }
+  .phone-card h4{margin:0 0 8px;font-size:24px}
+  .phone-card p{margin:0;color:var(--muted);line-height:1.55;font-size:15px}
+  .fake-number{
+    display:inline-block;margin-top:22px;padding:10px 14px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.04);
+    color:#eaf3ff;font-weight:700;letter-spacing:.02em;
+  }
+  .fake-number-note{display:block;margin-top:9px;color:#8290a4;font-size:11px}
+
+  /* PRIVATE / ON PREMISE */
+  .privacy{max-width:1180px;margin:140px auto 60px;padding:0 22px}
+  .privacy-card{
+    position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.10);
+    border-radius:30px;padding:clamp(34px,6vw,72px);
+    background:
+      radial-gradient(600px 360px at 100% 0%,rgba(87,213,165,.10),transparent 70%),
+      radial-gradient(560px 300px at 0% 100%,rgba(84,160,255,.10),transparent 70%),
+      rgba(255,255,255,.025);
+    box-shadow:0 28px 80px rgba(0,0,0,.28);
+  }
+  .privacy-copy{max-width:800px;margin:0 auto;text-align:center}
+  .privacy-points{
+    max-width:880px;margin:42px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;
+  }
+  .privacy-point{
+    padding:24px 18px;text-align:center;border:1px solid rgba(255,255,255,.08);
+    background:rgba(6,11,19,.30);border-radius:18px;
+  }
+  .privacy-icon{
+    width:38px;height:38px;margin:0 auto 14px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(84,160,255,.09);border:1px solid rgba(84,160,255,.16);font-size:18px;
+  }
+  .privacy-point strong{display:block;font-size:16px;margin-bottom:7px}
+  .privacy-point span{display:block;color:var(--muted);font-size:13px;line-height:1.5}
+  .cloud-note{
+    max-width:720px;margin:24px auto 0;text-align:center;color:#8f9aab;font-size:12px;line-height:1.6;
+  }
+
+  .final-cta{max-width:900px;margin:0 auto;padding:120px 22px 130px;text-align:center}
+  .final-cta .cta{margin-top:30px}
+
+  footer{
+    text-align:center;padding:22px 16px;border-top:1px solid rgba(255,255,255,.06);
+    color:var(--muted);font-size:14px;
+  }
+
+  @media(max-width:979px){
+    :root{--radius:16px;--space:18px}
+    header.site-header{height:56px}
+    .hero{min-height:auto}
+    .wrap{
+      grid-template-columns:1fr;
+      grid-template-areas:"logo" "tagline" "visual" "bullets" "cta" "note";
+      padding:calc(56px + 16px) var(--space) 52px;gap:8px;
+    }
+    .logo{font-size:58px;margin-bottom:6px}
+    .tagline{font-size:22px;margin-bottom:16px}
+    .bullets{gap:10px;margin-bottom:14px}
+    .bullet{font-size:16px;line-height:1.5}
+    .hero-frame{border-radius:14px;box-shadow:0 12px 28px rgba(0,0,0,.45)}
+    .note{font-size:12px}
+
+    .demos{padding:82px 16px 30px}
+    .section-head{margin-bottom:60px}
+    .section-head p,.privacy-copy>p,.final-cta p{font-size:16px}
+    .demo-stack{gap:84px}
+    .demo-copy{margin-bottom:22px;padding:0 6px}
+    .demo-copy p{font-size:15px}
+    .demo-media{border-radius:16px;aspect-ratio:16/10}
+    .fallback{padding:18px}
+    .mock-window{height:72%}
+    .mock-body{padding:16px}
+    .loss-card{padding:16px}
+    .loss-card strong{font-size:24px}
+
+    .privacy{margin-top:100px;padding:0 16px}
+    .privacy-card{border-radius:22px}
+    .privacy-points{grid-template-columns:1fr}
+    .final-cta{padding:92px 20px 100px}
+    footer{font-size:13px}
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="header-inner">
+    <a href="/" class="logo-small">Lylo.</a>
+    <button class="hamburger" id="hamburger" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
+      <span class="line top"></span><span class="line middle"></span><span class="line bottom"></span>
+    </button>
+  </div>
+</header>
+
+<nav class="nav-panel" id="mobileMenu" aria-hidden="true">
+  <div class="panel-inner">
+    <a href="#demos">See Lylo work</a>
+    <a href="#privacy">Private AI</a>
+    <a href="/research">Join the waitlist</a>
+  </div>
+</nav>
+
+<main>
+  <section class="hero" aria-label="Lylo introduction">
+    <div class="wrap">
+      <h1 class="logo">Lylo.</h1>
+      <p class="tagline">Offline, secure AI for solicitors.</p>
+
+      <aside class="visual">
+        <div class="hero-frame">
+          <img src="/static/poc.jpg" alt="Lylo case assistant demo screen">
+        </div>
+      </aside>
+
+      <ul class="bullets">
+        <li class="bullet">Retrieval based chat system, featuring specialist modules to support drafting Statements of Fact, ET1s, Schedules of Loss and Simple Procedure claim forms.</li>
+      </ul>
+
+      <a href="/research" class="cta" id="joinCta">Join the waitlist</a>
+      <div class="note">In development stages. Register interest.</div>
+    </div>
+  </section>
+
+  <section class="demos" id="demos">
+    <div class="section-head">
+      <span class="eyebrow">See Lylo work</span>
+      <h2>Less admin. More time.</h2>
+      <p>See the tools in action. Each one is made to take a slow job and make it simple.</p>
+    </div>
+
+    <div class="demo-stack">
+
+      <article class="demo">
+        <div class="demo-copy">
+          <span class="mini-badge">Case files</span>
+          <h3>Ask your files. Get the key facts.</h3>
+          <p>Add case files. Ask a question. Lylo finds the answer and shows where it came from.</p>
+        </div>
+        <div class="demo-media">
+          <div class="fallback" data-fallback="poc">
+            <div class="mock-window">
+              <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <div class="mock-body">
+                <div class="mock-line bright w70"></div>
+                <div class="mock-line w95"></div>
+                <div class="mock-line w82"></div>
+                <div class="mock-line green w58"></div>
+                <div class="mock-line w95"></div>
+                <div class="mock-line w46"></div>
+              </div>
+            </div>
+            <div class="fallback-label">Lylo case assistant</div>
+          </div>
+          <video class="demo-video" controls playsinline preload="metadata" poster="/static/poc.jpg" aria-label="Lylo case assistant demo">
+            <source src="/static/poc.mp4" type="video/mp4">
+            <source src="/static/poc.webm" type="video/webm">
+          </video>
+        </div>
+      </article>
+
+      <article class="demo">
+        <div class="demo-copy">
+          <span class="mini-badge">ET1</span>
+          <h3>Fill ET1 forms faster.</h3>
+          <p>Lylo reads the case, finds the facts and puts them in the right boxes. You check it before it is used.</p>
+        </div>
+        <div class="demo-media">
+          <div class="fallback">
+            <div class="mock-window">
+              <div class="mock-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+              <div class="mock-body">
+                <div class="mock-line bright w46"></div>
+                <div class="mock-line w95"></div>
+                <div class="mock-line green w82"></div>
+                <div class="mock-line w70"></div>
+                <div class="mock-line green w95"></div>
+                <div class="mock-line w58"></div>
+              </div>
+            </div>
+            <div class="fallback-label">ET1 form filling</div>
+            <div class="fallback-note">Add <strong>static/et1.mp4</strong> to show your full demo here.</div>
+          </div>
+          <video class="demo-video" controls playsinline preload="metadata" poster="/static/et1.jpg" aria-label="Lylo ET1 form filling demo">
+            <source src="/static/et1.mp4" type="video/mp4">
+          </video>
+        </div>
+      </article>
+
+      <article class="demo">
+        <div class="demo-copy">
+          <span class="mini-badge">Schedule of Loss</span>
+          <h3>Turn the numbers into a clear claim.</h3>
+          <p>Lylo pulls the pay, dates and sums together. It builds the Schedule of Loss and shows the numbers.</p>
+        </div>
+        <div class="demo-media">
+          <div class="fallback">
+            <div class="loss-result">
+              <div class="loss-card">
+                <small>Past loss</small>
+                <strong>£8,420</strong>
+              </div>
+              <div class="loss-card">
+                <small>Future loss</small>
+                <strong>£4,060</strong>
+              </div>
+              <div class="loss-card total">
+                <small>Schedule of Loss total</small>
+                <strong>£12,480</strong>
+              </div>
+            </div>
+            <div class="fallback-label">A clear Schedule of Loss, built from the case</div>
+            <div class="fallback-note">Add <strong>static/schedule-of-loss.mp4</strong> to show your full demo here.</div>
+          </div>
+          <video class="demo-video" controls playsinline preload="metadata" poster="/static/schedule-of-loss.jpg" aria-label="Lylo Schedule of Loss demo">
+            <source src="/static/schedule-of-loss.mp4" type="video/mp4">
+          </video>
+        </div>
+      </article>
+
+      <article class="demo">
+        <div class="demo-copy">
+          <span class="mini-badge">AI phone</span>
+          <h3>Your office can answer after hours.</h3>
+          <p>Lylo can answer calls, ask simple questions and take a message when your team is busy or the office is shut.</p>
+        </div>
+        <div class="demo-media">
+          <div class="fallback">
+            <div class="phone-card">
+              <div class="phone-orb" aria-hidden="true"></div>
+              <h4>Call Lylo</h4>
+              <p>Hear how the AI receptionist can greet a caller and take the first details.</p>
+              <span class="fake-number">0141 496 0123</span>
+              <small class="fake-number-note">Example number only — reserved for fictional use.</small>
+            </div>
+            <div class="fallback-note">Add <strong>static/ai-receptionist.mp4</strong> to show your phone demo here.</div>
+          </div>
+          <video class="demo-video" controls playsinline preload="metadata" poster="/static/ai-receptionist.jpg" aria-label="Lylo AI receptionist demo">
+            <source src="/static/ai-receptionist.mp4" type="video/mp4">
+          </video>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="privacy" id="privacy">
+    <div class="privacy-card">
+      <div class="privacy-copy">
+        <span class="eyebrow">Private AI</span>
+        <h2>Keep legal files in your office.</h2>
+        <p>Lylo can be built to run on a PC in your office. Case files can stay on your own network.</p>
+      </div>
+
+      <div class="privacy-points">
+        <div class="privacy-point">
+          <div class="privacy-icon">⌂</div>
+          <strong>Runs on site</strong>
+          <span>The legal AI can run on a computer in your office.</span>
+        </div>
+        <div class="privacy-point">
+          <div class="privacy-icon">▣</div>
+          <strong>Files stay close</strong>
+          <span>Your case files can stay inside your own network.</span>
+        </div>
+        <div class="privacy-point">
+          <div class="privacy-icon">✓</div>
+          <strong>You stay in control</strong>
+          <span>You choose what tools can use the cloud.</span>
+        </div>
+      </div>
+
+      <p class="cloud-note">The AI phone service is separate and can use cloud phone and voice tools. The on-site option is for the private legal AI and case-file work.</p>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <span class="eyebrow">Built for law firms</span>
+    <h2>Want to try Lylo?</h2>
+    <p>Join the waitlist and tell us which tool would save your team the most time.</p>
+    <a href="/research" class="cta">Join the waitlist</a>
+  </section>
+</main>
+
+<footer>
+  &copy; <script>document.write(new Date().getFullYear())</script> Lylo. All rights reserved.
+</footer>
+
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  function setMenu(open){
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    mobileMenu.classList.toggle('open', open);
+    mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    setMenu(hamburger.getAttribute('aria-expanded') !== 'true');
+  });
+
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => setMenu(false));
+  });
+
+  /* Keep a polished fallback visible until each demo file actually exists. */
+  document.querySelectorAll('.demo-media').forEach(media => {
+    const video = media.querySelector('.demo-video');
+    const fallback = media.querySelector('.fallback');
+    if (!video) return;
+
+    const showVideo = () => {
+      video.classList.add('is-ready');
+      if (fallback) fallback.classList.add('hidden');
+    };
+
+    if (video.readyState >= 1) showVideo();
+    video.addEventListener('loadedmetadata', showVideo, {once:true});
+  });
+
+  const joinCta = document.getElementById('joinCta');
+  const isMobile = window.matchMedia('(max-width: 979px)');
+  const DELAY_MS = 450;
+
+  if (joinCta){
+    joinCta.addEventListener('click', (e) => {
+      if (!isMobile.matches) return;
+      e.preventDefault();
+      const href = joinCta.getAttribute('href') || '/';
+      setTimeout(() => { window.location.href = href; }, DELAY_MS);
+    }, {passive:false});
+  }
+</script>
+
+</body>
+</html>
