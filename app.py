@@ -69,6 +69,113 @@ def preview():
         '<div class="demo-media"><video autoplay muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
     )
 
+    # Keep the desktop alternating layout, but make every demo use the same order on mobile:
+    # visual first, then copy. Also make the trust carousel and privacy cards lighter on phones.
+    mobile_overrides = """
+    <style id="lylo-mobile-overrides">
+      @media (max-width: 979px) {
+        .demo-grid,
+        .demo-section.alt .demo-grid,
+        .demo-section.alt.phone-section .demo-grid {
+          grid-template-columns: 1fr !important;
+          gap: 30px !important;
+        }
+
+        .demo-section .demo-media,
+        .demo-section.alt .demo-media {
+          order: 1 !important;
+        }
+
+        .demo-section .demo-copy,
+        .demo-section.alt .demo-copy {
+          order: 2 !important;
+        }
+
+        .phone-section .audio-stage {
+          order: 1 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          height: 430px !important;
+        }
+
+        .phone-section .demo-copy {
+          order: 2 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        .reg-cards {
+          width: calc(100vw - 32px) !important;
+          max-width: none !important;
+          gap: 12px !important;
+          padding: 6px 2px 8px !important;
+        }
+
+        .reg-card {
+          flex: 0 0 min(74vw, 245px) !important;
+          min-height: 142px !important;
+          padding: 18px 16px !important;
+          border-radius: 15px !important;
+        }
+
+        .reg-card strong {
+          font-size: 14px !important;
+          margin-bottom: 6px !important;
+        }
+
+        .reg-card span {
+          font-size: 12px !important;
+          line-height: 1.4 !important;
+          max-width: 205px !important;
+        }
+
+        .reg-card em {
+          font-size: 11px !important;
+          line-height: 1.4 !important;
+          margin-top: 8px !important;
+          padding-top: 8px !important;
+          max-width: 210px !important;
+        }
+
+        .privacy-visual {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 8px !important;
+          width: min(100%, 430px) !important;
+          max-width: 430px !important;
+          margin: 30px auto 0 !important;
+        }
+
+        .privacy-node {
+          width: 100% !important;
+          min-height: 0 !important;
+          padding: 14px 16px !important;
+          border-radius: 14px !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+
+        .privacy-node strong {
+          font-size: 14px !important;
+          margin-bottom: 4px !important;
+        }
+
+        .privacy-node span {
+          font-size: 12px !important;
+          line-height: 1.4 !important;
+          max-width: 320px !important;
+        }
+      }
+    </style>
+    """
+    html = html.replace("</head>", mobile_overrides + "</head>")
+
+    # The original carousel drift is deliberately subtle. Speed it up so the movement is
+    # clearly visible on phones while remaining calm/premium.
+    html = html.replace("regCarousel.scrollLeft+=dt*.032", "regCarousel.scrollLeft+=dt*.058")
+
     return HTMLResponse(content=html)
 
 @app.get("/research", response_class=FileResponse)
