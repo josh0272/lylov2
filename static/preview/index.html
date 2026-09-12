@@ -4,15 +4,14 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Lylo. — AI for solicitors</title>
-<meta name="description" content="Secure AI tools for solicitors. Read case files, fill ET1 forms, build Schedules of Loss and answer calls.">
+<meta name="description" content="Secure AI tools for solicitors. Read case files, fill ET1 forms, calculate Schedules of Loss and answer calls.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#08101d;
-  --bg-soft:#0d1729;
   --text:#f5f7fa;
   --muted:#aeb8c8;
-  --line:rgba(255,255,255,.085);
+  --line:rgba(255,255,255,.075);
   --blue:#63a8ff;
   --green:#6ad9b0;
   --container:1380px;
@@ -21,226 +20,127 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:var(--bg)}
 body{margin:0;color:var(--text);font-family:var(--font);background:var(--bg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(1100px 700px at 72% -10%,rgba(84,160,255,.09),transparent 70%),radial-gradient(850px 650px at -5% 35%,rgba(67,210,159,.055),transparent 72%),linear-gradient(180deg,#0a1220 0%,#08101d 48%,#070c15 100%)}
-
-.site-header{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;justify-content:center;background:rgba(9,18,32,.86);border-bottom:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px)}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(1100px 700px at 72% -10%,rgba(84,160,255,.085),transparent 70%),radial-gradient(850px 650px at -5% 35%,rgba(67,210,159,.04),transparent 72%),linear-gradient(180deg,#0a1220 0%,#08101d 48%,#070c15 100%)}
+.site-header{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;display:flex;align-items:center;justify-content:center;background:rgba(9,18,32,.84);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(18px)}
 .header-inner{width:100%;max-width:var(--container);padding:0 18px;display:flex;align-items:center;justify-content:space-between}
 .logo-small{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:27px;color:var(--text);text-decoration:none}
-.hamburger{width:40px;height:36px;position:relative;border:0;background:transparent;cursor:pointer;padding:0}
-.hamburger .line{position:absolute;left:9px;width:22px;height:2px;background:#fff;border-radius:3px;transition:.25s ease}
-.hamburger .top{top:11px}.hamburger .middle{top:17px}.hamburger .bottom{top:23px}
-.hamburger[aria-expanded="true"] .top{top:17px;transform:rotate(45deg)}
-.hamburger[aria-expanded="true"] .middle{opacity:0}
-.hamburger[aria-expanded="true"] .bottom{top:17px;transform:rotate(-45deg)}
-.nav-panel{position:fixed;inset:0;z-index:999;display:none;background:rgba(8,16,29,.985);backdrop-filter:blur(20px)}
-.nav-panel.open{display:block}
-.panel-inner{max-width:var(--container);height:100%;margin:auto;padding:92px 22px;display:flex;flex-direction:column}
-.panel-inner a{padding:18px 2px;color:#fff;text-decoration:none;font-size:24px;font-weight:650;border-bottom:1px solid var(--line)}
+.hamburger{width:40px;height:36px;position:relative;border:0;background:transparent;cursor:pointer;padding:0}.hamburger .line{position:absolute;left:9px;width:22px;height:2px;background:#fff;border-radius:3px;transition:.25s ease}.hamburger .top{top:11px}.hamburger .middle{top:17px}.hamburger .bottom{top:23px}.hamburger[aria-expanded="true"] .top{top:17px;transform:rotate(45deg)}.hamburger[aria-expanded="true"] .middle{opacity:0}.hamburger[aria-expanded="true"] .bottom{top:17px;transform:rotate(-45deg)}
+.nav-panel{position:fixed;inset:0;z-index:999;display:none;background:rgba(8,16,29,.985);backdrop-filter:blur(20px)}.nav-panel.open{display:block}.panel-inner{max-width:var(--container);height:100%;margin:auto;padding:92px 22px;display:flex;flex-direction:column}.panel-inner a{padding:18px 2px;color:#fff;text-decoration:none;font-size:24px;font-weight:650;border-bottom:1px solid var(--line)}
 
 /* FIRST SCREEN */
-.hero{min-height:100svh;display:flex;align-items:center}
-.wrap{width:100%;max-width:var(--container);margin:auto;padding:124px 22px 54px;display:grid;justify-items:center;gap:0}
-@media(min-width:980px){.wrap{grid-template-columns:1fr 1.35fr;align-items:center;grid-template-areas:"logo visual" "tagline visual" "bullets visual" "cta visual" "note visual"}}
-.logo{grid-area:logo;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:88px;letter-spacing:-.03em;line-height:1;text-align:center;margin:0 0 12px}
-.tagline{grid-area:tagline;font-size:28px;line-height:1.4;letter-spacing:-.01em;font-weight:400;text-align:center;margin:0 0 30px}
-.bullets{grid-area:bullets;list-style:none;padding:0;display:grid;justify-content:center;max-width:640px;text-align:center;margin:0 0 20px}
-.bullet{font-size:17px;line-height:1.55;max-width:440px;margin:auto}
-.visual{grid-area:visual;width:100%;display:flex;justify-content:center;margin:8px 0 20px}
-.hero-frame{position:relative;width:100%;max-width:900px;overflow:hidden;border-radius:20px;background:#020408;border:1px solid rgba(255,255,255,.10);box-shadow:0 24px 70px rgba(0,0,0,.48)}
-.hero-frame img{display:block;width:100%;height:auto;max-height:62vh;object-fit:cover}
-.cta{grid-area:cta;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;color:#fff;text-decoration:none;font-weight:650;font-size:16px;border-radius:18px;border:1px solid transparent;background:linear-gradient(180deg,#111722,#0c1423) padding-box,conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;box-shadow:0 10px 26px rgba(0,0,0,.32);margin:0 auto 10px;transition:.2s ease}
-.cta:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.42)}
-.note{grid-area:note;color:var(--muted);font-size:13px;text-align:center;margin-top:4px}
+.hero{min-height:100svh;display:flex;align-items:center}.wrap{width:100%;max-width:var(--container);margin:auto;padding:124px 22px 54px;display:grid;justify-items:center;gap:0}@media(min-width:980px){.wrap{grid-template-columns:1fr 1.35fr;align-items:center;grid-template-areas:"logo visual" "tagline visual" "bullets visual" "cta visual" "note visual"}}
+.logo{grid-area:logo;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:88px;letter-spacing:-.03em;line-height:1;text-align:center;margin:0 0 12px}.tagline{grid-area:tagline;font-size:28px;line-height:1.4;letter-spacing:-.01em;font-weight:400;text-align:center;margin:0 0 30px}.bullets{grid-area:bullets;list-style:none;padding:0;display:grid;justify-content:center;max-width:640px;text-align:center;margin:0 0 20px}.bullet{font-size:17px;line-height:1.55;max-width:440px;margin:auto}.visual{grid-area:visual;width:100%;display:flex;justify-content:center;margin:8px 0 20px}.hero-frame{position:relative;width:100%;max-width:900px;overflow:hidden;border-radius:20px;background:#020408;border:1px solid rgba(255,255,255,.09);box-shadow:0 24px 70px rgba(0,0,0,.45)}.hero-frame img{display:block;width:100%;height:auto;max-height:62vh;object-fit:cover}
+.cta{grid-area:cta;display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;color:#fff;text-decoration:none;font-weight:650;font-size:16px;border-radius:18px;border:1px solid transparent;background:linear-gradient(180deg,#111722,#0c1423) padding-box,conic-gradient(from 0deg,#ff6b6b,#feca57,#1dd1a1,#54a0ff,#5f27cd,#ff6b6b) border-box;box-shadow:0 10px 26px rgba(0,0,0,.32);margin:0 auto 10px;transition:.2s ease}.cta:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.42)}.note{grid-area:note;color:var(--muted);font-size:13px;text-align:center;margin-top:4px}
 
 /* INTRO */
-.demo-intro{padding:110px 22px 60px;text-align:center;border-top:1px solid var(--line)}
-.eyebrow{color:#88bbff;font-size:13px;font-weight:750;text-transform:uppercase;letter-spacing:.13em}
-.demo-intro h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(50px,6.8vw,82px);line-height:.96;letter-spacing:-.04em;margin:18px auto 16px;max-width:850px}
-.demo-intro p{color:var(--muted);font-size:18px;line-height:1.6;max-width:600px;margin:auto}
+.demo-intro{padding:110px 22px 52px;text-align:center;border-top:1px solid var(--line)}.demo-intro h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(50px,6.8vw,82px);line-height:.96;letter-spacing:-.04em;margin:0 auto 16px;max-width:850px}.demo-intro p{color:var(--muted);font-size:18px;line-height:1.6;max-width:600px;margin:auto}
 
-/* REPEATED TWO-COLUMN DEMOS */
-.demo-section{position:relative;padding:115px 22px;border-top:1px solid rgba(255,255,255,.06);overflow:hidden}
-.demo-section::before{content:"";position:absolute;width:650px;height:650px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(84,160,255,.055),transparent 70%);right:-330px;top:30px}
-.demo-section.alt::before{right:auto;left:-330px;background:radial-gradient(circle,rgba(82,211,163,.045),transparent 70%)}
-.demo-grid{position:relative;max-width:1280px;margin:auto;display:grid;grid-template-columns:minmax(0,1.38fr) minmax(320px,.82fr);gap:64px;align-items:center}
-.demo-section.alt .demo-grid{grid-template-columns:minmax(320px,.82fr) minmax(0,1.38fr)}
-.demo-section.alt .demo-copy{order:1}.demo-section.alt .demo-media{order:2}
-.demo-copy{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100%}
-.demo-label{color:#8fbdff;font-size:12px;font-weight:750;text-transform:uppercase;letter-spacing:.14em;margin-bottom:16px}
-.demo-copy h3{font-size:clamp(39px,4.4vw,64px);line-height:1.02;letter-spacing:-.045em;margin:0 0 18px;font-weight:680;max-width:500px}
-.demo-copy p{color:var(--muted);font-size:18px;line-height:1.58;max-width:470px;margin:0}
-.demo-points{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:24px}
-.demo-points span{padding:8px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:#95a3b7;font-size:12px}
-.demo-points strong{color:#edf4fd;font-weight:650}
-.demo-media{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:24px;background:#020408;border:1px solid rgba(255,255,255,.12);box-shadow:0 34px 90px rgba(0,0,0,.5)}
-.demo-media video{display:block;width:100%;height:100%;object-fit:contain;background:#020408}
-.blank-video{width:100%;height:100%;background:#020408}
+/* DEMOS */
+.demo-section{position:relative;padding:120px 22px;border-top:1px solid rgba(255,255,255,.055);overflow:hidden}.demo-section::before{content:"";position:absolute;width:650px;height:650px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(84,160,255,.045),transparent 72%);right:-330px;top:40px}.demo-section.alt::before{right:auto;left:-330px;background:radial-gradient(circle,rgba(82,211,163,.035),transparent 72%)}
+.demo-grid{position:relative;max-width:1280px;margin:auto;display:grid;grid-template-columns:minmax(0,1.42fr) minmax(320px,.78fr);gap:72px;align-items:center}.demo-section.alt .demo-grid{grid-template-columns:minmax(320px,.78fr) minmax(0,1.42fr)}.demo-section.alt .demo-copy{order:1}.demo-section.alt .demo-media{order:2}
+.demo-copy{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}.demo-copy h3{font-size:clamp(42px,4.7vw,66px);line-height:1.01;letter-spacing:-.045em;margin:0 0 22px;font-weight:680;max-width:520px}.demo-copy p{color:var(--muted);font-size:18px;line-height:1.62;max-width:490px;margin:0}.demo-media{width:100%;aspect-ratio:16/9;position:relative;overflow:hidden;border-radius:24px;background:#020408;border:1px solid rgba(255,255,255,.10);box-shadow:0 34px 90px rgba(0,0,0,.48)}.demo-media video{display:block;width:100%;height:100%;object-fit:contain;background:#020408}.blank-video{width:100%;height:100%;background:#020408}
 
-/* PRIVACY */
-.privacy{padding:140px 22px;border-top:1px solid rgba(255,255,255,.06)}
-.privacy-inner{max-width:1180px;margin:auto;text-align:center}
-.privacy .eyebrow{color:#7fdcb7}
-.privacy h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(52px,6.5vw,82px);line-height:.96;letter-spacing:-.04em;margin:18px auto 18px;max-width:900px}
-.privacy-main{color:var(--muted);font-size:18px;line-height:1.6;max-width:650px;margin:0 auto}
-.privacy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:44px auto 0}
-.privacy-card{padding:28px 20px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
-.privacy-card strong{display:block;font-size:17px;margin-bottom:8px}.privacy-card span{display:block;color:#8f9daf;font-size:13px;line-height:1.5}
-.privacy-note{color:#718094;font-size:12px;line-height:1.6;max-width:720px;margin:24px auto 0}
+/* PHONE CTA */
+.call-box{margin-top:30px;text-align:center}.call-label{font-size:13px;color:#8f9db0;margin-bottom:10px}.call-number{display:inline-flex;align-items:center;gap:12px;padding:13px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.025);font-size:18px;font-weight:700;letter-spacing:.015em}.call-number::before{content:"☎";font-size:15px;color:#91c2ff}.call-note{display:block;color:#6f7d90;font-size:11px;margin-top:9px}
 
-.final{padding:120px 22px 135px;text-align:center;border-top:1px solid rgba(255,255,255,.06)}
-.final h3{font-family:'Cormorant Garamond',serif;font-size:clamp(50px,6vw,76px);line-height:.96;letter-spacing:-.04em;margin:0 0 18px}
-.final p{color:var(--muted);font-size:17px;line-height:1.6;max-width:550px;margin:0 auto 28px}
-.final .cta{margin:0}
-footer{text-align:center;padding:22px 16px;border-top:1px solid rgba(255,255,255,.06);color:#768397;font-size:13px}
+/* ON PREMISE */
+.privacy{padding:145px 22px;border-top:1px solid rgba(255,255,255,.055)}.privacy-inner{max-width:1120px;margin:auto;text-align:center}.privacy h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(52px,6.5vw,82px);line-height:.96;letter-spacing:-.04em;margin:0 auto 20px;max-width:900px}.privacy-main{color:var(--muted);font-size:18px;line-height:1.65;max-width:690px;margin:0 auto}.privacy-visual{max-width:880px;margin:52px auto 0;display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:20px;align-items:center}.privacy-node{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;border-radius:20px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.018)}.privacy-node strong{font-size:17px;margin-bottom:8px}.privacy-node span{color:#8997aa;font-size:13px;line-height:1.5;max-width:180px}.privacy-arrow{color:#526176;font-size:24px}.privacy-note{color:#718094;font-size:12px;line-height:1.6;max-width:720px;margin:26px auto 0}
 
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease}.reveal.in{opacity:1;transform:none}
+.final{padding:120px 22px 135px;text-align:center;border-top:1px solid rgba(255,255,255,.055)}.final h3{font-family:'Cormorant Garamond',serif;font-size:clamp(50px,6vw,76px);line-height:.96;letter-spacing:-.04em;margin:0 0 18px}.final p{color:var(--muted);font-size:17px;line-height:1.6;max-width:550px;margin:0 auto 28px}.final .cta{margin:0}footer{text-align:center;padding:22px 16px;border-top:1px solid rgba(255,255,255,.06);color:#768397;font-size:13px}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}.reveal.in{opacity:1;transform:none}
 
 @media(max-width:979px){
-  .site-header{height:56px}
-  .wrap{grid-template-columns:1fr;grid-template-areas:"logo" "tagline" "visual" "bullets" "cta" "note";padding:76px 18px 46px;gap:8px}
-  .hero{min-height:auto}
-  .logo{font-size:58px;margin-bottom:6px}.tagline{font-size:22px;margin-bottom:16px}.bullet{font-size:15px;line-height:1.5}.hero-frame{border-radius:15px}.note{font-size:12px}
-  .demo-intro{padding:90px 18px 50px}.demo-intro p{font-size:16px}
-  .demo-section{padding:78px 16px}.demo-grid,.demo-section.alt .demo-grid{grid-template-columns:1fr;gap:34px}.demo-section.alt .demo-copy,.demo-section.alt .demo-media{order:initial}
-  .demo-copy h3{max-width:620px}.demo-copy p{font-size:16px;max-width:560px}
-  .demo-media{border-radius:17px}
-  .privacy{padding:100px 16px}.privacy-main{font-size:16px}.privacy-grid{grid-template-columns:1fr;max-width:520px}
-  .final{padding:95px 18px 105px}.final p{font-size:16px}
+  .site-header{height:56px}.wrap{grid-template-columns:1fr;grid-template-areas:"logo" "tagline" "visual" "bullets" "cta" "note";padding:76px 18px 46px;gap:8px}.hero{min-height:auto}.logo{font-size:58px;margin-bottom:6px}.tagline{font-size:22px;margin-bottom:16px}.bullet{font-size:15px;line-height:1.5}.hero-frame{border-radius:15px}.note{font-size:12px}
+  .demo-intro{padding:90px 18px 44px}.demo-intro p{font-size:16px}.demo-section{padding:82px 16px}.demo-grid,.demo-section.alt .demo-grid{grid-template-columns:1fr;gap:36px}.demo-section.alt .demo-copy,.demo-section.alt .demo-media{order:initial}.demo-copy h3{max-width:620px}.demo-copy p{font-size:16px;max-width:560px}.demo-media{border-radius:17px}.call-box{margin-top:24px}
+  .privacy{padding:105px 16px}.privacy-main{font-size:16px}.privacy-visual{grid-template-columns:1fr;gap:10px;margin-top:42px;max-width:520px}.privacy-arrow{transform:rotate(90deg);font-size:20px}.privacy-node{min-height:130px}.final{padding:95px 18px 105px}.final p{font-size:16px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="header-inner">
-    <a class="logo-small" href="/">Lylo.</a>
-    <button class="hamburger" id="hamburger" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">
-      <span class="line top"></span><span class="line middle"></span><span class="line bottom"></span>
-    </button>
-  </div>
-</header>
-
-<nav class="nav-panel" id="mobileMenu" aria-hidden="true">
-  <div class="panel-inner">
-    <a href="#demos">See Lylo work</a>
-    <a href="#privacy">Private AI</a>
-    <a href="/research">Join the waitlist</a>
-  </div>
-</nav>
+<header class="site-header"><div class="header-inner"><a class="logo-small" href="/">Lylo.</a><button class="hamburger" id="hamburger" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span class="line top"></span><span class="line middle"></span><span class="line bottom"></span></button></div></header>
+<nav class="nav-panel" id="mobileMenu" aria-hidden="true"><div class="panel-inner"><a href="#demos">See Lylo work</a><a href="#privacy">Private AI</a><a href="/research">Join the waitlist</a></div></nav>
 
 <main>
-  <section class="hero">
-    <div class="wrap">
-      <h1 class="logo">Lylo.</h1>
-      <p class="tagline">Offline, secure AI for solicitors.</p>
-      <aside class="visual">
-        <div class="hero-frame"><img src="/static/poc.jpg" alt="Lylo legal AI screen"></div>
-      </aside>
-      <ul class="bullets"><li class="bullet">Retrieval based chat system, featuring specialist modules to support drafting Statements of Fact, ET1s, Schedules of Loss and Simple Procedure claim forms.</li></ul>
-      <a href="/research" class="cta">Join the waitlist</a>
-      <div class="note">In development stages. Register interest.</div>
-    </div>
-  </section>
+<section class="hero">
+  <div class="wrap">
+    <h1 class="logo">Lylo.</h1>
+    <p class="tagline">Offline, secure AI for solicitors.</p>
+    <aside class="visual"><div class="hero-frame"><img src="/static/poc.jpg" alt="Lylo legal AI screen"></div></aside>
+    <ul class="bullets"><li class="bullet">Retrieval based chat system, featuring specialist modules to support drafting Statements of Fact, ET1s, Schedules of Loss and Simple Procedure claim forms.</li></ul>
+    <a href="/research" class="cta">Join the waitlist</a>
+    <div class="note">In development stages. Register interest.</div>
+  </div>
+</section>
 
-  <section class="demo-intro" id="demos">
-    <div class="reveal">
-      <div class="eyebrow">See Lylo work</div>
-      <h2>Less admin. More time.</h2>
-      <p>Simple tools for the work that takes too long.</p>
-    </div>
-  </section>
+<section class="demo-intro" id="demos"><div class="reveal"><h2>See how Lylo works.</h2><p>Four simple demos. Each one shows a real task Lylo can help with.</p></div></section>
 
-  <section class="demo-section">
-    <div class="demo-grid reveal">
-      <div class="demo-media">
-        <video autoplay muted loop playsinline controls poster="/static/poc.jpg" aria-label="Lylo case file demo">
-          <source src="/static/poc.mp4" type="video/mp4">
-          <source src="/static/poc.webm" type="video/webm">
-        </video>
-      </div>
-      <div class="demo-copy">
-        <div class="demo-label">Case files</div>
-        <h3>Ask the case. Get the facts.</h3>
-        <p>Drop in the files. Ask a question. Lylo finds the answer and shows where it came from.</p>
-        <div class="demo-points"><span><strong>Read</strong> files</span><span><strong>Find</strong> facts</span><span><strong>Show</strong> sources</span></div>
-      </div>
+<section class="demo-section">
+  <div class="demo-grid reveal">
+    <div class="demo-media"><video autoplay muted loop playsinline controls poster="/static/poc.jpg" aria-label="Lylo case file demo"><source src="/static/poc.mp4" type="video/mp4"><source src="/static/poc.webm" type="video/webm"></video></div>
+    <div class="demo-copy">
+      <h3>Ask the case. Get the answer.</h3>
+      <p>Upload the case files and ask Lylo a question. It searches the documents, finds the key facts and brings the answer back in one place.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="demo-section alt">
-    <div class="demo-grid reveal">
-      <div class="demo-copy">
-        <div class="demo-label">ET1</div>
-        <h3>Fill ET1 forms faster.</h3>
-        <p>Lylo reads the case, finds the right details and puts them in the right boxes. You check it before it is used.</p>
-        <div class="demo-points"><span><strong>Read</strong> the case</span><span><strong>Fill</strong> the form</span><span><strong>You</strong> review</span></div>
-      </div>
-      <div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div>
+<section class="demo-section alt">
+  <div class="demo-grid reveal">
+    <div class="demo-copy">
+      <h3>Turn case files into a completed form.</h3>
+      <p>Lylo can pull names, dates and case details from uploaded documents, fill the ET1 and send the information to the relevant department. You review it before anything is sent.</p>
     </div>
-  </section>
+    <div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div>
+  </div>
+</section>
 
-  <section class="demo-section">
-    <div class="demo-grid reveal">
-      <div class="demo-media"><div class="blank-video" aria-label="Schedule of Loss demo video space"></div></div>
-      <div class="demo-copy">
-        <div class="demo-label">Schedule of Loss</div>
-        <h3>Make the numbers clear.</h3>
-        <p>Lylo pulls out pay, dates and loss figures, then builds a clear Schedule of Loss for you to check.</p>
-        <div class="demo-points"><span><strong>Find</strong> figures</span><span><strong>Work out</strong> loss</span><span><strong>Build</strong> schedule</span></div>
+<section class="demo-section">
+  <div class="demo-grid reveal">
+    <div class="demo-media"><div class="blank-video" aria-label="Schedule of Loss demo video space"></div></div>
+    <div class="demo-copy">
+      <h3>Know what the claim is worth.</h3>
+      <p>Lylo’s Schedule of Loss calculator uses the claimant’s pay, dates and losses to work out an accurate figure and build a clear schedule for review.</p>
+    </div>
+  </div>
+</section>
+
+<section class="demo-section alt">
+  <div class="demo-grid reveal">
+    <div class="demo-copy">
+      <h3>Let Lylo answer the phone.</h3>
+      <p>This is one example of what general AI can do. Lylo can answer after hours, speak to callers in a natural voice, collect the first details and pass the message to your team.</p>
+      <div class="call-box">
+        <div class="call-label">Try calling Lylo</div>
+        <div class="call-number">01632 960 123</div>
+        <span class="call-note">Demo number placeholder</span>
       </div>
     </div>
-  </section>
+    <div class="demo-media"><div class="blank-video" aria-label="AI receptionist demo video space"></div></div>
+  </div>
+</section>
 
-  <section class="demo-section alt">
-    <div class="demo-grid reveal">
-      <div class="demo-copy">
-        <div class="demo-label">AI receptionist</div>
-        <h3>Your office can answer after hours.</h3>
-        <p>Lylo can answer calls, ask simple questions and take a message when your team is busy or the office is shut.</p>
-        <div class="demo-points"><span><strong>Answer</strong> calls</span><span><strong>Take</strong> details</span><span><strong>Pass</strong> messages</span></div>
-      </div>
-      <div class="demo-media"><div class="blank-video" aria-label="AI receptionist demo video space"></div></div>
+<section class="privacy" id="privacy">
+  <div class="privacy-inner reveal">
+    <h3>Private AI, inside your firm.</h3>
+    <p class="privacy-main">For sensitive legal work, Lylo can be developed to run on a computer inside your office. Case files can stay on your own network instead of being sent to a cloud AI.</p>
+    <div class="privacy-visual">
+      <div class="privacy-node"><strong>Your office</strong><span>The system can sit inside the firm.</span></div>
+      <div class="privacy-arrow">→</div>
+      <div class="privacy-node"><strong>Local AI</strong><span>The legal AI can run on your own machine.</span></div>
+      <div class="privacy-arrow">→</div>
+      <div class="privacy-node"><strong>Your files</strong><span>Case files can stay on your network.</span></div>
     </div>
-  </section>
+    <p class="privacy-note">The AI receptionist can still use cloud phone and voice services. The on-premise option is for the private legal AI and case-file work.</p>
+  </div>
+</section>
 
-  <section class="privacy" id="privacy">
-    <div class="privacy-inner reveal">
-      <div class="eyebrow">Private AI</div>
-      <h3>Your case files can stay in your office.</h3>
-      <p class="privacy-main">Lylo can be built to run on a PC in your office. The private legal AI can work with files on your own network.</p>
-      <div class="privacy-grid">
-        <div class="privacy-card"><strong>Runs on site</strong><span>The legal AI can run on a computer in your office.</span></div>
-        <div class="privacy-card"><strong>Files stay close</strong><span>Case files can stay inside your own network.</span></div>
-        <div class="privacy-card"><strong>You stay in control</strong><span>You choose which tools can use the cloud.</span></div>
-      </div>
-      <p class="privacy-note">The AI phone service is separate and can use cloud phone and voice tools. The on-site option is for the private legal AI and case-file work.</p>
-    </div>
-  </section>
-
-  <section class="final">
-    <div class="reveal">
-      <h3>Want to try Lylo?</h3>
-      <p>Join the waitlist and tell us which task takes your team too much time.</p>
-      <a href="/research" class="cta">Join the waitlist</a>
-    </div>
-  </section>
+<section class="final"><div class="reveal"><h3>Want to try Lylo?</h3><p>Join the waitlist and tell us which task takes your team too much time.</p><a href="/research" class="cta">Join the waitlist</a></div></section>
 </main>
-
 <footer>&copy; <script>document.write(new Date().getFullYear())</script> Lylo. All rights reserved.</footer>
-
 <script>
-const hamburger=document.getElementById('hamburger');
-const mobileMenu=document.getElementById('mobileMenu');
-function setMenu(open){hamburger.setAttribute('aria-expanded',open?'true':'false');mobileMenu.classList.toggle('open',open);mobileMenu.setAttribute('aria-hidden',open?'false':'true');document.body.style.overflow=open?'hidden':''}
-hamburger.addEventListener('click',()=>setMenu(hamburger.getAttribute('aria-expanded')!=='true'));
-mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
-
-const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(reduced){document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'))}
-else{
-  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in');observer.unobserve(entry.target)}})},{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-}
+const hamburger=document.getElementById('hamburger');const mobileMenu=document.getElementById('mobileMenu');function setMenu(open){hamburger.setAttribute('aria-expanded',open?'true':'false');mobileMenu.classList.toggle('open',open);mobileMenu.setAttribute('aria-hidden',open?'false':'true');document.body.style.overflow=open?'hidden':''}hamburger.addEventListener('click',()=>setMenu(hamburger.getAttribute('aria-expanded')!=='true'));mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduced){document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'))}else{const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in');observer.unobserve(entry.target)}})},{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el))}
 </script>
 </body>
 </html>
