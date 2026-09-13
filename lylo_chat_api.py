@@ -21,6 +21,44 @@ class LyloChatRequest(BaseModel):
     previousChatId: str | None = None
 
 
+def _extract_vapi_error(raw_body: str, status_code: int) -> str:
+    fallback = f"Vapi returned HTTP {status_code}."
+    if not raw_body:
+        return fallback
+
+    try:
+        detail = json.loads(raw_body)
+    except Exception:
+        text = raw_body.strip()
+        return f"Vapi returned HTTP {status_code}: {text[:500]}" if text else fallback
+
+    if isinstance(detail, str):
+        return f"Vapi returned HTTP {status_code}: {detail}"
+
+    if not isinstance(detail, dict):
+        return f"Vapi returned HTTP {status_code}: {str(detail)[:500]}"
+
+    candidates = [
+        detail.get("message"),
+        detail.get("error"),
+        detail.get("detail"),
+        detail.get("statusCode"),
+    ]
+
+    for candidate in candidates:
+        if isinstance(candidate, str) and candidate.strip():
+            return f"Vapi returned HTTP {status_code}: {candidate.strip()}"
+        if isinstance(candidate, dict):
+            nested = candidate.get("message") or candidate.get("detail") or candidate.get("error")
+            if isinstance(nested, str) and nested.strip():
+                return f"Vapi returned HTTP {status_code}: {nested.strip()}"
+            return f"Vapi returned HTTP {status_code}: {json.dumps(candidate)[:500]}"
+        if isinstance(candidate, list) and candidate:
+            return f"Vapi returned HTTP {status_code}: {json.dumps(candidate)[:500]}"
+
+    return f"Vapi returned HTTP {status_code}: {json.dumps(detail)[:500]}"
+
+
 @router.post("/api/lylo-chat")
 def lylo_chat(payload: LyloChatRequest):
     message = payload.message.strip()
@@ -67,13 +105,13 @@ def lylo_chat(payload: LyloChatRequest):
             data = json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as exc:
         try:
-            detail = json.loads(exc.read().decode("utf-8"))
-            message = detail.get("message") or detail.get("error") or f"Vapi returned HTTP {exc.code}."
-            if isinstance(message, dict):
-                message = message.get("message") or str(message)
+            raw_body = exc.read().decode("utf-8", errors="replace")
         except Exception:
-            message = f"Vapi returned HTTP {exc.code}."
-        return JSONResponse({"ok": False, "error": str(message)}, status_code=502)
+            raw_body = ""
+        return JSONResponse(
+            {"ok": False, "error": _extract_vapi_error(raw_body, exc.code)},
+            status_code=502,
+        )
     except Exception:
         return JSONResponse(
             {"ok": False, "error": "Could not connect to Lylo right now. Please try again."},
