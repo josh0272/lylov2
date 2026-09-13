@@ -177,6 +177,10 @@
   };
 
   const init = () => {
+    document.querySelectorAll('.privacy-node').forEach((node) => {
+      node.style.setProperty('animation', 'none', 'important');
+    });
+
     const videos = Array.from(document.querySelectorAll('.demo-media video'));
 
     if (isMobile()) {
