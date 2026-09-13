@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from faster_whisper import WhisperModel
+from lylo_chat_api import router as lylo_chat_router
 import uvicorn
 
 ffmpeg_bin = os.path.join(os.path.dirname(__file__), "ffmpeg", "bin")
@@ -35,6 +36,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(lylo_chat_router)
 
 model = WhisperModel(MODEL_SIZE, compute_type=COMPUTE_TYPE)
 
