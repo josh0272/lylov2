@@ -5,12 +5,12 @@
     #lylo-chat-launcher{position:fixed;right:22px;bottom:22px;z-index:1400;display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:#050505;color:#f5f5f5;font:500 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;box-shadow:0 18px 50px rgba(0,0,0,.48);cursor:pointer;transition:border-color .2s ease,background .2s ease,transform .2s ease}
     #lylo-chat-launcher:hover{border-color:rgba(255,255,255,.25);background:#0a0a0a;transform:translateY(-1px)}
 
-    #lylo-chat-panel{position:fixed;inset:0;z-index:2000;width:100vw;height:100dvh;display:none;grid-template-rows:72px minmax(0,1fr);overflow:hidden;background:#0b0c0d;color:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    #lylo-chat-panel{position:fixed;right:24px;bottom:24px;z-index:2000;width:min(760px,calc(100vw - 48px));height:min(760px,calc(100dvh - 48px));display:none;grid-template-rows:72px minmax(0,1fr);overflow:hidden;background:#0b0c0d;color:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;border:1px solid rgba(255,255,255,.10);border-radius:24px;box-shadow:0 34px 110px rgba(0,0,0,.62)}
     #lylo-chat-panel.open{display:grid}
 
-    .lylo-chat-head{display:flex;align-items:center;justify-content:space-between;padding:0 34px;border-bottom:1px solid rgba(255,255,255,.09);background:#0b0c0d}
+    .lylo-chat-head{display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(255,255,255,.09);background:#0b0c0d}
     .lylo-chat-brand{display:flex;align-items:baseline;gap:7px;min-width:0}
-    .lylo-chat-title{font-size:20px;font-weight:650;line-height:1;color:#f6f6f6;letter-spacing:-.025em}
+    .lylo-chat-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1;color:#f6f6f6;letter-spacing:-.03em}
     .lylo-chat-beta{font-size:11px;font-weight:600;letter-spacing:.02em;color:#6f7276}
     .lylo-chat-actions{display:flex;align-items:center;gap:8px}
     .lylo-chat-icon-btn{border:0;background:transparent;color:#777;font-size:12px;padding:8px 10px;border-radius:9px;cursor:pointer;transition:color .2s ease,background .2s ease}
@@ -21,14 +21,14 @@
     .lylo-chat-main{position:relative;min-height:0;overflow:hidden;background:#0b0c0d}
     .lylo-chat-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:8vh 24px 170px;text-align:center;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
     .lylo-chat-empty.hidden{opacity:0;visibility:hidden}
-    .lylo-chat-empty h2{margin:0;max-width:880px;font-size:clamp(38px,5.1vw,72px);line-height:1.04;font-weight:650;letter-spacing:-.045em;color:#f2f2f2}
-    .lylo-chat-empty p{margin:28px 0 0;max-width:680px;font-size:clamp(15px,1.3vw,20px);line-height:1.55;color:#8b8d91}
+    .lylo-chat-empty h2{margin:0;max-width:680px;font-size:clamp(38px,4.2vw,58px);line-height:1.04;font-weight:650;letter-spacing:-.045em;color:#f2f2f2}
+    .lylo-chat-empty p{margin:24px 0 0;max-width:580px;font-size:clamp(15px,1.2vw,18px);line-height:1.55;color:#8b8d91}
 
-    .lylo-chat-messages{height:100%;overflow-y:auto;padding:34px max(24px,calc((100vw - 860px)/2)) 190px;background:#0b0c0d;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.10) transparent}
+    .lylo-chat-messages{height:100%;overflow-y:auto;padding:30px 34px 190px;background:#0b0c0d;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.10) transparent}
     .lylo-chat-row{display:flex;width:100%;margin:0 0 18px}
     .lylo-chat-row.user{justify-content:flex-end}
     .lylo-chat-row.assistant{justify-content:flex-start}
-    .lylo-chat-bubble{max-width:min(78%,700px);padding:12px 15px;border-radius:18px;font-size:15px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+    .lylo-chat-bubble{max-width:min(82%,650px);padding:12px 15px;border-radius:18px;font-size:15px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
     .lylo-chat-row.assistant .lylo-chat-bubble{color:#e9e9e9;background:transparent;border:0;padding-left:2px;border-radius:0}
     .lylo-chat-row.user .lylo-chat-bubble{color:#f4f4f4;background:#1a1c1e;border:1px solid rgba(255,255,255,.08);border-bottom-right-radius:6px}
 
@@ -37,7 +37,7 @@
     .lylo-chat-typing i:nth-child(2){animation-delay:.14s}.lylo-chat-typing i:nth-child(3){animation-delay:.28s}
     @keyframes lyloTyping{0%,70%,100%{transform:translateY(0);opacity:.35}35%{transform:translateY(-3px);opacity:.9}}
 
-    .lylo-chat-compose{position:absolute;left:50%;bottom:0;z-index:4;width:min(860px,calc(100% - 38px));transform:translateX(-50%);padding:0 0 22px;background:linear-gradient(to bottom,rgba(11,12,13,0),#0b0c0d 25%,#0b0c0d 100%)}
+    .lylo-chat-compose{position:absolute;left:50%;bottom:0;z-index:4;width:calc(100% - 54px);transform:translateX(-50%);padding:0 0 20px;background:linear-gradient(to bottom,rgba(11,12,13,0),#0b0c0d 25%,#0b0c0d 100%)}
     .lylo-chat-form{display:flex;align-items:flex-end;gap:10px;min-height:72px;padding:14px 14px 14px 20px;border:1px solid rgba(255,255,255,.12);border-radius:24px;background:#181a1c;box-shadow:0 16px 50px rgba(0,0,0,.24);transition:border-color .2s ease,background .2s ease}
     .lylo-chat-form:focus-within{border-color:rgba(255,255,255,.20);background:#1b1d1f}
     #lylo-chat-input{flex:1;min-width:0;max-height:150px;resize:none;border:0;outline:0;background:transparent;color:#f5f5f5;font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:10px 0}
@@ -51,9 +51,9 @@
 
     @media(max-width:700px){
       #lylo-chat-launcher{right:14px;bottom:14px;min-height:46px;padding:0 16px}
-      #lylo-chat-panel{grid-template-rows:62px minmax(0,1fr)}
+      #lylo-chat-panel{inset:0;width:100vw;height:100dvh;border:0;border-radius:0;box-shadow:none;grid-template-rows:62px minmax(0,1fr)}
       .lylo-chat-head{padding:0 14px}
-      .lylo-chat-title{font-size:18px}
+      .lylo-chat-title{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;letter-spacing:-.03em}
       .lylo-chat-beta{font-size:10px}
       .lylo-chat-icon-btn{font-size:11px;padding:7px 8px}
       #lylo-chat-close{width:36px;height:36px;font-size:20px}
@@ -64,7 +64,7 @@
       .lylo-chat-bubble{max-width:88%;font-size:14px}
       .lylo-chat-compose{width:calc(100% - 20px);padding-bottom:calc(10px + env(safe-area-inset-bottom))}
       .lylo-chat-form{min-height:60px;border-radius:20px;padding:9px 9px 9px 15px}
-      #lylo-chat-input{font-size:15px;padding:9px 0}
+      #lylo-chat-input{font-size:16px!important;line-height:1.5;padding:9px 0;-webkit-text-size-adjust:100%}
       #lylo-chat-send{width:38px;height:38px}
       .lylo-chat-note{font-size:9px;padding-top:8px}
     }
@@ -225,7 +225,7 @@
       addBubble('assistant', 'I’m having trouble connecting right now. Please try again in a moment.');
     } finally {
       setBusy(false);
-      input.focus();
+      if (window.innerWidth > 700) input.focus();
     }
   };
 
@@ -236,7 +236,7 @@
     launcher.setAttribute('aria-expanded', 'true');
     launcher.style.display = 'none';
     updateEmptyState();
-    window.setTimeout(() => input.focus(), 30);
+    if (window.innerWidth > 700) window.setTimeout(() => input.focus(), 30);
   };
 
   const closePanel = () => {
@@ -254,7 +254,7 @@
     sessionStorage.removeItem('lyloPreviousChatId');
     messagesEl.innerHTML = '';
     updateEmptyState();
-    input.focus();
+    if (window.innerWidth > 700) input.focus();
   });
 
   document.addEventListener('keydown', (event) => {
