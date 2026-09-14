@@ -290,6 +290,15 @@ def preview():
     return HTMLResponse(content=html)
 
 
+@app.get("/call-lylo-out-of-hours-demo-record-for-jess", response_class=FileResponse)
+def jess_out_of_hours_demo():
+    response = FileResponse("static/jess-out-of-hours.html")
+    response.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive, nosnippet"
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["Referrer-Policy"] = "no-referrer"
+    return response
+
+
 @app.get("/research", response_class=FileResponse)
 def research():
     return FileResponse("static/research.html")
