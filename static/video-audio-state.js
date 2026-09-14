@@ -3,6 +3,19 @@
     const videos = Array.from(document.querySelectorAll('.demo-media video'));
     if (!videos.length) return;
 
+    const ICON_SOUND_ON = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>
+        <path d="M16 8.5c1.2 1 1.8 2.2 1.8 3.5s-.6 2.5-1.8 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M18.8 6.2c1.8 1.6 2.7 3.5 2.7 5.8s-.9 4.2-2.7 5.8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>`;
+
+    const ICON_MUTED = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/>
+        <path d="M16 9l5 5M21 9l-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>`;
+
     if (!document.getElementById('lylo-video-sound-styles')) {
       const style = document.createElement('style');
       style.id = 'lylo-video-sound-styles';
@@ -11,29 +24,53 @@
           display: none;
         }
         @media (max-width: 979px) {
+          .demo-media .lylo-sound-toggle,
+          .demo-media .lylo-cc-toggle {
+            top: 9px !important;
+            height: 32px !important;
+            min-width: 32px !important;
+            border-radius: 8px !important;
+            border: 1px solid rgba(255,255,255,.10) !important;
+            background: rgba(4,9,16,.30) !important;
+            color: rgba(245,247,250,.88) !important;
+            box-shadow: none !important;
+            opacity: .76;
+            -webkit-backdrop-filter: blur(6px) !important;
+            backdrop-filter: blur(6px) !important;
+            transition: opacity .18s ease, background .18s ease, border-color .18s ease !important;
+          }
           .demo-media .lylo-sound-toggle {
             position: absolute;
-            top: 9px;
-            left: 9px;
+            left: calc(50% - 39px);
+            right: auto;
             z-index: 9;
-            height: 30px;
-            padding: 0 11px;
+            width: 32px;
+            padding: 0;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,.18);
-            background: rgba(4,9,16,.72);
-            color: rgba(245,247,250,.92);
-            font: 650 11px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",sans-serif;
             cursor: pointer;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
           }
-          .demo-media .lylo-sound-toggle[aria-pressed="true"] {
-            background: rgba(245,247,250,.94);
-            color: #08101d;
-            border-color: rgba(255,255,255,.78);
+          .demo-media .lylo-sound-toggle svg {
+            width: 17px;
+            height: 17px;
+            display: block;
+          }
+          .demo-media .lylo-cc-toggle {
+            left: calc(50% + 5px) !important;
+            right: auto !important;
+            width: 36px !important;
+            padding: 0 !important;
+            transform: none !important;
+          }
+          .demo-media .lylo-sound-toggle:active,
+          .demo-media .lylo-cc-toggle:active,
+          .demo-media .lylo-sound-toggle[aria-pressed="true"],
+          .demo-media .lylo-cc-toggle[aria-pressed="true"] {
+            background: rgba(4,9,16,.48) !important;
+            color: rgba(255,255,255,.98) !important;
+            border-color: rgba(255,255,255,.18) !important;
+            opacity: .94;
           }
         }
       `;
@@ -49,9 +86,10 @@
       const button = video._lyloSoundButton;
       if (!button) return;
       const soundOn = !video.muted && video.volume > 0;
-      button.textContent = soundOn ? 'Sound off' : 'Sound on';
+      button.innerHTML = soundOn ? ICON_SOUND_ON : ICON_MUTED;
       button.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
-      button.setAttribute('aria-label', soundOn ? 'Turn sound off' : 'Turn sound on');
+      button.setAttribute('aria-label', soundOn ? 'Mute video' : 'Unmute video');
+      button.title = soundOn ? 'Mute' : 'Unmute';
     };
 
     const markSoundOn = (video) => {
@@ -104,8 +142,7 @@
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'lylo-sound-toggle';
-        button.textContent = 'Sound on';
-        button.setAttribute('aria-label', 'Turn sound on');
+        button.setAttribute('aria-label', 'Unmute video');
         button.setAttribute('aria-pressed', 'false');
         media.appendChild(button);
         video._lyloSoundButton = button;
@@ -160,8 +197,6 @@
         entries.forEach((entry) => {
           if (entry.target !== video) return;
 
-          // iPhone native fullscreen can report the inline element as off-screen,
-          // especially during a portrait/landscape rotation. Never reset audio there.
           if (isFullscreen(video)) {
             restoreChosenSound(video);
             return;
