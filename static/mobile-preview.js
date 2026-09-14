@@ -239,6 +239,21 @@
       video.pause();
     };
 
+    const resumeAfterFullscreen = (video) => {
+      video.dataset.lyloFullscreenExitResume = '1';
+      delete video.dataset.userControlled;
+
+      window.setTimeout(() => {
+        hideNativeControls(video);
+        delete video.dataset.userControlled;
+        safePlay(video);
+      }, 80);
+
+      window.setTimeout(() => {
+        delete video.dataset.lyloFullscreenExitResume;
+      }, 650);
+    };
+
     videos.forEach((video) => {
       video.autoplay = false;
       video.removeAttribute('autoplay');
@@ -257,9 +272,22 @@
         });
       }
 
+      video.addEventListener('webkitbeginfullscreen', () => {
+        video.dataset.lyloFullscreenExitResume = '1';
+        delete video.dataset.userControlled;
+      });
+
+      video.addEventListener('webkitendfullscreen', () => {
+        resumeAfterFullscreen(video);
+      });
+
       video.addEventListener('pause', () => {
         if (autoPausedVideos.has(video)) {
           autoPausedVideos.delete(video);
+          return;
+        }
+        if (video.dataset.lyloFullscreenExitResume === '1') {
+          delete video.dataset.userControlled;
           return;
         }
         if (!isVideoFullscreen(video)) {
@@ -269,6 +297,24 @@
 
       video.addEventListener('play', () => {
         delete video.dataset.userControlled;
+      });
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement || document.webkitFullscreenElement) return;
+      videos.forEach((video) => {
+        if (video.dataset.lyloFullscreenExitResume === '1') {
+          resumeAfterFullscreen(video);
+        }
+      });
+    });
+
+    document.addEventListener('webkitfullscreenchange', () => {
+      if (document.fullscreenElement || document.webkitFullscreenElement) return;
+      videos.forEach((video) => {
+        if (video.dataset.lyloFullscreenExitResume === '1') {
+          resumeAfterFullscreen(video);
+        }
       });
     });
 
