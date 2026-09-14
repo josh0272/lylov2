@@ -11,7 +11,6 @@
     .lylo-chat-head{display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid rgba(255,255,255,.09);background:#0b0c0d}
     .lylo-chat-brand{display:flex;align-items:baseline;gap:7px;min-width:0}
     .lylo-chat-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;line-height:1;color:#f6f6f6;letter-spacing:-.03em}
-    .lylo-chat-beta{font-size:11px;font-weight:600;letter-spacing:.02em;color:#6f7276}
     .lylo-chat-actions{display:flex;align-items:center;gap:8px}
     .lylo-chat-icon-btn{border:0;background:transparent;color:#777;font-size:12px;padding:8px 10px;border-radius:9px;cursor:pointer;transition:color .2s ease,background .2s ease}
     .lylo-chat-icon-btn:hover{background:rgba(255,255,255,.055);color:#ddd}
@@ -21,7 +20,7 @@
     .lylo-chat-main{position:relative;min-height:0;overflow:hidden;background:#0b0c0d}
     .lylo-chat-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:8vh 24px 170px;text-align:center;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
     .lylo-chat-empty.hidden{opacity:0;visibility:hidden}
-    .lylo-chat-empty h2{margin:0;max-width:680px;font-size:clamp(38px,4.2vw,58px);line-height:1.04;font-weight:650;letter-spacing:-.045em;color:#f2f2f2}
+    .lylo-chat-empty h2{margin:0;max-width:680px;font-family:'Cormorant Garamond',serif;font-size:clamp(38px,4.2vw,58px);line-height:1.04;font-weight:600;letter-spacing:-.03em;color:#f2f2f2}
     .lylo-chat-empty p{margin:24px 0 0;max-width:580px;font-size:clamp(15px,1.2vw,18px);line-height:1.55;color:#8b8d91}
 
     .lylo-chat-messages{height:100%;overflow-y:auto;padding:30px 34px 190px;background:#0b0c0d;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.10) transparent}
@@ -54,11 +53,10 @@
       #lylo-chat-panel{inset:0;width:100vw;height:100dvh;border:0;border-radius:0;box-shadow:none;grid-template-rows:62px minmax(0,1fr)}
       .lylo-chat-head{padding:0 14px}
       .lylo-chat-title{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;letter-spacing:-.03em}
-      .lylo-chat-beta{font-size:10px}
       .lylo-chat-icon-btn{font-size:11px;padding:7px 8px}
       #lylo-chat-close{width:36px;height:36px;font-size:20px}
       .lylo-chat-empty{padding:9vh 20px 155px}
-      .lylo-chat-empty h2{font-size:clamp(34px,11vw,52px)}
+      .lylo-chat-empty h2{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,11vw,52px);font-weight:600;letter-spacing:-.03em}
       .lylo-chat-empty p{margin-top:20px;font-size:15px;max-width:330px}
       .lylo-chat-messages{padding:24px 14px 168px}
       .lylo-chat-bubble{max-width:88%;font-size:14px}
@@ -87,7 +85,6 @@
     <div class="lylo-chat-head">
       <div class="lylo-chat-brand">
         <div class="lylo-chat-title">Lylo.</div>
-        <div class="lylo-chat-beta">beta</div>
       </div>
       <div class="lylo-chat-actions">
         <button type="button" class="lylo-chat-icon-btn" id="lylo-chat-new">New chat</button>
