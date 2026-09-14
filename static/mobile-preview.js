@@ -4,21 +4,16 @@
 
   const isVideoFullscreen = (video) => {
     const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
-    return fullscreenElement === video || video.webkitDisplayingFullscreen === true;
+    return fullscreenElement === video || video.webkitDisplayingFullscreen === true || video.dataset.lyloFullscreenActive === '1';
   };
 
   const unmuteFullscreenVideo = (video) => {
     video.dataset.lyloFullscreenAudio = '1';
+    video.dataset.lyloSoundChosen = '1';
+    video.dataset.lyloFullscreenActive = '1';
     video.muted = false;
     video.defaultMuted = false;
     video.volume = 1;
-  };
-
-  const remuteAfterFullscreen = (video) => {
-    if (video.dataset.lyloFullscreenAudio !== '1') return;
-    delete video.dataset.lyloFullscreenAudio;
-    video.muted = true;
-    video.defaultMuted = true;
   };
 
   const initFullscreenAudio = (videos) => {
@@ -28,8 +23,8 @@
       videos.forEach((video) => {
         if (fullscreenElement === video) {
           unmuteFullscreenVideo(video);
-        } else if (!fullscreenElement) {
-          remuteAfterFullscreen(video);
+        } else if (!fullscreenElement && video.dataset.lyloFullscreenActive === '1' && video.webkitDisplayingFullscreen !== true) {
+          delete video.dataset.lyloFullscreenActive;
         }
       });
     };
@@ -39,7 +34,9 @@
 
     videos.forEach((video) => {
       video.addEventListener('webkitbeginfullscreen', () => unmuteFullscreenVideo(video));
-      video.addEventListener('webkitendfullscreen', () => remuteAfterFullscreen(video));
+      video.addEventListener('webkitendfullscreen', () => {
+        delete video.dataset.lyloFullscreenActive;
+      });
     });
   };
 
@@ -156,7 +153,7 @@
   };
 
   const safePlay = (video) => {
-    if (!isVideoFullscreen(video)) {
+    if (!isVideoFullscreen(video) && video.dataset.lyloSoundChosen !== '1') {
       video.muted = true;
       video.defaultMuted = true;
     }
@@ -191,7 +188,7 @@
 
         if (entry.isIntersecting && entry.intersectionRatio >= 0.35 && !document.hidden) {
           safePlay(video);
-        } else if (!video.paused) {
+        } else if (!video.paused && !isVideoFullscreen(video)) {
           video.pause();
         }
       });
@@ -203,9 +200,12 @@
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
-        videos.forEach((video) => video.pause());
+        videos.forEach((video) => {
+          if (!isVideoFullscreen(video)) video.pause();
+        });
       } else {
         videos.forEach((video) => {
+          if (isVideoFullscreen(video)) return;
           const rect = video.getBoundingClientRect();
           const vh = window.innerHeight || document.documentElement.clientHeight;
           const visiblePx = Math.max(0, Math.min(rect.bottom, vh) - Math.max(rect.top, 0));
@@ -224,26 +224,24 @@
       video.defaultMuted = true;
       video.playsInline = true;
       video.setAttribute('playsinline', '');
-      video.controls = false;
+      video.controls = true;
       video.pause();
-
-      if (!video.dataset.mobileTapInit) {
-        video.dataset.mobileTapInit = '1';
-        const revealControls = () => {
-          video.controls = true;
-          video.dataset.userControlled = '1';
-          video.removeEventListener('touchstart', revealControls);
-          video.removeEventListener('click', revealControls);
-        };
-        video.addEventListener('touchstart', revealControls, { passive: true });
-        video.addEventListener('click', revealControls);
-      }
+      video.dataset.userControlled = '1';
     });
 
     let videoTicking = false;
 
     const updateActiveVideo = () => {
       videoTicking = false;
+
+      const fullscreenVideos = videos.filter((video) => isVideoFullscreen(video));
+      if (fullscreenVideos.length) {
+        fullscreenVideos.forEach((video) => {
+          if (video.paused) safePlay(video);
+        });
+        return;
+      }
+
       if (!isMobile() || document.hidden) {
         videos.forEach((video) => video.pause());
         return;
@@ -288,8 +286,18 @@
     };
 
     window.addEventListener('scroll', queueVideoUpdate, { passive: true });
-    window.addEventListener('resize', queueVideoUpdate, { passive: true });
-    document.addEventListener('visibilitychange', queueVideoUpdate);
+    window.addEventListener('resize', () => {
+      if (videos.some((video) => isVideoFullscreen(video))) return;
+      queueVideoUpdate();
+    }, { passive: true });
+    window.addEventListener('orientationchange', () => {
+      if (videos.some((video) => isVideoFullscreen(video))) return;
+      window.setTimeout(queueVideoUpdate, 150);
+    }, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+      if (videos.some((video) => isVideoFullscreen(video))) return;
+      queueVideoUpdate();
+    });
     queueVideoUpdate();
   };
 
