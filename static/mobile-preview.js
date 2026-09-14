@@ -219,8 +219,22 @@
   const initMobileVideos = (videos) => {
     const autoPausedVideos = new WeakSet();
 
+    const hideNativeControls = (video) => {
+      if (isVideoFullscreen(video)) return;
+      video.controls = false;
+      video.removeAttribute('controls');
+    };
+
+    const revealNativeControls = (video) => {
+      if (isVideoFullscreen(video)) return;
+      video.controls = true;
+      video.setAttribute('controls', '');
+    };
+
     const autoPause = (video) => {
-      if (video.paused || isVideoFullscreen(video)) return;
+      if (isVideoFullscreen(video)) return;
+      hideNativeControls(video);
+      if (video.paused) return;
       autoPausedVideos.add(video);
       video.pause();
     };
@@ -232,9 +246,16 @@
       video.defaultMuted = true;
       video.playsInline = true;
       video.setAttribute('playsinline', '');
-      video.controls = true;
+      hideNativeControls(video);
       video.pause();
       delete video.dataset.userControlled;
+
+      if (video.dataset.lyloTapControls !== '1') {
+        video.dataset.lyloTapControls = '1';
+        video.addEventListener('click', () => {
+          revealNativeControls(video);
+        });
+      }
 
       video.addEventListener('pause', () => {
         if (autoPausedVideos.has(video)) {
