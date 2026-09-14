@@ -284,7 +284,7 @@ def preview():
 
     html = html.replace(
         "</body>",
-        '<script src="/static/mobile-preview.js?v=6" defer></script><script src="/static/video-audio-state.js?v=1" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
+        '<script src="/static/mobile-preview.js?v=7" defer></script><script src="/static/video-audio-state.js?v=2" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
     )
 
     return HTMLResponse(content=html)
