@@ -10,6 +10,7 @@ from pydantic import BaseModel
 router = APIRouter()
 
 VAPI_API_KEY = os.environ.get("VAPI_API_KEY", "").strip()
+VAPI_PUBLIC_KEY = os.environ.get("VAPI_PUBLIC_KEY", "").strip()
 VAPI_ASSISTANT_ID = os.environ.get(
     "VAPI_ASSISTANT_ID",
     "f3b4952e-ce7f-4c19-b20e-661e27b42f0f",
@@ -57,6 +58,30 @@ def _extract_vapi_error(raw_body: str, status_code: int) -> str:
             return f"Vapi returned HTTP {status_code}: {json.dumps(candidate)[:500]}"
 
     return f"Vapi returned HTTP {status_code}: {json.dumps(detail)[:500]}"
+
+
+@router.get("/api/lylo-voice-config")
+def lylo_voice_config():
+    if not VAPI_PUBLIC_KEY:
+        return JSONResponse(
+            {
+                "ok": False,
+                "error": "Lylo voice calling is not connected yet. Add VAPI_PUBLIC_KEY to the server environment."
+            },
+            status_code=503,
+        )
+
+    if not VAPI_ASSISTANT_ID:
+        return JSONResponse(
+            {"ok": False, "error": "VAPI_ASSISTANT_ID is not configured."},
+            status_code=503,
+        )
+
+    return {
+        "ok": True,
+        "publicKey": VAPI_PUBLIC_KEY,
+        "assistantId": VAPI_ASSISTANT_ID,
+    }
 
 
 @router.post("/api/lylo-chat")
