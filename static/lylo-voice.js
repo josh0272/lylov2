@@ -8,6 +8,9 @@
     let assistantId = '';
     let state = 'idle';
     let sdkPromise = null;
+    let lastStartFailure = '';
+
+    const sleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
     const setState = (next, message) => {
       state = next;
@@ -28,36 +31,41 @@
       }
     };
 
-    const loadVapiBrowserSDK = () => {
-      if (window.vapiSDK && typeof window.vapiSDK.run === 'function') {
-        return Promise.resolve(window.vapiSDK);
+    const errorText = (value) => {
+      if (!value) return '';
+      if (typeof value === 'string') return value;
+      if (value instanceof Error) return value.message || String(value);
+      if (typeof value === 'object') {
+        if (typeof value.error === 'string') return value.error;
+        if (value.error && typeof value.error.message === 'string') return value.error.message;
+        if (typeof value.message === 'string') return value.message;
+        if (typeof value.reason === 'string') return value.reason;
+        try { return JSON.stringify(value); } catch (_) { return String(value); }
       }
+      return String(value);
+    };
 
+    const loadVapiClass = async () => {
       if (sdkPromise) return sdkPromise;
 
-      sdkPromise = new Promise((resolve, reject) => {
-        const existing = document.querySelector('script[data-lylo-vapi-sdk="1"]');
-        if (existing) {
-          existing.addEventListener('load', () => {
-            if (window.vapiSDK && typeof window.vapiSDK.run === 'function') resolve(window.vapiSDK);
-            else reject(new Error('Vapi browser SDK did not initialise.'));
-          }, { once: true });
-          existing.addEventListener('error', () => reject(new Error('Could not load the Vapi browser SDK.')), { once: true });
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js';
-        script.async = true;
-        script.defer = true;
-        script.dataset.lyloVapiSdk = '1';
-        script.onload = () => {
-          if (window.vapiSDK && typeof window.vapiSDK.run === 'function') resolve(window.vapiSDK);
-          else reject(new Error('Vapi browser SDK did not initialise.'));
-        };
-        script.onerror = () => reject(new Error('Could not load the Vapi browser SDK.'));
-        document.head.appendChild(script);
-      });
+      sdkPromise = import('https://esm.sh/@vapi-ai/web@2.7.0?bundle&target=es2022')
+        .then((module) => {
+          let Vapi = module.default;
+          if (Vapi && typeof Vapi !== 'function' && typeof Vapi.default === 'function') {
+            Vapi = Vapi.default;
+          }
+          if (typeof Vapi !== 'function' && typeof module.Vapi === 'function') {
+            Vapi = module.Vapi;
+          }
+          if (typeof Vapi !== 'function') {
+            throw new Error('Vapi Web SDK loaded, but its client class was not found.');
+          }
+          return Vapi;
+        })
+        .catch((error) => {
+          sdkPromise = null;
+          throw error;
+        });
 
       return sdkPromise;
     };
@@ -73,26 +81,11 @@
       }
 
       assistantId = config.assistantId;
-
-      const sdk = await loadVapiBrowserSDK();
-      vapi = sdk.run({
-        apiKey: config.publicKey,
-        assistant: assistantId,
-        config: {
-          position: 'bottom-right',
-          offset: '-9999px',
-          width: '1px',
-          height: '1px'
-        }
-      });
-
-      if (!vapi) {
-        throw new Error('Vapi could not initialise the Lylo call.');
-      }
-
-      document.getElementById('vapi-support-btn')?.remove();
+      const Vapi = await loadVapiClass();
+      vapi = new Vapi(config.publicKey);
 
       vapi.on('call-start', () => {
+        lastStartFailure = '';
         setState('active', 'Connected — speak to Lylo');
       });
 
@@ -102,10 +95,23 @@
         }
       });
 
+      vapi.on('call-start-progress', (event) => {
+        console.log('Lylo call start progress:', event);
+      });
+
+      vapi.on('call-start-failed', (event) => {
+        const detail = errorText(event && (event.error || event));
+        lastStartFailure = detail || 'The browser could not start the voice session.';
+        console.error('Lylo call start failed:', event);
+        setState('idle', `Call failed: ${lastStartFailure}`);
+      });
+
       vapi.on('error', (error) => {
+        const detail = errorText(error);
         console.error('Lylo voice call error:', error);
         if (state === 'connecting') {
-          setState('idle', 'Could not start the call · try again');
+          lastStartFailure = detail || lastStartFailure;
+          setState('idle', `Call failed: ${lastStartFailure || 'Could not start the voice session.'}`);
         }
       });
 
@@ -122,10 +128,12 @@
 
       try {
         await vapi.stop();
+        // Give mobile browsers a brief moment to release the previous audio/WebRTC session.
+        await sleep(350);
         setState('idle', 'Call ended · tap to speak again');
       } catch (error) {
         console.error('Could not stop Lylo voice call:', error);
-        setState('idle', 'Call ended · tap to speak again');
+        setState('idle', `Call ended · ${errorText(error) || 'tap to speak again'}`);
       }
     };
 
@@ -137,17 +145,20 @@
 
       if (state === 'connecting' || state === 'ending') return;
 
-      setState('connecting', 'Allow microphone access when your browser asks');
+      lastStartFailure = '';
+      setState('connecting', 'Connecting to Lylo…');
 
       try {
         const client = await ensureVapi();
-        await client.start(assistantId);
+        const call = await client.start(assistantId);
+
+        if (!call && state === 'connecting') {
+          setState('idle', `Call failed: ${lastStartFailure || 'Vapi did not create a new call.'}`);
+        }
       } catch (error) {
         console.error('Could not start Lylo voice call:', error);
-        const message = error && error.message
-          ? error.message
-          : 'Could not start the call · try again';
-        setState('idle', message);
+        const detail = errorText(error) || lastStartFailure || 'Could not start the voice session.';
+        setState('idle', `Call failed: ${detail}`);
       }
     });
 
