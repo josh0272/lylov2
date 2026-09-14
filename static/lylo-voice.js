@@ -8,13 +8,15 @@
     let assistantId = '';
     let state = 'idle';
     let sdkPromise = null;
+    let endFallbackTimer = null;
 
     const setState = (next, message) => {
       state = next;
       button.classList.toggle('is-active', next === 'active');
-      button.disabled = next === 'connecting';
+      button.disabled = next === 'connecting' || next === 'ending';
 
       if (next === 'connecting') button.textContent = 'Connecting…';
+      else if (next === 'ending') button.textContent = 'Ending…';
       else if (next === 'active') button.textContent = 'End call';
       else button.textContent = 'Call Lylo';
 
@@ -61,6 +63,20 @@
       return sdkPromise;
     };
 
+    const discardClient = (client) => {
+      if (!client) return;
+      try {
+        if (typeof client.removeAllListeners === 'function') client.removeAllListeners();
+      } catch (error) {
+        console.warn('Could not clear old Lylo call listeners:', error);
+      }
+      if (vapi === client) vapi = null;
+      if (window.vapiSDK && window.vapiSDK.vapi === client) {
+        window.vapiSDK.vapi = null;
+      }
+      document.getElementById('vapi-support-btn')?.remove();
+    };
+
     const ensureVapi = async () => {
       if (vapi) return vapi;
 
@@ -74,7 +90,7 @@
       assistantId = config.assistantId;
 
       const sdk = await loadVapiBrowserSDK();
-      vapi = sdk.run({
+      const client = sdk.run({
         apiKey: config.publicKey,
         assistant: assistantId,
         config: {
@@ -85,39 +101,75 @@
         }
       });
 
-      if (!vapi) {
+      if (!client) {
         throw new Error('Vapi could not initialise the Lylo call.');
       }
 
+      vapi = client;
       document.getElementById('vapi-support-btn')?.remove();
 
-      vapi.on('call-start', () => {
+      client.on('call-start', () => {
+        if (vapi !== client) return;
         setState('active', 'Connected — speak to Lylo');
       });
 
-      vapi.on('call-end', () => {
-        setState('idle', 'Call ended · tap to speak again');
+      client.on('call-end', () => {
+        if (endFallbackTimer) {
+          clearTimeout(endFallbackTimer);
+          endFallbackTimer = null;
+        }
+        if (vapi === client) {
+          discardClient(client);
+          setState('idle', 'Call ended · tap to speak again');
+        }
       });
 
-      vapi.on('error', (error) => {
+      client.on('error', (error) => {
         console.error('Lylo voice call error:', error);
-        setState('idle', 'Could not start the call · try again');
+        if (vapi === client && state !== 'active') {
+          discardClient(client);
+          setState('idle', 'Could not start the call · try again');
+        }
       });
 
-      return vapi;
+      return client;
+    };
+
+    const endCurrentCall = () => {
+      const client = vapi;
+      if (!client) {
+        setState('idle');
+        return;
+      }
+
+      setState('ending', 'Ending call…');
+
+      try {
+        client.stop();
+      } catch (error) {
+        console.error('Could not stop Lylo voice call:', error);
+        discardClient(client);
+        setState('idle', 'Call ended · tap to speak again');
+        return;
+      }
+
+      if (endFallbackTimer) clearTimeout(endFallbackTimer);
+      endFallbackTimer = setTimeout(() => {
+        if (vapi === client) {
+          discardClient(client);
+          setState('idle', 'Call ended · tap to speak again');
+        }
+        endFallbackTimer = null;
+      }, 3000);
     };
 
     button.addEventListener('click', async () => {
       if (state === 'active') {
-        try {
-          vapi?.stop();
-        } finally {
-          setState('idle', 'Call ended · tap to speak again');
-        }
+        endCurrentCall();
         return;
       }
 
-      if (state === 'connecting') return;
+      if (state === 'connecting' || state === 'ending') return;
 
       setState('connecting', 'Allow microphone access when your browser asks');
 
@@ -126,6 +178,8 @@
         await client.start(assistantId);
       } catch (error) {
         console.error('Could not start Lylo voice call:', error);
+        const failedClient = vapi;
+        discardClient(failedClient);
         const message = error && error.message
           ? error.message
           : 'Could not start the call · try again';
@@ -134,7 +188,9 @@
     });
 
     window.addEventListener('pagehide', () => {
-      if (state === 'active') vapi?.stop();
+      if (vapi && (state === 'active' || state === 'connecting')) {
+        try { vapi.stop(); } catch (_) {}
+      }
     });
 
     setState('idle');
