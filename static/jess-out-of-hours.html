@@ -5,38 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
 <meta name="referrer" content="no-referrer" />
-<title>Lylo — Out of Hours Demo</title>
+<title>Lylo Out of Hours Demo</title>
 <style>
-:root{--bg:#08101d;--panel:#0c1626;--text:#f5f7fa;--muted:#95a2b4;--line:rgba(255,255,255,.08);--blue:#7db7ff}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","Segoe UI",Arial,sans-serif}
-body{min-height:100svh;display:grid;place-items:center;padding:24px;background:radial-gradient(900px 500px at 50% -10%,rgba(84,160,255,.12),transparent 70%),linear-gradient(180deg,#0a1220,#07101c)}
-.shell{width:min(100%,540px);text-align:center}.brand{font-family:Georgia,"Times New Roman",serif;font-size:58px;letter-spacing:-.04em;margin-bottom:8px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#7f90a7;margin-bottom:26px}.card{border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.014));padding:38px 28px;box-shadow:0 30px 90px rgba(0,0,0,.34)}
-h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-weight:600}.sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:420px;margin:0 auto 30px}.call-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}.call{appearance:none;border:1px solid rgba(125,183,255,.42);background:linear-gradient(180deg,#173050,#10243d);color:#fff;min-width:190px;height:58px;padding:0 24px;border-radius:999px;font-size:16px;font-weight:650;cursor:pointer;box-shadow:0 14px 36px rgba(45,117,210,.20);transition:.2s ease}.call:hover{transform:translateY(-2px);border-color:rgba(125,183,255,.68)}.call:disabled{opacity:.65;cursor:wait;transform:none}.call.active{background:linear-gradient(180deg,#3b1d24,#28151a);border-color:rgba(255,145,155,.32)}.status{min-height:22px;color:#7f8da0;font-size:12px;line-height:1.45}.tips{margin-top:28px;padding-top:22px;border-top:1px solid var(--line);text-align:left}.tips p{margin:0 0 8px;color:#c7d0dc;font-size:13px}.tips ul{margin:0;padding-left:18px;color:#8391a4;font-size:12px;line-height:1.65}.secure{margin-top:18px;color:#647388;font-size:11px;line-height:1.5}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#63d4a6;margin-right:7px;vertical-align:1px}
-@media(max-width:520px){body{padding:16px}.card{padding:30px 20px}.brand{font-size:48px}h1{font-size:28px}}
+:root{--bg:#08101d;--text:#f5f7fa;--muted:#94a0b2;--line:rgba(255,255,255,.12)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","Segoe UI",Arial,sans-serif}
+body{min-height:100svh;padding:32px 20px}
+main{width:min(100%,560px);margin:0 auto;padding:42px 0 56px;text-align:center}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:52px;letter-spacing:-.04em;margin-bottom:34px}
+h1{font-size:30px;line-height:1.12;letter-spacing:-.025em;margin:0 0 12px;font-weight:600}
+.intro{max-width:440px;margin:0 auto 26px;color:var(--muted);font-size:15px;line-height:1.55}
+.call{appearance:none;border:1px solid var(--line);background:#101927;color:#fff;min-width:176px;height:54px;padding:0 22px;border-radius:14px;font-size:16px;font-weight:650;cursor:pointer}
+.call:disabled{opacity:.6;cursor:wait}
+.call.active{background:#24161a}
+.status{min-height:20px;margin-top:12px;color:#7f8b9b;font-size:12px;line-height:1.4}
+.help{margin-top:42px;text-align:left}
+.help h2{font-size:17px;margin:0 0 10px;font-weight:600}
+.help p{margin:0 0 8px;color:#c9d1dc;font-size:14px;line-height:1.55}
+.help .small{color:var(--muted);font-size:13px}
+.ideas{margin-top:32px;text-align:left}
+.ideas h2{font-size:17px;margin:0 0 12px;font-weight:600}
+.idea{padding:14px 0}
+.idea strong{display:block;font-size:14px;margin-bottom:5px}
+.idea p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.note{margin-top:30px;color:#677486;font-size:11px;line-height:1.5}
+@media(max-width:520px){body{padding:20px 18px}main{padding-top:26px}.brand{font-size:46px;margin-bottom:28px}h1{font-size:27px}}
 </style>
 </head>
 <body>
-<main class="shell">
+<main>
   <div class="brand">Lylo.</div>
-  <div class="eyebrow">Private recording page</div>
-  <section class="card">
-    <h1>Out-of-hours receptionist demo</h1>
-    <p class="sub">For Jess to record a sample call with Lylo. Press the button, allow microphone access, then speak as if you were calling a law firm after hours.</p>
-    <div class="call-wrap">
-      <button class="call" id="jess-call" type="button">Call Lylo</button>
-      <div class="status" id="jess-status">Ready to call</div>
-    </div>
-    <div class="tips">
-      <p>For the recording:</p>
-      <ul>
-        <li>Start with a simple reason for calling.</li>
-        <li>Let Lylo ask the first few questions.</li>
-        <li>Speak naturally and leave a short pause after each reply.</li>
-        <li>Press “End call” when you have enough for the demo.</li>
-      </ul>
-    </div>
-    <div class="secure"><span class="dot"></span>Unlisted page · not linked from the main Lylo site · search indexing disabled</div>
+
+  <h1>Out of hours call demo</h1>
+  <p class="intro">Press Call Lylo. Let Lylo ask the questions. Keep the call short.</p>
+
+  <button class="call" id="jess-call" type="button">Call Lylo</button>
+  <div class="status" id="jess-status">Ready to call</div>
+
+  <section class="help">
+    <h2>How to do the call</h2>
+    <p>Pick one call idea below.</p>
+    <p>Talk like a real caller.</p>
+    <p>Give short answers.</p>
+    <p>Let Lylo lead the call.</p>
+    <p class="small">Aim for 30 to 60 seconds. Try a few calls and use the best one.</p>
   </section>
+
+  <section class="ideas">
+    <h2>Call ideas</h2>
+
+    <div class="idea">
+      <strong>1. Fired from work</strong>
+      <p>I was fired today. I think it was unfair. I want to know what I can do.</p>
+    </div>
+
+    <div class="idea">
+      <strong>2. Not paid</strong>
+      <p>My work has not paid me. I want help getting the money I am owed.</p>
+    </div>
+
+    <div class="idea">
+      <strong>3. Work meeting tomorrow</strong>
+      <p>I got a letter from work. I have a meeting tomorrow and I am worried about it.</p>
+    </div>
+
+    <div class="idea">
+      <strong>4. Left my job</strong>
+      <p>I left my job because of how I was treated. I want to know if I can make a claim.</p>
+    </div>
+  </section>
+
+  <div class="note">This page is not linked from the main Lylo site. Search indexing is off.</div>
 </main>
 <script>
 (() => {
@@ -58,12 +97,12 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
     button.classList.toggle('active', next === 'active');
     button.disabled = next === 'connecting' || next === 'ending';
 
-    if (next === 'connecting') button.textContent = 'Connecting…';
-    else if (next === 'ending') button.textContent = 'Ending…';
+    if (next === 'connecting') button.textContent = 'Connecting';
+    else if (next === 'ending') button.textContent = 'Ending call';
     else if (next === 'active') button.textContent = 'End call';
     else button.textContent = 'Call Lylo';
 
-    status.textContent = message || (next === 'active' ? 'Connected — speak to Lylo' : 'Ready to call');
+    status.textContent = message || (next === 'active' ? 'Connected. Start talking.' : 'Ready to call');
   };
 
   const loadVapiClass = async () => {
@@ -111,7 +150,7 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
     } catch (_) {}
   };
 
-  const finishSession = (client, sessionId, message = 'Call ended · ready to record again') => {
+  const finishSession = (client, sessionId, message = 'Call ended. Ready to call again.') => {
     if (sessionId !== currentSessionId || client !== vapi) return;
 
     if (endFallbackTimer) {
@@ -134,7 +173,7 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
 
     client.on('call-start', () => {
       if (sessionId !== currentSessionId || client !== vapi) return;
-      setState('active', 'Connected — recording can begin');
+      setState('active', 'Connected. Start talking.');
     });
 
     client.on('call-end', () => {
@@ -144,14 +183,14 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
     client.on('call-start-failed', (event) => {
       if (sessionId !== currentSessionId || client !== vapi) return;
       console.error('Jess voice call start failed:', event);
-      finishSession(client, sessionId, 'Call failed — please try again');
+      finishSession(client, sessionId, 'Call failed. Try again.');
     });
 
     client.on('error', (err) => {
       if (sessionId !== currentSessionId || client !== vapi) return;
       console.error('Jess voice call error:', err);
       if (state === 'connecting') {
-        finishSession(client, sessionId, 'Call failed — please try again');
+        finishSession(client, sessionId, 'Call failed. Try again.');
       }
     });
 
@@ -167,10 +206,8 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
       return;
     }
 
-    setState('ending', 'Ending call and releasing microphone…');
+    setState('ending', 'Ending call');
 
-    // Do not allow a new call until this session has genuinely ended.
-    // If the SDK never emits call-end, use a guarded fallback after a short delay.
     if (endFallbackTimer) clearTimeout(endFallbackTimer);
     endFallbackTimer = window.setTimeout(() => {
       finishSession(client, sessionId);
@@ -190,7 +227,7 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
 
     const sessionId = ++sessionCounter;
     currentSessionId = sessionId;
-    setState('connecting', 'Connecting to Lylo…');
+    setState('connecting', 'Connecting to Lylo');
 
     try {
       const { client, assistantId } = await createFreshClient(sessionId);
@@ -203,7 +240,7 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
       }
 
       if (!call && state === 'connecting') {
-        finishSession(client, sessionId, 'Call failed — please try again');
+        finishSession(client, sessionId, 'Call failed. Try again.');
       }
     } catch (err) {
       console.error('Could not start Jess voice call:', err);
