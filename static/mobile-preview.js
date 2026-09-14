@@ -43,6 +43,37 @@
     });
   };
 
+  const initPocCaptions = (videos) => {
+    const pocVideo = videos.find((video) => {
+      return Array.from(video.querySelectorAll('source')).some((source) => {
+        const src = source.getAttribute('src') || '';
+        return src.includes('/static/poc.mp4');
+      });
+    });
+
+    if (!pocVideo || pocVideo.querySelector('track[data-lylo-poc-captions="1"]')) return;
+
+    const track = document.createElement('track');
+    track.kind = 'subtitles';
+    track.label = 'English';
+    track.srclang = 'en';
+    track.src = '/static/poc-en.vtt';
+    track.default = true;
+    track.dataset.lyloPocCaptions = '1';
+    pocVideo.appendChild(track);
+
+    const enableDefaultCaptions = () => {
+      const textTrack = Array.from(pocVideo.textTracks || []).find((item) => item.language === 'en');
+      if (textTrack && textTrack.mode === 'disabled') {
+        textTrack.mode = 'showing';
+      }
+    };
+
+    track.addEventListener('load', enableDefaultCaptions, { once: true });
+    pocVideo.addEventListener('loadedmetadata', enableDefaultCaptions, { once: true });
+    window.setTimeout(enableDefaultCaptions, 250);
+  };
+
   const safePlay = (video) => {
     if (!isVideoFullscreen(video)) {
       video.muted = true;
@@ -234,6 +265,7 @@
     });
 
     const videos = Array.from(document.querySelectorAll('.demo-media video'));
+    initPocCaptions(videos);
     initFullscreenAudio(videos);
 
     if (isMobile()) {
