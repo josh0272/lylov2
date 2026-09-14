@@ -7,6 +7,7 @@
     let vapi = null;
     let assistantId = '';
     let state = 'idle';
+    let sdkPromise = null;
 
     const setState = (next, message) => {
       state = next;
@@ -26,6 +27,40 @@
       }
     };
 
+    const loadVapiBrowserSDK = () => {
+      if (window.vapiSDK && typeof window.vapiSDK.run === 'function') {
+        return Promise.resolve(window.vapiSDK);
+      }
+
+      if (sdkPromise) return sdkPromise;
+
+      sdkPromise = new Promise((resolve, reject) => {
+        const existing = document.querySelector('script[data-lylo-vapi-sdk="1"]');
+        if (existing) {
+          existing.addEventListener('load', () => {
+            if (window.vapiSDK && typeof window.vapiSDK.run === 'function') resolve(window.vapiSDK);
+            else reject(new Error('Vapi browser SDK did not initialise.'));
+          }, { once: true });
+          existing.addEventListener('error', () => reject(new Error('Could not load the Vapi browser SDK.')), { once: true });
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js';
+        script.async = true;
+        script.defer = true;
+        script.dataset.lyloVapiSdk = '1';
+        script.onload = () => {
+          if (window.vapiSDK && typeof window.vapiSDK.run === 'function') resolve(window.vapiSDK);
+          else reject(new Error('Vapi browser SDK did not initialise.'));
+        };
+        script.onerror = () => reject(new Error('Could not load the Vapi browser SDK.'));
+        document.head.appendChild(script);
+      });
+
+      return sdkPromise;
+    };
+
     const ensureVapi = async () => {
       if (vapi) return vapi;
 
@@ -38,9 +73,23 @@
 
       assistantId = config.assistantId;
 
-      const sdkModule = await import('https://cdn.jsdelivr.net/npm/@vapi-ai/web@2.5.2/+esm');
-      const Vapi = sdkModule.default;
-      vapi = new Vapi(config.publicKey);
+      const sdk = await loadVapiBrowserSDK();
+      vapi = sdk.run({
+        apiKey: config.publicKey,
+        assistant: assistantId,
+        config: {
+          position: 'bottom-right',
+          offset: '-9999px',
+          width: '1px',
+          height: '1px'
+        }
+      });
+
+      if (!vapi) {
+        throw new Error('Vapi could not initialise the Lylo call.');
+      }
+
+      document.getElementById('vapi-support-btn')?.remove();
 
       vapi.on('call-start', () => {
         setState('active', 'Connected — speak to Lylo');
