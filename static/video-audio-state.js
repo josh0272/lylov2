@@ -16,6 +16,36 @@
           display: none !important;
         }
 
+        .demo-media .lylo-cc-toggle {
+          border: 1px solid rgba(255,255,255,.12) !important;
+          background: rgba(4,9,16,.30) !important;
+          color: rgba(255,255,255,.90) !important;
+          box-shadow: none !important;
+          opacity: .78 !important;
+          -webkit-backdrop-filter: blur(6px) !important;
+          backdrop-filter: blur(6px) !important;
+          transition: opacity .18s ease, background .18s ease, border-color .18s ease !important;
+        }
+
+        .demo-media .lylo-cc-toggle:hover {
+          transform: none !important;
+          opacity: .96 !important;
+          background: rgba(4,9,16,.42) !important;
+          border-color: rgba(255,255,255,.20) !important;
+        }
+
+        .demo-media .lylo-cc-toggle[aria-pressed="true"] {
+          background: rgba(4,9,16,.40) !important;
+          color: rgba(255,255,255,.98) !important;
+          border-color: rgba(255,255,255,.18) !important;
+          opacity: .92 !important;
+        }
+
+        .demo-media .lylo-cc-toggle:active {
+          opacity: 1 !important;
+          background: rgba(4,9,16,.52) !important;
+        }
+
         @media (max-width: 979px) {
           .lylo-ios .demo-media .lylo-cc-toggle {
             display: none !important;
@@ -79,8 +109,6 @@
         window.setTimeout(() => restoreChosenSound(video), 0);
       });
 
-      // Native mobile video controls fire volumechange too, so the iPhone's own
-      // mute button becomes the single sound control while we remember its state.
       video.addEventListener('volumechange', () => {
         if (internalReset) return;
 
@@ -99,8 +127,6 @@
         entries.forEach((entry) => {
           if (entry.target !== video) return;
 
-          // Native iPhone fullscreen can report the inline video as off-screen
-          // while the phone rotates. Do not change audio until fullscreen ends.
           if (isFullscreen(video)) {
             restoreChosenSound(video);
             return;
