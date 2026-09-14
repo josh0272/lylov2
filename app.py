@@ -65,9 +65,10 @@ def preview():
         '<div class="demo-media"><video muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
     )
 
+    # Browser voice calling uses Vapi's web SDK. No phone number is required.
     html = html.replace(
         '<div class="call-number">07700 900 642</div>',
-        '<div class="call-number"><a class="call-number-link" href="tel:07700900642">07700 900 642</a></div>'
+        '<button class="call-number lylo-voice-call" id="lylo-voice-call" type="button">Call Lylo</button><div class="lylo-voice-status" id="lylo-voice-status">Browser voice call · no phone number needed</div>'
     )
 
     # Native touch scrolling on mobile; keep desktop mouse drag logic from taking touch pointers.
@@ -90,6 +91,40 @@ def preview():
         text-decoration: none;
         font: inherit;
         letter-spacing: inherit;
+      }
+
+      .lylo-voice-call {
+        appearance: none;
+        -webkit-appearance: none;
+        font-family: inherit;
+        cursor: pointer;
+        transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+      }
+
+      .lylo-voice-call:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255,255,255,.24);
+        background: rgba(12,24,41,.72);
+      }
+
+      .lylo-voice-call:disabled {
+        cursor: wait;
+        opacity: .72;
+        transform: none;
+      }
+
+      .lylo-voice-call.is-active {
+        border-color: rgba(255,170,170,.22);
+        color: #f3dede;
+      }
+
+      .lylo-voice-status {
+        min-height: 18px;
+        margin-top: 10px;
+        color: #748398;
+        font-size: 11px;
+        line-height: 1.45;
+        text-align: center;
       }
 
       @media (max-width: 979px) {
@@ -247,10 +282,9 @@ def preview():
     """
     html = html.replace("</head>", mobile_overrides + "</head>")
 
-    # One mobile controller only: deterministic video playback + carousel timer.
     html = html.replace(
         "</body>",
-        '<script src="/static/mobile-preview.js?v=2" defer></script></body>'
+        '<script src="/static/mobile-preview.js?v=2" defer></script><script src="/static/lylo-voice.js?v=1" defer></script></body>'
     )
 
     return HTMLResponse(content=html)
