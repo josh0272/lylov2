@@ -46,9 +46,8 @@
     #lylo-chat-send:disabled{opacity:.35;cursor:default;transform:none}
     .lylo-chat-note{padding:10px 4px 0;text-align:center;color:#55585c;font-size:10px;line-height:1.35}
 
-    body.lylo-chat-open{overflow:hidden!important}
-
     @media(max-width:700px){
+      body.lylo-chat-open{overflow:hidden!important}
       #lylo-chat-launcher{right:14px;bottom:14px;min-height:46px;padding:0 16px}
       #lylo-chat-panel{inset:0;width:100vw;height:100dvh;border:0;border-radius:0;box-shadow:none;grid-template-rows:62px minmax(0,1fr)}
       .lylo-chat-head{padding:0 14px}
@@ -227,7 +226,9 @@
   };
 
   const openPanel = () => {
-    pageScrollY = window.scrollY || window.pageYOffset || 0;
+    if (window.innerWidth <= 700) {
+      pageScrollY = window.scrollY || window.pageYOffset || 0;
+    }
     panel.classList.add('open');
     document.body.classList.add('lylo-chat-open');
     launcher.setAttribute('aria-expanded', 'true');
@@ -237,11 +238,12 @@
   };
 
   const closePanel = () => {
+    const restoreMobileScroll = window.innerWidth <= 700;
     panel.classList.remove('open');
     document.body.classList.remove('lylo-chat-open');
     launcher.setAttribute('aria-expanded', 'false');
     launcher.style.display = '';
-    window.scrollTo(0, pageScrollY);
+    if (restoreMobileScroll) window.scrollTo(0, pageScrollY);
   };
 
   launcher.addEventListener('click', openPanel);
