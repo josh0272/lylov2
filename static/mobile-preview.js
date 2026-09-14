@@ -2,9 +2,52 @@
   const mq = window.matchMedia('(max-width: 979px)');
   const isMobile = () => mq.matches;
 
-  const safePlay = (video) => {
+  const isVideoFullscreen = (video) => {
+    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+    return fullscreenElement === video || video.webkitDisplayingFullscreen === true;
+  };
+
+  const unmuteFullscreenVideo = (video) => {
+    video.dataset.lyloFullscreenAudio = '1';
+    video.muted = false;
+    video.defaultMuted = false;
+    video.volume = 1;
+  };
+
+  const remuteAfterFullscreen = (video) => {
+    if (video.dataset.lyloFullscreenAudio !== '1') return;
+    delete video.dataset.lyloFullscreenAudio;
     video.muted = true;
     video.defaultMuted = true;
+  };
+
+  const initFullscreenAudio = (videos) => {
+    const handleDocumentFullscreen = () => {
+      const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+
+      videos.forEach((video) => {
+        if (fullscreenElement === video) {
+          unmuteFullscreenVideo(video);
+        } else if (!fullscreenElement) {
+          remuteAfterFullscreen(video);
+        }
+      });
+    };
+
+    document.addEventListener('fullscreenchange', handleDocumentFullscreen);
+    document.addEventListener('webkitfullscreenchange', handleDocumentFullscreen);
+
+    videos.forEach((video) => {
+      video.addEventListener('webkitbeginfullscreen', () => unmuteFullscreenVideo(video));
+      video.addEventListener('webkitendfullscreen', () => remuteAfterFullscreen(video));
+    });
+  };
+
+  const safePlay = (video) => {
+    if (!isVideoFullscreen(video)) {
+      video.muted = true;
+      video.defaultMuted = true;
+    }
     video.loop = true;
     video.playsInline = true;
     video.setAttribute('playsinline', '');
@@ -191,6 +234,7 @@
     });
 
     const videos = Array.from(document.querySelectorAll('.demo-media video'));
+    initFullscreenAudio(videos);
 
     if (isMobile()) {
       initMobileVideos(videos);
