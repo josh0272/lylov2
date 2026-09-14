@@ -3,6 +3,11 @@
     const videos = Array.from(document.querySelectorAll('.demo-media video'));
     if (!videos.length) return;
 
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    if (isIOS) document.documentElement.classList.add('lylo-ios');
+
     if (!document.getElementById('lylo-mobile-control-polish')) {
       const style = document.createElement('style');
       style.id = 'lylo-mobile-control-polish';
@@ -12,35 +17,8 @@
         }
 
         @media (max-width: 979px) {
-          .demo-media .lylo-cc-toggle {
-            top: 50px !important;
-            right: 10px !important;
-            left: auto !important;
-            width: 36px !important;
-            min-width: 36px !important;
-            height: 30px !important;
-            padding: 0 !important;
-            border-radius: 8px !important;
-            border: 1px solid rgba(255,255,255,.10) !important;
-            background: rgba(4,9,16,.26) !important;
-            color: rgba(255,255,255,.90) !important;
-            box-shadow: none !important;
-            opacity: .72 !important;
-            transform: none !important;
-            -webkit-backdrop-filter: blur(5px) !important;
-            backdrop-filter: blur(5px) !important;
-          }
-
-          .demo-media .lylo-cc-toggle[aria-pressed="true"] {
-            background: rgba(4,9,16,.34) !important;
-            color: rgba(255,255,255,.96) !important;
-            border-color: rgba(255,255,255,.14) !important;
-            opacity: .84 !important;
-          }
-
-          .demo-media .lylo-cc-toggle:active {
-            opacity: 1 !important;
-            background: rgba(4,9,16,.48) !important;
+          .lylo-ios .demo-media .lylo-cc-toggle {
+            display: none !important;
           }
         }
       `;
