@@ -217,6 +217,14 @@
   };
 
   const initMobileVideos = (videos) => {
+    const autoPausedVideos = new WeakSet();
+
+    const autoPause = (video) => {
+      if (video.paused || isVideoFullscreen(video)) return;
+      autoPausedVideos.add(video);
+      video.pause();
+    };
+
     videos.forEach((video) => {
       video.autoplay = false;
       video.removeAttribute('autoplay');
@@ -228,11 +236,18 @@
       video.pause();
       delete video.dataset.userControlled;
 
-      const markUserControl = () => {
-        video.dataset.userControlled = '1';
-      };
       video.addEventListener('pause', () => {
-        if (!isVideoFullscreen(video)) markUserControl();
+        if (autoPausedVideos.has(video)) {
+          autoPausedVideos.delete(video);
+          return;
+        }
+        if (!isVideoFullscreen(video)) {
+          video.dataset.userControlled = '1';
+        }
+      });
+
+      video.addEventListener('play', () => {
+        delete video.dataset.userControlled;
       });
     });
 
@@ -250,7 +265,7 @@
       }
 
       if (!isMobile() || document.hidden) {
-        videos.forEach((video) => video.pause());
+        videos.forEach((video) => autoPause(video));
         return;
       }
 
@@ -277,7 +292,7 @@
 
       videos.forEach((video) => {
         if (video !== bestVideo) {
-          if (!video.paused) video.pause();
+          autoPause(video);
           return;
         }
 
