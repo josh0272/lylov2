@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet" />
+<meta name="referrer" content="no-referrer" />
+<title>Lylo — Out of Hours Demo</title>
+<style>
+:root{--bg:#08101d;--panel:#0c1626;--text:#f5f7fa;--muted:#95a2b4;--line:rgba(255,255,255,.08);--blue:#7db7ff}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue","Segoe UI",Arial,sans-serif}
+body{min-height:100svh;display:grid;place-items:center;padding:24px;background:radial-gradient(900px 500px at 50% -10%,rgba(84,160,255,.12),transparent 70%),linear-gradient(180deg,#0a1220,#07101c)}
+.shell{width:min(100%,540px);text-align:center}.brand{font-family:Georgia,"Times New Roman",serif;font-size:58px;letter-spacing:-.04em;margin-bottom:8px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:#7f90a7;margin-bottom:26px}.card{border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.028),rgba(255,255,255,.014));padding:38px 28px;box-shadow:0 30px 90px rgba(0,0,0,.34)}
+h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-weight:600}.sub{color:var(--muted);font-size:15px;line-height:1.6;max-width:420px;margin:0 auto 30px}.call-wrap{display:flex;flex-direction:column;align-items:center;gap:14px}.call{appearance:none;border:1px solid rgba(125,183,255,.42);background:linear-gradient(180deg,#173050,#10243d);color:#fff;min-width:190px;height:58px;padding:0 24px;border-radius:999px;font-size:16px;font-weight:650;cursor:pointer;box-shadow:0 14px 36px rgba(45,117,210,.20);transition:.2s ease}.call:hover{transform:translateY(-2px);border-color:rgba(125,183,255,.68)}.call:disabled{opacity:.65;cursor:wait;transform:none}.call.active{background:linear-gradient(180deg,#3b1d24,#28151a);border-color:rgba(255,145,155,.32)}.status{min-height:22px;color:#7f8da0;font-size:12px;line-height:1.45}.tips{margin-top:28px;padding-top:22px;border-top:1px solid var(--line);text-align:left}.tips p{margin:0 0 8px;color:#c7d0dc;font-size:13px}.tips ul{margin:0;padding-left:18px;color:#8391a4;font-size:12px;line-height:1.65}.secure{margin-top:18px;color:#647388;font-size:11px;line-height:1.5}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#63d4a6;margin-right:7px;vertical-align:1px}
+@media(max-width:520px){body{padding:16px}.card{padding:30px 20px}.brand{font-size:48px}h1{font-size:28px}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="brand">Lylo.</div>
+  <div class="eyebrow">Private recording page</div>
+  <section class="card">
+    <h1>Out-of-hours receptionist demo</h1>
+    <p class="sub">For Jess to record a sample call with Lylo. Press the button, allow microphone access, then speak as if you were calling a law firm after hours.</p>
+    <div class="call-wrap">
+      <button class="call" id="jess-call" type="button">Call Lylo</button>
+      <div class="status" id="jess-status">Ready to call</div>
+    </div>
+    <div class="tips">
+      <p>For the recording:</p>
+      <ul>
+        <li>Start with a simple reason for calling.</li>
+        <li>Let Lylo ask the first few questions.</li>
+        <li>Speak naturally and leave a short pause after each reply.</li>
+        <li>Press “End call” when you have enough for the demo.</li>
+      </ul>
+    </div>
+    <div class="secure"><span class="dot"></span>Unlisted page · not linked from the main Lylo site · search indexing disabled</div>
+  </section>
+</main>
+<script>
+(() => {
+  const button = document.getElementById('jess-call');
+  const status = document.getElementById('jess-status');
+  let vapi = null;
+  let assistantId = '';
+  let state = 'idle';
+  let sdkPromise = null;
+
+  const setState = (next, message) => {
+    state = next;
+    button.classList.toggle('active', next === 'active');
+    button.disabled = next === 'connecting' || next === 'ending';
+    if (next === 'connecting') button.textContent = 'Connecting…';
+    else if (next === 'ending') button.textContent = 'Ending…';
+    else if (next === 'active') button.textContent = 'End call';
+    else button.textContent = 'Call Lylo';
+    status.textContent = message || (next === 'active' ? 'Connected — speak to Lylo' : 'Ready to call');
+  };
+
+  const loadVapiClass = async () => {
+    if (sdkPromise) return sdkPromise;
+    sdkPromise = import('https://esm.sh/@vapi-ai/web@2.7.0?bundle&target=es2022')
+      .then((module) => {
+        let Vapi = module.default;
+        if (Vapi && typeof Vapi !== 'function' && typeof Vapi.default === 'function') Vapi = Vapi.default;
+        if (typeof Vapi !== 'function' && typeof module.Vapi === 'function') Vapi = module.Vapi;
+        if (typeof Vapi !== 'function') throw new Error('Voice client could not load.');
+        return Vapi;
+      });
+    return sdkPromise;
+  };
+
+  const ensureVapi = async () => {
+    if (vapi) return vapi;
+    const response = await fetch('/api/jess-voice-config', { cache: 'no-store' });
+    const config = await response.json().catch(() => ({}));
+    if (!response.ok || !config.ok || !config.publicKey || !config.assistantId) {
+      throw new Error(config.error || 'Voice calling is not available.');
+    }
+    assistantId = config.assistantId;
+    const Vapi = await loadVapiClass();
+    vapi = new Vapi(config.publicKey);
+    vapi.on('call-start', () => setState('active', 'Connected — recording can begin'));
+    vapi.on('call-end', () => setState('idle', 'Call ended · ready to record again'));
+    vapi.on('error', (err) => {
+      console.error(err);
+      if (state === 'connecting') setState('idle', 'Call failed — please try again');
+    });
+    return vapi;
+  };
+
+  button.addEventListener('click', async () => {
+    if (state === 'active') {
+      setState('ending', 'Ending call…');
+      try { await vapi.stop(); } catch (_) {}
+      setState('idle', 'Call ended · ready to record again');
+      return;
+    }
+    if (state !== 'idle') return;
+    setState('connecting', 'Connecting to Lylo…');
+    try {
+      const client = await ensureVapi();
+      await client.start(assistantId);
+    } catch (err) {
+      console.error(err);
+      setState('idle', err && err.message ? err.message : 'Could not start the call');
+    }
+  });
+
+  window.addEventListener('pagehide', () => {
+    if (vapi && (state === 'active' || state === 'connecting')) vapi.stop().catch(() => {});
+  });
+})();
+</script>
+</body>
+</html>
