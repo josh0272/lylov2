@@ -167,7 +167,8 @@ def preview():
           transition: height .48s cubic-bezier(.22,.78,.24,1) !important;
         }
 
-        .phone-section .audio-stage:has(.audio-demo.started) {
+        .phone-section .audio-stage:has(.audio-demo.started),
+        .phone-section .audio-stage.phone-demo-active {
           height: 445px !important;
         }
 
@@ -284,7 +285,7 @@ def preview():
 
     html = html.replace(
         "</body>",
-        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=6" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
+        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=2" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
     )
 
     return HTMLResponse(content=html)
