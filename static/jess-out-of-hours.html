@@ -42,24 +42,33 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
 (() => {
   const button = document.getElementById('jess-call');
   const status = document.getElementById('jess-status');
+
   let vapi = null;
-  let assistantId = '';
   let state = 'idle';
   let sdkPromise = null;
+  let configPromise = null;
+  let sessionCounter = 0;
+  let currentSessionId = 0;
+  let endFallbackTimer = null;
+
+  const sleep = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
   const setState = (next, message) => {
     state = next;
     button.classList.toggle('active', next === 'active');
     button.disabled = next === 'connecting' || next === 'ending';
+
     if (next === 'connecting') button.textContent = 'Connecting…';
     else if (next === 'ending') button.textContent = 'Ending…';
     else if (next === 'active') button.textContent = 'End call';
     else button.textContent = 'Call Lylo';
+
     status.textContent = message || (next === 'active' ? 'Connected — speak to Lylo' : 'Ready to call');
   };
 
   const loadVapiClass = async () => {
     if (sdkPromise) return sdkPromise;
+
     sdkPromise = import('https://esm.sh/@vapi-ai/web@2.7.0?bundle&target=es2022')
       .then((module) => {
         let Vapi = module.default;
@@ -67,49 +76,165 @@ h1{font-size:32px;line-height:1.08;letter-spacing:-.03em;margin:0 0 14px;font-we
         if (typeof Vapi !== 'function' && typeof module.Vapi === 'function') Vapi = module.Vapi;
         if (typeof Vapi !== 'function') throw new Error('Voice client could not load.');
         return Vapi;
+      })
+      .catch((error) => {
+        sdkPromise = null;
+        throw error;
       });
+
     return sdkPromise;
   };
 
-  const ensureVapi = async () => {
-    if (vapi) return vapi;
-    const response = await fetch('/api/jess-voice-config', { cache: 'no-store' });
-    const config = await response.json().catch(() => ({}));
-    if (!response.ok || !config.ok || !config.publicKey || !config.assistantId) {
-      throw new Error(config.error || 'Voice calling is not available.');
+  const loadConfig = async () => {
+    if (configPromise) return configPromise;
+
+    configPromise = fetch('/api/jess-voice-config', { cache: 'no-store' })
+      .then(async (response) => {
+        const config = await response.json().catch(() => ({}));
+        if (!response.ok || !config.ok || !config.publicKey || !config.assistantId) {
+          throw new Error(config.error || 'Voice calling is not available.');
+        }
+        return config;
+      })
+      .catch((error) => {
+        configPromise = null;
+        throw error;
+      });
+
+    return configPromise;
+  };
+
+  const detachClient = (client) => {
+    if (!client) return;
+    try {
+      if (typeof client.removeAllListeners === 'function') client.removeAllListeners();
+    } catch (_) {}
+  };
+
+  const finishSession = (client, sessionId, message = 'Call ended · ready to record again') => {
+    if (sessionId !== currentSessionId || client !== vapi) return;
+
+    if (endFallbackTimer) {
+      clearTimeout(endFallbackTimer);
+      endFallbackTimer = null;
     }
-    assistantId = config.assistantId;
-    const Vapi = await loadVapiClass();
-    vapi = new Vapi(config.publicKey);
-    vapi.on('call-start', () => setState('active', 'Connected — recording can begin'));
-    vapi.on('call-end', () => setState('idle', 'Call ended · ready to record again'));
-    vapi.on('error', (err) => {
-      console.error(err);
-      if (state === 'connecting') setState('idle', 'Call failed — please try again');
+
+    detachClient(client);
+    vapi = null;
+    setState('idle', message);
+  };
+
+  const createFreshClient = async (sessionId) => {
+    const [config, Vapi] = await Promise.all([loadConfig(), loadVapiClass()]);
+
+    if (sessionId !== currentSessionId) throw new Error('Call was cancelled.');
+
+    const client = new Vapi(config.publicKey);
+    vapi = client;
+
+    client.on('call-start', () => {
+      if (sessionId !== currentSessionId || client !== vapi) return;
+      setState('active', 'Connected — recording can begin');
     });
-    return vapi;
+
+    client.on('call-end', () => {
+      finishSession(client, sessionId);
+    });
+
+    client.on('call-start-failed', (event) => {
+      if (sessionId !== currentSessionId || client !== vapi) return;
+      console.error('Jess voice call start failed:', event);
+      finishSession(client, sessionId, 'Call failed — please try again');
+    });
+
+    client.on('error', (err) => {
+      if (sessionId !== currentSessionId || client !== vapi) return;
+      console.error('Jess voice call error:', err);
+      if (state === 'connecting') {
+        finishSession(client, sessionId, 'Call failed — please try again');
+      }
+    });
+
+    return { client, assistantId: config.assistantId };
+  };
+
+  const stopCurrentCall = async () => {
+    const client = vapi;
+    const sessionId = currentSessionId;
+
+    if (!client) {
+      setState('idle', 'Ready to call');
+      return;
+    }
+
+    setState('ending', 'Ending call and releasing microphone…');
+
+    // Do not allow a new call until this session has genuinely ended.
+    // If the SDK never emits call-end, use a guarded fallback after a short delay.
+    if (endFallbackTimer) clearTimeout(endFallbackTimer);
+    endFallbackTimer = window.setTimeout(() => {
+      finishSession(client, sessionId);
+    }, 2200);
+
+    try {
+      await client.stop();
+    } catch (error) {
+      console.error('Could not stop Jess voice call cleanly:', error);
+      await sleep(300);
+      finishSession(client, sessionId);
+    }
+  };
+
+  const startNewCall = async () => {
+    if (state !== 'idle' || vapi) return;
+
+    const sessionId = ++sessionCounter;
+    currentSessionId = sessionId;
+    setState('connecting', 'Connecting to Lylo…');
+
+    try {
+      const { client, assistantId } = await createFreshClient(sessionId);
+      const call = await client.start(assistantId);
+
+      if (sessionId !== currentSessionId || client !== vapi) {
+        try { await client.stop(); } catch (_) {}
+        detachClient(client);
+        return;
+      }
+
+      if (!call && state === 'connecting') {
+        finishSession(client, sessionId, 'Call failed — please try again');
+      }
+    } catch (err) {
+      console.error('Could not start Jess voice call:', err);
+      if (sessionId === currentSessionId) {
+        if (vapi) detachClient(vapi);
+        vapi = null;
+        setState('idle', err && err.message ? err.message : 'Could not start the call');
+      }
+    }
   };
 
   button.addEventListener('click', async () => {
     if (state === 'active') {
-      setState('ending', 'Ending call…');
-      try { await vapi.stop(); } catch (_) {}
-      setState('idle', 'Call ended · ready to record again');
+      await stopCurrentCall();
       return;
     }
-    if (state !== 'idle') return;
-    setState('connecting', 'Connecting to Lylo…');
-    try {
-      const client = await ensureVapi();
-      await client.start(assistantId);
-    } catch (err) {
-      console.error(err);
-      setState('idle', err && err.message ? err.message : 'Could not start the call');
+
+    if (state === 'idle') {
+      await startNewCall();
     }
   });
 
   window.addEventListener('pagehide', () => {
-    if (vapi && (state === 'active' || state === 'connecting')) vapi.stop().catch(() => {});
+    currentSessionId = ++sessionCounter;
+    const client = vapi;
+    vapi = null;
+    if (endFallbackTimer) clearTimeout(endFallbackTimer);
+    if (client) {
+      try { client.stop(); } catch (_) {}
+      detachClient(client);
+    }
   });
 })();
 </script>
