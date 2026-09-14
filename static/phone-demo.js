@@ -1,14 +1,17 @@
 (() => {
   const demo = document.getElementById('phoneAudioDemo');
+  const stage = demo?.closest('.audio-stage');
   const transcript = document.getElementById('phoneTranscript');
   const wave = document.getElementById('phoneWave');
   const oldButton = document.getElementById('phonePlay');
   const oldAudio = document.getElementById('phoneDemoAudio');
 
-  if (!demo || !transcript || !wave || !oldButton || !oldAudio) return;
+  if (!demo || !stage || !transcript || !wave || !oldButton || !oldAudio) return;
+  if (demo.dataset.phoneDemoV2 === '1') return;
+  demo.dataset.phoneDemoV2 = '1';
 
-  // Replace the old controls so the inline preview script can no longer drive
-  // the phone demo with its short placeholder transcript.
+  // Clone the interactive elements to strip the old inline demo listeners.
+  // This leaves this file as the single controller on desktop and mobile.
   const button = oldButton.cloneNode(true);
   oldButton.replaceWith(button);
 
@@ -19,6 +22,10 @@
   oldAudio.replaceWith(audio);
 
   const icon = button.querySelector('svg');
+  const FALLBACK_DURATION = 135.144;
+  let mediaDuration = FALLBACK_DURATION;
+  let frame = 0;
+  const lineNodes = new Map();
 
   if (!document.getElementById('lylo-phone-demo-styles')) {
     const style = document.createElement('style');
@@ -38,15 +45,14 @@
         mask-image: linear-gradient(to bottom, transparent 0, #000 10px, #000 calc(100% - 12px), transparent 100%);
       }
 
-      .phone-section .transcript::-webkit-scrollbar {
-        display: none;
-      }
+      .phone-section .transcript::-webkit-scrollbar { display: none; }
 
       .phone-section .transcript-line {
         display: block !important;
         width: fit-content !important;
         max-width: 88% !important;
         margin: 0 0 9px !important;
+        padding: 9px 13px !important;
         opacity: 1 !important;
         transform: none !important;
         white-space: normal !important;
@@ -75,9 +81,7 @@
         text-transform: uppercase;
       }
 
-      .phone-section .transcript-copy {
-        display: block;
-      }
+      .phone-section .transcript-copy { display: block; }
 
       .phone-section .transcript-line.active {
         border-color: rgba(151,177,211,.18) !important;
@@ -85,10 +89,16 @@
       }
 
       @media (max-width: 979px) {
+        .phone-section .audio-stage.phone-demo-active {
+          height: 445px !important;
+        }
+
         .phone-section .transcript {
           height: 190px !important;
           max-height: 190px !important;
+          width: min(94%,430px) !important;
         }
+
         .phone-section .transcript-line {
           max-width: 90% !important;
         }
@@ -97,32 +107,31 @@
     document.head.appendChild(style);
   }
 
-  // Timings below are aligned to the attached 2:15 recording itself rather
-  // than the later Vapi event timestamps. Starts were checked against the
-  // recorded speech waveform so the transcript changes with the actual audio.
+  // Start times are the relative timestamps from the recorded call log.
+  // End times use the next speaker turn so the text can reveal naturally
+  // throughout each spoken turn.
   const turns = [
-    { who: 'lylo', speaker: 'Lylo', start: 1.75, end: 2.20, text: 'Hello.' },
-    { who: 'caller', speaker: 'Caller', start: 2.50, end: 3.00, text: 'Hello?' },
-    { who: 'lylo', speaker: 'Lylo', start: 3.05, end: 6.45, text: 'You can ask me about Lylo or try the out of hours receptionist demo.' },
-    { who: 'caller', speaker: 'Caller', start: 11.30, end: 12.10, text: 'This is good.' },
-    { who: 'lylo', speaker: 'Lylo', start: 14.30, end: 20.00, text: 'Good. Lylo is designed to make legal AI feel practical, private, and straightforward.' },
-    { who: 'caller', speaker: 'Caller', start: 21.30, end: 26.90, text: 'How is it private? What does it even mean to be on premise? Can you tell me in simple terms?' },
-    { who: 'lylo', speaker: 'Lylo', start: 28.60, end: 84.40, text: "Lylo is being designed so that sensitive case documents and the core legal AI can operate within the law firm's own controlled environment. In simple terms, on premises means the system runs on computers and rather than sending case files into a general public AI service. That gives the firm greater control over where information is stored, who can access it, how long it is kept, and whether it can leave the firm's environment. That matters for client confidentiality, legal professional privilege, and data protection. Some optional functions such as telephony can involve carefully selected external providers. Those are separate data flows and must be assessed and configured properly for each firm. Lylo is being built around controlled handling of legal information, source traceability, and solicitor review, not casual uploading of sensitive documents into public AI tools." },
-    { who: 'caller', speaker: 'Caller', start: 86.70, end: 87.00, text: 'Cool.' },
-    { who: 'lylo', speaker: 'Lylo', start: 89.10, end: 92.40, text: 'Lylo keeps the firm and control of sensitive legal information. Would you like to try the out of hours receptionist demo?' },
-    { who: 'caller', speaker: 'Caller', start: 93.00, end: 99.90, text: 'And actually, I would like to ask, can you tell me a joke?' },
-    { who: 'lylo', speaker: 'Lylo', start: 101.80, end: 104.10, text: 'Why did the solicitor bring a ladder to court? To reach the higher authority.' },
-    { who: 'caller', speaker: 'Caller', start: 105.00, end: 110.80, text: "Why? That's not really that funny. We do have everyone." },
-    { who: 'lylo', speaker: 'Lylo', start: 113.00, end: 120.30, text: 'Fair point. That joke should be struck from the record. Why did the lawyer wear 2 pairs of trousers in case they lost their case?' },
-    { who: 'caller', speaker: 'Caller', start: 124.00, end: 124.80, text: 'Okay. Good 1.' },
-    { who: 'lylo', speaker: 'Lylo', start: 127.20, end: 128.20, text: "I'll take that win." },
-    { who: 'caller', speaker: 'Caller', start: 130.90, end: 131.60, text: 'Can you end the call?' },
-    { who: 'lylo', speaker: 'Lylo', start: 133.50, end: 134.10, text: 'Goodbye.' }
-  ];
-
-  let frame = 0;
-  let lastActiveIndex = -1;
-  const lineNodes = new Map();
+    { who:'lylo', speaker:'Lylo', start:2.96, text:'Hello.' },
+    { who:'caller', speaker:'Caller', start:3.04, text:'Hello?' },
+    { who:'lylo', speaker:'Lylo', start:3.49, text:'You can ask me about Lylo or try the out of hours receptionist demo.' },
+    { who:'caller', speaker:'Caller', start:12.24, text:'This is good.' },
+    { who:'lylo', speaker:'Lylo', start:15.30, text:'Good. Lylo is designed to make legal AI feel practical, private, and straightforward.' },
+    { who:'caller', speaker:'Caller', start:22.45, text:'How is it private? What does it even mean to be on premise? Can you tell me in simple terms?' },
+    { who:'lylo', speaker:'Lylo', start:29.61, text:"Lylo is being designed so that sensitive case documents and the core legal AI can operate within the law firm's own controlled environment. In simple terms, on premises means the system runs on computers and rather than sending case files into a general public AI service. That gives the firm greater control over where information is stored, who can access it, how long it is kept, and whether it can leave the firm's environment. That matters for client confidentiality, legal professional privilege, and data protection. Some optional functions such as telephony can involve carefully selected external providers. Those are separate data flows and must be assessed and configured properly for each firm. Lylo is being built around controlled handling of legal information, source traceability, and solicitor review, not casual uploading of sensitive documents into public AI tools." },
+    { who:'caller', speaker:'Caller', start:87.66, text:'Cool.' },
+    { who:'lylo', speaker:'Lylo', start:90.05, text:'Lylo keeps the firm in control of sensitive legal information. Would you like to try the out of hours receptionist demo?' },
+    { who:'caller', speaker:'Caller', start:95.26, text:'And actually, I would like to ask, can you tell me a joke?' },
+    { who:'lylo', speaker:'Lylo', start:102.69, text:'Why did the solicitor bring a ladder to court? To reach the higher authority.' },
+    { who:'caller', speaker:'Caller', start:106.08, text:"Why? That's not really that funny. We do have everyone." },
+    { who:'lylo', speaker:'Lylo', start:113.94, text:'Fair point. That joke should be struck from the record. Why did the lawyer wear 2 pairs of trousers in case they lost their case?' },
+    { who:'caller', speaker:'Caller', start:125.03, text:'Okay. Good 1.' },
+    { who:'lylo', speaker:'Lylo', start:128.03, text:"I'll take that win." },
+    { who:'caller', speaker:'Caller', start:131.74, text:'Can you end the call?' },
+    { who:'lylo', speaker:'Lylo', start:134.39, text:'Goodbye.' }
+  ].map((turn, index, all) => ({
+    ...turn,
+    end: index < all.length - 1 ? Math.max(turn.start + 0.35, all[index + 1].start - 0.12) : FALLBACK_DURATION
+  }));
 
   const setIcon = (playing) => {
     if (!icon) return;
@@ -136,7 +145,6 @@
     transcript.innerHTML = '';
     transcript.scrollTop = 0;
     lineNodes.clear();
-    lastActiveIndex = -1;
   };
 
   const ensureLine = (index) => {
@@ -154,15 +162,15 @@
 
     line.append(speaker, copy);
     transcript.appendChild(line);
-    lineNodes.set(index, { line, copy });
-    return { line, copy };
+    const nodes = { line, copy };
+    lineNodes.set(index, nodes);
+    return nodes;
   };
 
-  const scrollActiveIntoView = (node) => {
+  const scrollTranscript = (node) => {
     if (!node) return;
-    const bottom = node.offsetTop + node.offsetHeight;
-    const target = Math.max(0, bottom - transcript.clientHeight + 16);
-    transcript.scrollTop = target;
+    const wanted = Math.max(0, node.offsetTop + node.offsetHeight - transcript.clientHeight + 14);
+    if (Math.abs(transcript.scrollTop - wanted) > 1) transcript.scrollTop = wanted;
   };
 
   const renderTranscript = (time) => {
@@ -171,57 +179,52 @@
     turns.forEach((turn, index) => {
       if (time < turn.start) return;
       const { line, copy } = ensureLine(index);
-
       const duration = Math.max(0.25, turn.end - turn.start);
       const progress = Math.max(0, Math.min(1, (time - turn.start) / duration));
-      const visibleChars = time >= turn.end
-        ? turn.text.length
-        : Math.max(1, Math.floor(turn.text.length * progress));
-
-      copy.textContent = turn.text.slice(0, visibleChars);
-
-      if (time >= turn.start && time < turn.end) activeIndex = index;
-      line.classList.toggle('active', time >= turn.start && time < turn.end);
+      const chars = time >= turn.end ? turn.text.length : Math.max(1, Math.floor(turn.text.length * progress));
+      copy.textContent = turn.text.slice(0, chars);
+      const active = time >= turn.start && time < turn.end;
+      line.classList.toggle('active', active);
+      if (active) activeIndex = index;
     });
 
     if (activeIndex < 0) {
       for (let i = turns.length - 1; i >= 0; i--) {
-        if (time >= turns[i].start) {
-          activeIndex = i;
-          break;
-        }
+        if (time >= turns[i].start) { activeIndex = i; break; }
       }
     }
 
-    const active = lineNodes.get(activeIndex)?.line;
-    if (active) {
-      // Scroll continuously while a long turn grows, and jump naturally to
-      // the next speaker when their turn begins.
-      scrollActiveIntoView(active);
-      lastActiveIndex = activeIndex;
-    }
+    scrollTranscript(lineNodes.get(activeIndex)?.line);
   };
 
   const updateWave = (time) => {
     const bars = Array.from(wave.children);
-    const duration = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 135.08;
+    if (!bars.length) return;
+    const duration = Number.isFinite(mediaDuration) && mediaDuration > 0 ? mediaDuration : FALLBACK_DURATION;
     const progress = Math.max(0, Math.min(1, time / duration));
     bars.forEach((bar, index) => {
-      bar.classList.toggle('active', index / Math.max(1, bars.length - 1) <= progress);
+      const barPoint = bars.length === 1 ? 0 : index / (bars.length - 1);
+      bar.classList.toggle('active', barPoint <= progress);
     });
   };
 
-  const tick = () => {
+  const sync = () => {
     const time = audio.currentTime || 0;
     renderTranscript(time);
     updateWave(time);
+  };
+
+  const tick = () => {
+    sync();
     if (!audio.paused && !audio.ended) frame = requestAnimationFrame(tick);
   };
 
   const startVisuals = () => {
-    demo.classList.add('started', 'playing');
+    demo.classList.add('started','playing');
+    stage.classList.add('phone-demo-active');
     setIcon(true);
     cancelAnimationFrame(frame);
+    sync();
     frame = requestAnimationFrame(tick);
   };
 
@@ -229,8 +232,12 @@
     demo.classList.remove('playing');
     setIcon(false);
     cancelAnimationFrame(frame);
-    renderTranscript(audio.currentTime || 0);
-    updateWave(audio.currentTime || 0);
+    sync();
+  };
+
+  const captureDuration = () => {
+    if (Number.isFinite(audio.duration) && audio.duration > 0) mediaDuration = audio.duration;
+    sync();
   };
 
   resetTranscript();
@@ -243,7 +250,7 @@
       return;
     }
 
-    if (audio.ended || audio.currentTime >= (audio.duration || 135.08) - 0.15) {
+    if (audio.ended || audio.currentTime >= mediaDuration - 0.15) {
       audio.currentTime = 0;
       resetTranscript();
       updateWave(0);
@@ -256,14 +263,16 @@
     }
   });
 
+  audio.addEventListener('loadedmetadata', captureDuration);
+  audio.addEventListener('durationchange', captureDuration);
+  audio.addEventListener('timeupdate', sync);
   audio.addEventListener('play', startVisuals);
-  audio.addEventListener('pause', () => {
-    if (!audio.ended) stopVisuals();
-  });
-  audio.addEventListener('seeking', () => renderTranscript(audio.currentTime || 0));
+  audio.addEventListener('pause', () => { if (!audio.ended) stopVisuals(); });
+  audio.addEventListener('seeking', sync);
+  audio.addEventListener('seeked', sync);
   audio.addEventListener('ended', () => {
     stopVisuals();
-    renderTranscript(audio.duration || 135.08);
-    updateWave(audio.duration || 135.08);
+    renderTranscript(mediaDuration);
+    updateWave(mediaDuration);
   });
 })();
