@@ -144,6 +144,14 @@
 
       observer.observe(video);
     });
+
+    if (!document.getElementById('lylo-phone-demo-script')) {
+      const script = document.createElement('script');
+      script.id = 'lylo-phone-demo-script';
+      script.src = '/static/phone-demo.js?v=1';
+      script.defer = true;
+      document.body.appendChild(script);
+    }
   };
 
   if (document.readyState === 'loading') {
