@@ -78,9 +78,9 @@
           border-color: rgba(255,255,255,.78);
         }
         .demo-media video::cue {
-          color: #fff;
-          background: rgba(2,6,11,.80);
-          font-family: -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",sans-serif;
+          color:#fff;
+          background:rgba(2,6,11,.80);
+          font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",sans-serif;
         }
         @media (max-width: 979px) {
           .demo-media .lylo-cc-toggle {
@@ -226,7 +226,14 @@
       video.setAttribute('playsinline', '');
       video.controls = true;
       video.pause();
-      video.dataset.userControlled = '1';
+      delete video.dataset.userControlled;
+
+      const markUserControl = () => {
+        video.dataset.userControlled = '1';
+      };
+      video.addEventListener('pause', () => {
+        if (!isVideoFullscreen(video)) markUserControl();
+      });
     });
 
     let videoTicking = false;
