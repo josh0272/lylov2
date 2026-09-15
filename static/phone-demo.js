@@ -20,7 +20,7 @@
   oldAudio.replaceWith(audio);
 
   const icon = button.querySelector('svg');
-  const FALLBACK_DURATION = 135.144;
+  const FALLBACK_DURATION = 281.952;
   const TYPE_CHARS_PER_SECOND = 38;
   let mediaDuration = FALLBACK_DURATION;
   let frame = 0;
@@ -107,25 +107,32 @@
   }
 
   const turns = [
-    { who:'lylo', speaker:'Lylo', start:2.96, end:6.45, text:'Hello. You can ask me about Lylo or try the out of hours receptionist demo.' },
-    { who:'caller', speaker:'Caller', start:12.24, text:'This is good.' },
-    { who:'lylo', speaker:'Lylo', start:15.30, text:'Good. Lylo is designed to make legal AI feel practical, private, and straightforward.' },
-    { who:'caller', speaker:'Caller', start:22.45, text:'How is it private? What does it even mean to be on premise? Can you tell me in simple terms?' },
-    { who:'lylo', speaker:'Lylo', start:29.61, text:"Lylo is being designed so that sensitive case documents and the core legal AI can operate within the law firm's own controlled environment. In simple terms, on premises means the system runs on computers and rather than sending case files into a general public AI service. That gives the firm greater control over where information is stored, who can access it, how long it is kept, and whether it can leave the firm's environment. That matters for client confidentiality, legal professional privilege, and data protection. Some optional functions such as telephony can involve carefully selected external providers. Those are separate data flows and must be assessed and configured properly for each firm. Lylo is being built around controlled handling of legal information, source traceability, and solicitor review, not casual uploading of sensitive documents into public AI tools." },
-    { who:'caller', speaker:'Caller', start:87.66, text:'Cool.' },
-    { who:'lylo', speaker:'Lylo', start:90.05, text:'Lylo keeps the firm in control of sensitive legal information. Would you like to try the out of hours receptionist demo?' },
-    { who:'caller', speaker:'Caller', start:95.26, text:'And actually, I would like to ask, can you tell me a joke?' },
-    { who:'lylo', speaker:'Lylo', start:102.69, text:'Why did the solicitor bring a ladder to court? To reach the higher authority.' },
-    { who:'caller', speaker:'Caller', start:106.08, text:"Why? That's not really that funny. We do have everyone." },
-    { who:'lylo', speaker:'Lylo', start:113.94, text:'Fair point. That joke should be struck from the record. Why did the lawyer wear 2 pairs of trousers in case they lost their case?' },
-    { who:'caller', speaker:'Caller', start:125.03, text:'Okay. Good 1.' },
-    { who:'lylo', speaker:'Lylo', start:128.03, text:"I'll take that win." },
-    { who:'caller', speaker:'Caller', start:131.74, text:'Can you end the call?' },
-    { who:'lylo', speaker:'Lylo', start:134.39, text:'Goodbye.' }
-  ].map((turn, index, all) => ({
-    ...turn,
-    end: turn.end ?? (index < all.length - 1 ? Math.max(turn.start + 0.35, all[index + 1].start - 0.12) : FALLBACK_DURATION)
-  }));
+    { who:'lylo', speaker:'Lylo', start:0.06, end:10.80, text:"Hello. You've reached Lylo. I'm an AI assistant built for law firms. You can ask me about Lylo, or try the out-of-hours receptionist demo by speaking as a client. How can I help?" },
+    { who:'caller', speaker:'Caller', start:12.72, end:35.72, text:"My employer is harassing and bullying me, and all of my colleagues are acting as if it doesn't happen. And I want to get out of my current employment, but I'm too scared because they are doing illegal things, and I don't want to be blackmailed into doing something I don't want to do." },
+    { who:'lylo', speaker:'Lylo', start:37.36, end:48.00, text:"I'm sorry you're dealing with that. I can take some initial details and arrange for a solicitor to speak with you, but I can't provide legal advice myself. Are you a new client or an existing client?" },
+    { who:'caller', speaker:'Caller', start:49.02, end:50.08, text:"I'm a new client." },
+    { who:'lylo', speaker:'Lylo', start:51.78, end:53.80, text:'Thank you. What is your full name?' },
+    { who:'caller', speaker:'Caller', start:55.46, end:57.22, text:'My name is Safa Ahmed.' },
+    { who:'lylo', speaker:'Lylo', start:59.64, end:63.48, text:'Thank you, Safa Ahmed. What is the best callback number for you?' },
+    { who:'caller', speaker:'Caller', start:65.42, end:71.18, text:'My number is 2 5 0 2 4 0 8 8 8.' },
+    { who:'lylo', speaker:'Lylo', start:73.26, end:75.32, text:'Thank you. What is your email address?' },
+    { who:'caller', speaker:'Caller', start:77.78, end:82.64, text:'It is Safa at Gmail dot com.' },
+    { who:'lylo', speaker:'Lylo', start:84.38, end:87.12, text:'Thank you. Tell me briefly what has been happening at work.' },
+    { who:'caller', speaker:'Caller', start:89.44, end:114.46, text:"Um, they discriminate me because of my religion and my clothing. They also call my food a nuisance to them. And I just feel like I'm really being discriminated and harassed in ways that I shouldn't be, according to current employment law rights, protected characteristics." },
+    { who:'lylo', speaker:'Lylo', start:116.38, end:116.66, text:"I'm sorry." },
+    { who:'caller', speaker:'Caller', start:116.68, end:124.76, text:"I've had a look online, and I know that this shouldn't be happening to me, but it is." },
+    { who:'lylo', speaker:'Lylo', start:126.42, end:142.30, text:"I understand. I'll record this as concerns about discrimination and harassment connected to your religion and clothing, including comments about your food. Is the matter urgent? For example, are you at immediate risk, being pressured to do something, or facing a deadline?" },
+    { who:'caller', speaker:'Caller', start:144.68, end:156.96, text:"I am. This is urgent. I want to get out, and my mental health is really, really bad. And my children don't have the same mother that they did have before I joined this company." },
+    { who:'lylo', speaker:'Lylo', start:158.88, end:179.46, text:"I'm sorry you're going through this, Safa. Your immediate safety comes first. If you feel at risk of harming yourself or you are in immediate danger, call 999 now or contact Samaritans on 116 123. I'll mark this as urgent and ask the team to prioritise a callback. What time is safest for them to call you?" },
+    { who:'caller', speaker:'Caller', start:181.70, end:195.34, text:'The time that is safest to call me is before I start work, which is 6 AM till 8 AM, and after work, which is 6 PM till 8 PM.' },
+    { who:'lylo', speaker:'Lylo', start:196.80, end:211.82, text:"Thank you. I've recorded your preferred callback windows as 6 to 8 AM and 6 to 8 PM. Would you like to add anything else the solicitor should know, such as your employer's name, any recent incidents, or whether you have kept messages or other evidence?" },
+    { who:'caller', speaker:'Caller', start:213.28, end:231.56, text:"I have messages. I have emails as evidence, and they have pictures and stuff that they put on WhatsApp and Facebook groups about me. My employer's name is Brian Lewis, and I can't remember anything else. Right now, I'm too upset." },
+    { who:'lylo', speaker:'Lylo', start:233.56, end:262.90, text:"Thank you, Safa. I've recorded that you have messages, emails, and images or posts in WhatsApp and Facebook groups, and that your employer is Brian Lewis. You do not need to go through anything else now. Your enquiry will be marked urgent, with a safe callback requested between 6 to 8 AM or 6 to 8 PM. If you feel at immediate risk, call 999. If you feel you may harm yourself or cannot stay safe, call Samaritans on 116 123." },
+    { who:'caller', speaker:'Caller', start:264.80, end:268.06, text:'Amazing. Thank you so much for being so understanding.' },
+    { who:'lylo', speaker:'Lylo', start:269.92, end:275.84, text:"You're welcome, Safa. Take care of yourself. The team will use the safe contact details and times you provided." },
+    { who:'caller', speaker:'Caller', start:278.20, end:279.52, text:'Okay. Thank you.' },
+    { who:'lylo', speaker:'Lylo', start:281.12, end:281.72, text:'Goodbye.' }
+  ];
 
   const setIcon = (playing) => {
     if (!icon) return;
