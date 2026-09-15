@@ -65,6 +65,11 @@ def preview():
         '<div class="demo-media"><video muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
     )
 
+    # Keep the ET1 demo as the main feature, then lightly show that the same workflow can be adapted to other forms.
+    et1_original = '<section class="demo-section alt"><div class="demo-grid reveal"><div class="demo-copy"><h3>Turn case files into a completed form.</h3><p>Lylo pulls names, dates and case details from uploaded documents, fills the ET1 and prepares the information for review. You stay in control before it is used.</p><a class="demo-cta" href="/research">Automate a form</a></div><div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div></div></section>'
+    et1_expanded = '''<section class="demo-section alt et1-section"><div class="demo-grid reveal"><div class="demo-copy"><h3>Turn case files into a completed form.</h3><p>Lylo pulls names, dates and case details from uploaded documents, fills the ET1 and prepares the information for review. You stay in control before it is used.</p><button class="demo-cta et1-suggest-jump" id="et1-suggest-jump" type="button">Suggest a form</button></div><div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div></div><div class="et1-extension reveal"><div class="et1-extension-head"><h4>One form is just the start.</h4><p>Lylo can be built to fill the forms your firm uses every day.</p></div><div class="et1-form-strip" aria-label="Examples of forms Lylo could be adapted to fill"><div class="et1-form-track"><div class="et1-form-set"><span class="et1-form-chip">ET1</span><span class="et1-form-chip">ET3</span><span class="et1-form-chip">N1 Claim Form</span><span class="et1-form-chip">N244 Application</span><span class="et1-form-chip">C100 Family Application</span><span class="et1-form-chip">Form E</span><span class="et1-form-chip">Simple Procedure</span><span class="et1-form-chip is-own">Your firm’s own forms</span></div><div class="et1-form-set" aria-hidden="true"><span class="et1-form-chip">ET1</span><span class="et1-form-chip">ET3</span><span class="et1-form-chip">N1 Claim Form</span><span class="et1-form-chip">N244 Application</span><span class="et1-form-chip">C100 Family Application</span><span class="et1-form-chip">Form E</span><span class="et1-form-chip">Simple Procedure</span><span class="et1-form-chip is-own">Your firm’s own forms</span></div></div></div><form class="et1-suggest" id="et1-form-suggest"><label for="et1-form-input">What form takes your firm too much time?</label><div class="et1-suggest-row"><input id="et1-form-input" name="form_suggestion" type="text" autocomplete="off" maxlength="140" placeholder="e.g. ET3, Form E, our client intake form…" aria-describedby="et1-form-status"><button type="submit">Suggest a form</button></div><div class="et1-suggest-status" id="et1-form-status" aria-live="polite"></div></form></div></section>'''
+    html = html.replace(et1_original, et1_expanded)
+
     # Desktop uses the browser voice demo. Mobile shows the real Twilio number and opens the native dialler.
     html = html.replace(
         '<div class="call-number">07700 900 642</div>',
@@ -85,6 +90,7 @@ def preview():
     )
 
     mobile_overrides = """
+    <link rel="stylesheet" href="/static/et1-intake.css?v=1">
     <style id="lylo-mobile-overrides">
       .call-number-link {
         color: inherit;
@@ -297,7 +303,7 @@ def preview():
 
     html = html.replace(
         "</body>",
-        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=3" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
+        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=3" defer></script><script src="/static/et1-intake.js?v=1" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
     )
 
     return HTMLResponse(content=html)
