@@ -6,6 +6,54 @@
     });
   };
 
+  const initEt1Captions = (section) => {
+    const video = section.querySelector('.demo-media video');
+    if (!video || video.dataset.lyloEt1Captions === '1') return;
+    video.dataset.lyloEt1Captions = '1';
+
+    const track = document.createElement('track');
+    track.kind = 'captions';
+    track.label = 'English';
+    track.srclang = 'en';
+    track.src = '/static/et1-en.vtt';
+    track.default = true;
+    track.dataset.lyloCaptionTrack = 'et1';
+    video.appendChild(track);
+
+    const media = video.closest('.demo-media');
+    if (!media || media.querySelector('.lylo-cc-toggle')) return;
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'lylo-cc-toggle';
+    button.textContent = 'CC';
+    button.setAttribute('aria-label', 'Hide captions');
+    button.setAttribute('aria-pressed', 'true');
+    media.appendChild(button);
+
+    let captionsOn = true;
+
+    const getTextTrack = () => track.track || Array.from(video.textTracks || []).find((item) => item.language === 'en');
+    const applyCaptionState = () => {
+      const textTrack = getTextTrack();
+      if (textTrack) textTrack.mode = captionsOn ? 'showing' : 'hidden';
+      button.setAttribute('aria-pressed', captionsOn ? 'true' : 'false');
+      button.setAttribute('aria-label', captionsOn ? 'Hide captions' : 'Show captions');
+      button.title = captionsOn ? 'Captions on' : 'Captions off';
+    };
+
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      captionsOn = !captionsOn;
+      applyCaptionState();
+    });
+
+    track.addEventListener('load', applyCaptionState);
+    video.addEventListener('loadedmetadata', applyCaptionState, { once: true });
+    window.setTimeout(applyCaptionState, 250);
+  };
+
   const buildExtension = () => {
     const wrap = document.createElement('div');
     wrap.className = 'et1-extension reveal in';
@@ -55,6 +103,7 @@
     if (!section) return;
 
     section.classList.add('et1-section');
+    initEt1Captions(section);
 
     let extension = section.querySelector('.et1-extension');
     if (!extension) {
