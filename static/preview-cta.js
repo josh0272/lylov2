@@ -135,8 +135,8 @@
       const title = final.querySelector('h3');
       const copy = final.querySelector('p');
       const cta = final.querySelector('.cta');
-      if (title) title.textContent = 'Put Lylo to work on a real workflow.';
-      if (copy) copy.textContent = 'Start with a short demo. If it looks useful, test Lylo against a synthetic or properly anonymised matter from your firm.';
+      if (title) title.textContent = 'We are looking for a small number of law firms to pilot Lylo with us.';
+      if (copy) copy.textContent = 'Start with a short demo. If it looks useful, test Lylo on one synthetic or properly anonymised matter and compare it with your normal workflow.';
       if (cta) {
         cta.textContent = 'Apply for the founding pilot';
         cta.setAttribute('href', '/founding-pilot#book');
