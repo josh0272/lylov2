@@ -6,8 +6,12 @@
 .et1-form-track{display:flex;width:max-content;animation:et1FormDrift 34s linear infinite;will-change:transform}
 .et1-form-strip:hover .et1-form-track{animation-play-state:paused}
 .et1-form-set{display:flex;align-items:center;gap:9px;padding-right:9px;flex:none}
-.et1-form-chip{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.018);color:#b8c4d3;font-size:12px;white-space:nowrap}
+.et1-form-chip{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.018);color:#b8c4d3;font-size:12px;white-space:nowrap;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease,box-shadow .18s ease}
+.et1-form-chip:hover{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.12);color:#d9e4f0;transform:translateY(-1px)}
+.et1-form-chip:focus-visible{outline:none;border-color:rgba(119,179,255,.34);box-shadow:0 0 0 3px rgba(99,168,255,.06)}
+.et1-form-chip.is-selected{color:#f1f7fd;border-color:rgba(112,177,255,.28);background:rgba(86,145,216,.11);box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}
 .et1-form-chip.is-own{color:#dce8f7;border-color:rgba(126,186,255,.14);background:rgba(91,151,221,.045)}
+.et1-form-chip.is-own.is-selected{border-color:rgba(112,177,255,.30);background:rgba(86,145,216,.12)}
 @keyframes et1FormDrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .et1-suggest{width:min(100%,640px);margin:30px auto 0;padding:20px 22px 18px;border-radius:18px;border:1px solid rgba(255,255,255,.07);background:rgba(4,10,18,.23);box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
 .et1-suggest label{display:block;margin:0 0 12px;color:#e8eef6;font-size:14px;font-weight:600}
@@ -15,8 +19,10 @@
 .et1-suggest input{min-width:0;flex:1;height:44px;padding:0 15px;border-radius:13px;border:1px solid rgba(255,255,255,.09);outline:none;background:rgba(5,11,20,.64);color:#f4f7fb;font:inherit;font-size:13px;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease}
 .et1-suggest input::placeholder{color:#65758a}
 .et1-suggest input:focus{border-color:rgba(112,177,255,.34);background:rgba(8,16,29,.82);box-shadow:0 0 0 3px rgba(99,168,255,.055)}
-.et1-suggest button{height:44px;padding:0 17px;border:1px solid rgba(127,184,255,.17);border-radius:13px;background:rgba(19,36,58,.74);color:#f2f7fd;font:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+.et1-suggest button{height:44px;padding:0 17px;border:1px solid rgba(127,184,255,.17);border-radius:13px;background:rgba(19,36,58,.74);color:#f2f7fd;font:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}
 .et1-suggest button:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.3);background:rgba(24,45,72,.86)}
+.et1-suggest button.is-ready{border-color:rgba(115,181,255,.30);background:rgba(28,53,85,.92);box-shadow:0 8px 20px rgba(41,103,177,.10),inset 0 1px 0 rgba(255,255,255,.05)}
+.et1-suggest button.ready-cue{transform:translateY(-1px);box-shadow:0 10px 24px rgba(55,120,196,.16),0 0 0 3px rgba(99,168,255,.04),inset 0 1px 0 rgba(255,255,255,.05)}
 .et1-suggest button:disabled{cursor:wait;opacity:.62;transform:none}
 .et1-suggest-status{min-height:17px;margin-top:10px;color:#77889c;font-size:11px;line-height:1.45}
 .et1-suggest-status.success{color:#9fcdbd}
@@ -47,4 +53,4 @@
   .et1-suggest-row{flex-direction:column}
   .et1-suggest button{width:100%}
 }
-@media(prefers-reduced-motion:reduce){.et1-form-track{animation:none}.et1-form-set[aria-hidden="true"]{display:none}}
+@media(prefers-reduced-motion:reduce){.et1-form-track{animation:none}.et1-form-set[aria-hidden="true"]{display:none}.et1-form-chip,.et1-suggest button{transition:none}}
