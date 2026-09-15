@@ -65,10 +65,10 @@ def preview():
         '<div class="demo-media"><video muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
     )
 
-    # Browser voice calling uses Vapi's web SDK. No phone number is required.
+    # Desktop uses the browser voice demo. Mobile shows the real Twilio number and opens the native dialler.
     html = html.replace(
         '<div class="call-number">07700 900 642</div>',
-        '<button class="call-number lylo-voice-call" id="lylo-voice-call" type="button">Call Lylo</button><div class="lylo-voice-status" id="lylo-voice-status">Browser voice call · no phone number needed</div>'
+        '<button class="call-number lylo-voice-call lylo-desktop-call" id="lylo-voice-call" type="button">Call Lylo</button><a class="call-number call-number-link lylo-mobile-call" href="tel:+441416732902" aria-label="Call Lylo on 0141 673 2902">0141 673 2902</a><div class="lylo-voice-status" id="lylo-voice-status">Browser voice call · no phone number needed</div>'
     )
 
     # Native touch scrolling on mobile; keep desktop mouse drag logic from taking touch pointers.
@@ -91,6 +91,10 @@ def preview():
         text-decoration: none;
         font: inherit;
         letter-spacing: inherit;
+      }
+
+      .lylo-mobile-call {
+        display: none;
       }
 
       .lylo-voice-call {
@@ -145,11 +149,19 @@ def preview():
           order: 2 !important;
         }
 
-        .call-number-link,
-        .call-number-link:link,
-        .call-number-link:visited,
-        .call-number-link:hover,
-        .call-number-link:active {
+        .lylo-desktop-call,
+        .lylo-voice-status {
+          display: none !important;
+        }
+
+        .lylo-mobile-call,
+        .lylo-mobile-call:link,
+        .lylo-mobile-call:visited,
+        .lylo-mobile-call:hover,
+        .lylo-mobile-call:active {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
           color: #dce5ef !important;
           text-decoration: none !important;
           -webkit-text-fill-color: #dce5ef !important;
