@@ -26,6 +26,20 @@
   let frame = 0;
   const lineNodes = new Map();
 
+  const controls = demo.querySelector('.audio-controls');
+  const timeline = document.createElement('div');
+  timeline.className = 'audio-timeline';
+  timeline.innerHTML = `
+    <span class="audio-time audio-time-current">0:00</span>
+    <input class="audio-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek through sample call">
+    <span class="audio-time audio-time-total">4:42</span>
+  `;
+  controls?.insertAdjacentElement('afterend', timeline);
+
+  const seek = timeline.querySelector('.audio-seek');
+  const currentTimeLabel = timeline.querySelector('.audio-time-current');
+  const totalTimeLabel = timeline.querySelector('.audio-time-total');
+
   if (!document.getElementById('lylo-phone-demo-styles')) {
     const style = document.createElement('style');
     style.id = 'lylo-phone-demo-styles';
@@ -87,6 +101,91 @@
         background: rgba(121,154,195,.055) !important;
       }
 
+      .phone-section .audio-timeline {
+        width: min(100%, 330px);
+        display: grid;
+        grid-template-columns: 34px minmax(0,1fr) 34px;
+        align-items: center;
+        gap: 10px;
+        margin: 14px auto 0;
+      }
+
+      .phone-section .audio-time {
+        color: #68798e;
+        font-size: 10px;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: .01em;
+        line-height: 1;
+        user-select: none;
+      }
+
+      .phone-section .audio-time-current { text-align: right; }
+      .phone-section .audio-time-total { text-align: left; }
+
+      .phone-section .audio-seek {
+        --seek: 0%;
+        width: 100%;
+        height: 18px;
+        margin: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        cursor: pointer;
+        touch-action: pan-x;
+      }
+
+      .phone-section .audio-seek::-webkit-slider-runnable-track {
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(203,220,241,.72) 0 var(--seek), rgba(139,160,186,.18) var(--seek) 100%);
+      }
+
+      .phone-section .audio-seek::-moz-range-track {
+        height: 2px;
+        border-radius: 999px;
+        background: rgba(139,160,186,.18);
+      }
+
+      .phone-section .audio-seek::-moz-range-progress {
+        height: 2px;
+        border-radius: 999px;
+        background: rgba(203,220,241,.72);
+      }
+
+      .phone-section .audio-seek::-webkit-slider-thumb {
+        width: 9px;
+        height: 9px;
+        margin-top: -3.5px;
+        border: 0;
+        border-radius: 50%;
+        appearance: none;
+        -webkit-appearance: none;
+        background: #dce8f6;
+        box-shadow: 0 0 0 3px rgba(118,157,207,.08);
+        opacity: .82;
+        transition: opacity .18s ease, transform .18s ease, box-shadow .18s ease;
+      }
+
+      .phone-section .audio-seek::-moz-range-thumb {
+        width: 9px;
+        height: 9px;
+        border: 0;
+        border-radius: 50%;
+        background: #dce8f6;
+        box-shadow: 0 0 0 3px rgba(118,157,207,.08);
+        opacity: .82;
+      }
+
+      .phone-section .audio-seek:hover::-webkit-slider-thumb,
+      .phone-section .audio-seek:focus-visible::-webkit-slider-thumb {
+        opacity: 1;
+        transform: scale(1.08);
+        box-shadow: 0 0 0 4px rgba(118,157,207,.12);
+      }
+
+      .phone-section .audio-seek:focus-visible { outline: none; }
+
       @media (max-width: 979px) {
         .phone-section .audio-stage.phone-demo-active {
           height: 445px !important;
@@ -100,6 +199,12 @@
 
         .phone-section .transcript-line {
           max-width: 90% !important;
+        }
+
+        .phone-section .audio-timeline {
+          width: min(88%, 310px);
+          margin-top: 12px;
+          gap: 9px;
         }
       }
     `;
@@ -133,6 +238,13 @@
     { who:'caller', speaker:'Caller', start:278.20, end:279.52, text:'Okay. Thank you.' },
     { who:'lylo', speaker:'Lylo', start:281.12, end:281.72, text:'Goodbye.' }
   ];
+
+  const formatTime = (seconds) => {
+    const safe = Math.max(0, Number.isFinite(seconds) ? seconds : 0);
+    const mins = Math.floor(safe / 60);
+    const secs = Math.floor(safe % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  };
 
   const setIcon = (playing) => {
     if (!icon) return;
@@ -213,10 +325,20 @@
     });
   };
 
+  const updateTimeline = (time) => {
+    const duration = Number.isFinite(mediaDuration) && mediaDuration > 0 ? mediaDuration : FALLBACK_DURATION;
+    const progress = Math.max(0, Math.min(1, time / duration));
+    seek.value = String(Math.round(progress * 1000));
+    seek.style.setProperty('--seek', `${progress * 100}%`);
+    currentTimeLabel.textContent = formatTime(time);
+    totalTimeLabel.textContent = formatTime(duration);
+  };
+
   const sync = () => {
     const time = audio.currentTime || 0;
     renderTranscript(time);
     updateWave(time);
+    updateTimeline(time);
   };
 
   const tick = () => {
@@ -242,12 +364,26 @@
 
   const captureDuration = () => {
     if (Number.isFinite(audio.duration) && audio.duration > 0) mediaDuration = audio.duration;
+    updateTimeline(audio.currentTime || 0);
     sync();
   };
 
   resetTranscript();
   setIcon(false);
   updateWave(0);
+  updateTimeline(0);
+
+  seek.addEventListener('input', () => {
+    const duration = Number.isFinite(mediaDuration) && mediaDuration > 0 ? mediaDuration : FALLBACK_DURATION;
+    const nextTime = (Number(seek.value) / 1000) * duration;
+    demo.classList.add('started');
+    stage.classList.add('phone-demo-active');
+    audio.currentTime = nextTime;
+    resetTranscript();
+    renderTranscript(nextTime);
+    updateWave(nextTime);
+    updateTimeline(nextTime);
+  });
 
   button.addEventListener('click', async () => {
     if (!audio.paused) {
@@ -259,6 +395,7 @@
       audio.currentTime = 0;
       resetTranscript();
       updateWave(0);
+      updateTimeline(0);
     }
 
     try {
@@ -273,11 +410,15 @@
   audio.addEventListener('timeupdate', sync);
   audio.addEventListener('play', startVisuals);
   audio.addEventListener('pause', () => { if (!audio.ended) stopVisuals(); });
-  audio.addEventListener('seeking', sync);
+  audio.addEventListener('seeking', () => {
+    resetTranscript();
+    sync();
+  });
   audio.addEventListener('seeked', sync);
   audio.addEventListener('ended', () => {
     stopVisuals();
     renderTranscript(mediaDuration);
     updateWave(mediaDuration);
+    updateTimeline(mediaDuration);
   });
 })();
