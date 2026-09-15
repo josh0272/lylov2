@@ -113,6 +113,20 @@
 
     const phoneSection = byHeading('Let Lylo answer the phone.');
     if (phoneSection) {
+      if (!document.querySelector('.beyond-casework')) {
+        const bridge = document.createElement('section');
+        bridge.className = 'beyond-casework';
+        bridge.innerHTML = `
+          <div class="beyond-casework-inner">
+            <div class="beyond-kicker">Beyond casework</div>
+            <h3>AI can help with more than legal documents.</h3>
+            <p>Alongside private legal workflows, Lylo can also be adapted for useful firm-wide tasks. One example is out-of-hours call handling.</p>
+            <div class="beyond-boundary">The voice receptionist uses separate cloud voice services and is separate from Lylo’s private on-premise legal AI.</div>
+          </div>
+        `;
+        phoneSection.parentNode.insertBefore(bridge, phoneSection);
+      }
+
       const label = phoneSection.querySelector('.call-label');
       if (label) label.textContent = 'Try the live receptionist';
 
@@ -148,6 +162,13 @@
       style.id = 'preview-cta-styles';
       style.textContent = `
         #sra-warning,#demos,#privacy{scroll-margin-top:84px}
+        .beyond-casework{padding:82px var(--gutter) 18px;text-align:center;border-top:1px solid rgba(255,255,255,.055);background:linear-gradient(180deg,rgba(11,20,34,.12),rgba(8,16,29,0))}
+        .beyond-casework-inner{width:100%;max-width:720px;margin:0 auto}
+        .beyond-kicker{margin-bottom:13px;color:#88a8cf;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+        .beyond-casework h3{max-width:680px;margin:0 auto 15px;font-family:'Cormorant Garamond',serif;font-size:clamp(38px,4.5vw,54px);font-weight:400;line-height:1.04;letter-spacing:-.03em;color:#f5f7fa}
+        .beyond-casework p{max-width:610px;margin:0 auto;color:#9eabba;font-size:15px;line-height:1.65}
+        .beyond-boundary{max-width:610px;margin:17px auto 0;padding-top:15px;border-top:1px solid rgba(255,255,255,.055);color:#68798e;font-size:10.5px;line-height:1.55}
+        .beyond-casework + .phone-section{border-top:0;padding-top:82px}
         .phone-call-helper{margin-top:11px;color:#77879a;font-size:11px;line-height:1.45}
         .phone-section .phone-live-cta{position:relative;isolation:isolate;overflow:hidden;gap:12px;margin-top:0;min-height:50px;padding:0 21px;border-radius:999px;border:1px solid transparent;background:linear-gradient(180deg,rgba(16,29,48,.96),rgba(9,18,31,.98)) padding-box,linear-gradient(115deg,rgba(124,191,255,.72),rgba(111,221,183,.38),rgba(151,122,255,.52)) border-box;color:#f5f9ff!important;-webkit-text-fill-color:#f5f9ff!important;text-decoration:none;font-size:14px;font-weight:600;letter-spacing:.005em;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 12px 34px rgba(42,112,210,.13),0 0 0 1px rgba(255,255,255,.018);transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
         .phone-section .phone-live-cta::after{content:"→";font-size:17px;line-height:1;transition:transform .25s ease}
@@ -169,6 +190,11 @@
           .desktop-nav{display:none!important}
           #mobileMenu .panel-inner a{font-size:21px;padding:17px 2px}
           #mobileMenu .panel-inner a:last-child{color:#eef5fd}
+          .beyond-casework{padding:62px 20px 4px}
+          .beyond-casework h3{max-width:340px;font-size:37px;margin-bottom:12px}
+          .beyond-casework p{max-width:345px;font-size:13px;line-height:1.58}
+          .beyond-boundary{max-width:345px;margin-top:14px;padding-top:13px;font-size:9.5px}
+          .beyond-casework + .phone-section{padding-top:62px}
           .phone-call-helper{margin-top:10px;font-size:10.5px}
           .phone-section .phone-live-cta{min-height:48px;padding:0 20px;font-size:14px}
           .et1-book-demo{height:41px;padding:0 12px;border-radius:11px;font-size:11px}
