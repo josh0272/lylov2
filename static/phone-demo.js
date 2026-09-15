@@ -21,6 +21,7 @@
 
   const icon = button.querySelector('svg');
   const FALLBACK_DURATION = 135.144;
+  const TYPE_CHARS_PER_SECOND = 38;
   let mediaDuration = FALLBACK_DURATION;
   let frame = 0;
   const lineNodes = new Map();
@@ -172,10 +173,14 @@
     turns.forEach((turn, index) => {
       if (time < turn.start) return;
       const { line, copy } = ensureLine(index);
-      const duration = Math.max(0.25, turn.end - turn.start);
-      const progress = Math.max(0, Math.min(1, (time - turn.start) / duration));
-      const chars = time >= turn.end ? turn.text.length : Math.max(1, Math.floor(turn.text.length * progress));
+
+      const availableDuration = Math.max(0.25, turn.end - turn.start);
+      const naturalTypingDuration = Math.max(0.35, turn.text.length / TYPE_CHARS_PER_SECOND);
+      const typingDuration = Math.min(availableDuration, naturalTypingDuration);
+      const progress = Math.max(0, Math.min(1, (time - turn.start) / typingDuration));
+      const chars = Math.max(1, Math.floor(turn.text.length * progress));
       copy.textContent = turn.text.slice(0, chars);
+
       const active = time >= turn.start && time < turn.end;
       line.classList.toggle('active', active);
       if (active) activeIndex = index;
