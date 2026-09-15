@@ -5,6 +5,8 @@
     return node;
   };
 
+  const pilotPath = '/preview/founding-pilot';
+
   const initSectionAnchors = () => {
     const intro = document.querySelector('.demo-intro');
     const warning = document.querySelector('.reg-trust');
@@ -32,7 +34,7 @@
       <a href="#sra-warning">SRA warning</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
-      <a class="desktop-pilot-link" href="/founding-pilot">Founding Pilot</a>
+      <a class="desktop-pilot-link" href="${pilotPath}">Founding Pilot</a>
     `;
   };
 
@@ -54,7 +56,7 @@
       <a href="#sra-warning">SRA warning</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
-      <a href="/founding-pilot">Founding Pilot</a>
+      <a href="${pilotPath}">Founding Pilot</a>
     `;
 
     panel.querySelectorAll('a').forEach((link) => {
@@ -70,7 +72,7 @@
     const heroCta = document.querySelector('.hero .cta');
     if (heroCta) {
       heroCta.textContent = 'Book a 20-minute demo';
-      heroCta.setAttribute('href', '/founding-pilot#book');
+      heroCta.setAttribute('href', `${pilotPath}#book`);
     }
     text('.hero .note', 'See Lylo, ask questions, and decide if the pilot is worth testing.');
 
@@ -81,14 +83,14 @@
     const caseCta = caseSection?.querySelector('.demo-cta');
     if (caseCta) {
       caseCta.textContent = 'Explore the founding pilot';
-      caseCta.setAttribute('href', '/founding-pilot');
+      caseCta.setAttribute('href', pilotPath);
     }
 
     const et1Section = byHeading('Turn case files into a completed form.');
     const et1Cta = et1Section?.querySelector('.demo-copy .demo-cta');
     if (et1Cta) {
       et1Cta.textContent = 'Explore the founding pilot';
-      et1Cta.setAttribute('href', '/founding-pilot?workflow=et1');
+      et1Cta.setAttribute('href', `${pilotPath}?workflow=et1`);
     }
 
     const et1Form = et1Section?.querySelector('#et1-form-suggest');
@@ -96,19 +98,19 @@
     if (et1Row && !et1Row.querySelector('.et1-book-demo')) {
       const demoLink = document.createElement('a');
       demoLink.className = 'et1-book-demo';
-      demoLink.href = '/founding-pilot?workflow=et1#book';
+      demoLink.href = `${pilotPath}?workflow=et1#book`;
       demoLink.textContent = 'Book a 20-minute demo';
       et1Row.appendChild(demoLink);
     } else {
       const demoLink = et1Row?.querySelector('.et1-book-demo');
-      if (demoLink) demoLink.href = '/founding-pilot?workflow=et1#book';
+      if (demoLink) demoLink.href = `${pilotPath}?workflow=et1#book`;
     }
 
     const scheduleSection = byHeading('Know what the claim is worth.');
     const scheduleCta = scheduleSection?.querySelector('.demo-cta');
     if (scheduleCta) {
       scheduleCta.textContent = 'Test this with your workflow';
-      scheduleCta.setAttribute('href', '/founding-pilot?workflow=schedule#book');
+      scheduleCta.setAttribute('href', `${pilotPath}?workflow=schedule#book`);
     }
 
     const phoneSection = byHeading('Let Lylo answer the phone.');
@@ -139,7 +141,7 @@
       if (copy) copy.textContent = 'Start with a short demo. If it looks useful, test Lylo on one synthetic or properly anonymised matter and compare it with your normal workflow.';
       if (cta) {
         cta.textContent = 'Apply for the founding pilot';
-        cta.setAttribute('href', '/founding-pilot#book');
+        cta.setAttribute('href', `${pilotPath}#book`);
       }
     }
 
