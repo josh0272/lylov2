@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lylo. — Founding Pilot</title>
+<meta name="description" content="Join the Lylo founding pilot. See Lylo in a short demo, test one legal workflow and compare it with your current process.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08101d;--panel:#0b1524;--text:#f5f7fa;--muted:#9eabba;--line:rgba(255,255,255,.075);--blue:#63a8ff;--green:#6ad9b0;--container:1120px;--gutter:clamp(20px,4vw,42px);--font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;color:var(--text);font-family:var(--font);background:var(--bg);-webkit-font-smoothing:antialiased}body:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(900px 620px at 74% -8%,rgba(84,160,255,.08),transparent 70%),radial-gradient(780px 560px at -8% 40%,rgba(67,210,159,.035),transparent 72%),linear-gradient(180deg,#0a1220 0%,#08101d 52%,#070c15 100%)}
+a{color:inherit}.site-header{position:fixed;top:0;left:0;right:0;z-index:50;height:64px;display:flex;align-items:center;background:rgba(9,18,32,.86);border-bottom:1px solid rgba(255,255,255,.06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.header-inner{width:100%;max-width:var(--container);margin:auto;padding:0 var(--gutter);display:flex;align-items:center;justify-content:space-between}.logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;text-decoration:none}.desktop-nav{display:flex;align-items:center;gap:28px}.desktop-nav a{color:#aeb8c8;text-decoration:none;font-size:13px;font-weight:500;transition:color .2s ease}.desktop-nav a:hover{color:#fff}.desktop-nav .pilot{height:36px;padding:0 15px;display:inline-flex;align-items:center;border-radius:999px;color:#eef5fd;border:1px solid rgba(120,187,255,.22);background:rgba(19,36,58,.54)}.menu-button{display:none;width:40px;height:36px;border:0;background:transparent;position:relative;cursor:pointer;padding:0}.menu-button span{position:absolute;left:9px;width:22px;height:2px;background:#fff;border-radius:2px;transition:top .22s ease,transform .22s ease,opacity .18s ease}.menu-button span:nth-child(1){top:11px}.menu-button span:nth-child(2){top:17px}.menu-button span:nth-child(3){top:23px}.menu-button[aria-expanded="true"] span:nth-child(1){top:17px;transform:rotate(45deg)}.menu-button[aria-expanded="true"] span:nth-child(2){opacity:0}.menu-button[aria-expanded="true"] span:nth-child(3){top:17px;transform:rotate(-45deg)}.mobile-menu{display:none;position:fixed;inset:64px 0 0;z-index:45;background:rgba(8,16,29,.985);padding:26px var(--gutter);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}.mobile-menu.open{display:block}.mobile-menu a{display:block;padding:17px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:20px;color:#eef3f9}.mobile-menu a:last-child{color:#f6f9fd}
+main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padding:126px var(--gutter) 80px}.hero-inner{width:100%;max-width:900px;margin:auto;text-align:center}.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#88a8cf;margin-bottom:18px}.hero h1{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(58px,8vw,92px);letter-spacing:-.04em;line-height:.96;margin:0 auto 24px;max-width:850px}.hero p{max-width:660px;margin:0 auto;color:var(--muted);font-size:18px;line-height:1.68}.hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:34px}.primary,.secondary{min-height:48px;padding:0 21px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:14px;font-weight:600;transition:transform .2s ease,border-color .2s ease,background .2s ease}.primary{border:1px solid rgba(124,191,255,.32);background:linear-gradient(180deg,rgba(20,38,62,.98),rgba(10,21,37,.98));box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 14px 34px rgba(42,112,210,.13)}.secondary{color:#c1ccda;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.018)}.primary:hover,.secondary:hover{transform:translateY(-2px)}.hero-note{margin-top:14px;color:#6f8096;font-size:12px}
+.section{padding:94px var(--gutter);border-top:1px solid rgba(255,255,255,.055)}.section-inner{width:100%;max-width:var(--container);margin:auto}.section-head{text-align:center;max-width:720px;margin:0 auto 42px}.section-head h2{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,5.5vw,62px);line-height:1.02;letter-spacing:-.03em;font-weight:400;margin:0 0 16px}.section-head p{margin:0;color:var(--muted);font-size:16px;line-height:1.65}.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.step{min-height:205px;padding:22px 19px;border:1px solid rgba(255,255,255,.075);border-radius:18px;background:linear-gradient(155deg,rgba(255,255,255,.025),rgba(255,255,255,.012));box-shadow:0 18px 45px rgba(0,0,0,.1)}.step-no{display:flex;align-items:center;justify-content:center;width:28px;height:28px;margin-bottom:18px;border-radius:50%;border:1px solid rgba(120,187,255,.18);background:rgba(74,132,202,.06);color:#9fc3ed;font-size:11px;font-weight:700}.step h3{font-size:15px;margin:0 0 9px;font-weight:600}.step p{margin:0;color:#8594a8;font-size:12.5px;line-height:1.55}.pilot-note{max-width:760px;margin:30px auto 0;padding:18px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.055);border-bottom:1px solid rgba(255,255,255,.055);color:#c8d2df;font-size:13px;line-height:1.6}.pilot-note strong{color:#fff}
+.workflow-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:58px;align-items:start}.workflow-copy{padding-top:16px}.workflow-copy h2{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,5vw,60px);font-weight:400;letter-spacing:-.03em;line-height:1.02;margin:0 0 18px}.workflow-copy>p{margin:0;color:var(--muted);font-size:16px;line-height:1.66;max-width:470px}.small-points{margin-top:28px;display:grid;gap:14px}.small-point{padding-left:18px;position:relative;color:#c2ccda;font-size:13px;line-height:1.5}.small-point:before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:#7aaeea;box-shadow:0 0 0 4px rgba(122,174,234,.06)}
+.form-card{border:1px solid rgba(255,255,255,.08);border-radius:22px;background:rgba(5,11,20,.42);padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.22)}.form-card h3{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;margin:0 0 7px;letter-spacing:-.02em}.form-card .sub{color:#7f90a5;font-size:12.5px;line-height:1.55;margin:0 0 24px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:grid;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:600;color:#b7c3d2}.field input,.field select,.field textarea{width:100%;border-radius:12px;border:1px solid rgba(255,255,255,.085);background:rgba(8,16,29,.72);color:#f5f7fa;font:inherit;font-size:13px;outline:none;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}.field input,.field select{height:45px;padding:0 13px}.field textarea{min-height:94px;padding:12px 13px;resize:vertical}.field input::placeholder,.field textarea::placeholder{color:#627287}.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(112,177,255,.32);background:rgba(10,20,35,.9);box-shadow:0 0 0 3px rgba(99,168,255,.045)}.form-submit{width:100%;height:48px;margin-top:17px;border-radius:13px;border:1px solid rgba(120,187,255,.28);background:linear-gradient(180deg,rgba(27,51,82,.96),rgba(15,31,52,.98));color:#f5f9ff;font:600 13px var(--font);cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 12px 30px rgba(36,95,164,.12);transition:transform .2s ease,border-color .2s ease}.form-submit:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.38)}.form-submit:disabled{cursor:wait;opacity:.62;transform:none}.form-status{min-height:18px;margin-top:10px;text-align:center;color:#7f90a5;font-size:11px}.form-status.success{color:#a3cfbe}.form-status.error{color:#d8aaaa}.privacy-line{margin-top:12px;color:#65768b;text-align:center;font-size:10.5px;line-height:1.5}#book,#how-it-works{scroll-margin-top:92px}
+.footer{padding:36px var(--gutter) 48px;border-top:1px solid rgba(255,255,255,.055);text-align:center;color:#65758a;font-size:11px}.footer a{text-decoration:none;color:#8fa3bd}
+@media(max-width:979px){.desktop-nav{display:none}.menu-button{display:block}.hero{min-height:auto;padding-top:122px}.hero h1{font-size:60px}.hero p{font-size:16px}.steps{grid-template-columns:1fr 1fr}.step:last-child{grid-column:1/-1}.workflow-grid{grid-template-columns:1fr;gap:36px}.workflow-copy{text-align:center;padding-top:0}.workflow-copy>p{margin-left:auto;margin-right:auto}.small-points{max-width:520px;margin-left:auto;margin-right:auto;text-align:left}.form-card{max-width:620px;margin:auto}}
+@media(max-width:620px){.hero{padding:112px 20px 64px}.hero h1{font-size:50px}.hero p{font-size:15px;line-height:1.6}.hero-actions{display:grid}.primary,.secondary{width:100%}.section{padding:58px 20px}.section-head{max-width:360px;margin:0 auto 28px}.section-head h2{font-size:38px;line-height:1.04;margin-bottom:11px}.section-head p{max-width:330px;margin:0 auto;font-size:13.5px;line-height:1.55}.steps{grid-template-columns:1fr;gap:9px}.step:last-child{grid-column:auto}.step{width:min(100%,350px);min-height:0;margin:0 auto;padding:16px 17px 17px;border-radius:14px;text-align:center}.step-no{width:26px;height:26px;margin:0 auto 11px;font-size:10px}.step h3{font-size:14px;margin:0 0 6px}.step p{max-width:292px;margin:0 auto;font-size:11.5px;line-height:1.5}.pilot-note{max-width:350px;margin:22px auto 0;padding:14px 9px;font-size:11.5px;line-height:1.55}.fields{grid-template-columns:1fr}.form-card{padding:20px 16px;border-radius:18px;text-align:left;scroll-margin-top:82px}.form-card h3{font-size:31px}.workflow-copy h2{font-size:42px}.workflow-copy>p{font-size:14px}.small-points{margin-top:22px;gap:11px;max-width:350px}.small-point{font-size:12px}.mobile-menu{padding-top:18px}.mobile-menu a{font-size:20px;padding:16px 2px}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="logo" href="/preview">Lylo.</a>
+    <nav class="desktop-nav" aria-label="Primary">
+      <a href="/preview#demos">Demos</a>
+      <a href="/preview#privacy">Private AI</a>
+      <a class="pilot" href="#book">Founding Pilot</a>
+    </nav>
+    <button class="menu-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<nav class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="/preview#sra-warning">SRA warning</a>
+  <a href="/preview#demos">Demos</a>
+  <a href="/preview#privacy">Private AI</a>
+  <a href="#book">Book a 20-minute demo</a>
+</nav>
+<main>
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="eyebrow">Founding Pilot</div>
+    <h1>See if Lylo fits your firm before you commit.</h1>
+    <p>We are looking for a small number of law firms to pilot Lylo with us. Start with a short demonstration, choose one workflow and help us test where Lylo saves time, where it needs work and whether it is worth taking further.</p>
+    <div class="hero-actions">
+      <a class="primary" href="#book">Book a 20-minute demo</a>
+      <a class="secondary" href="#how-it-works">See how the pilot works</a>
+    </div>
+    <div class="hero-note">No purchase commitment. A paid pilot is only discussed if the test is useful.</div>
+  </div>
+</section>
+<section class="section" id="how-it-works">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2>A small test, not a big rollout.</h2>
+      <p>The aim is simple: find out whether Lylo can save useful time on a real legal workflow.</p>
+    </div>
+    <div class="steps">
+      <article class="step"><div class="step-no">1</div><h3>See Lylo live</h3><p>A short 20–30 minute demonstration of the current system and demos.</p></article>
+      <article class="step"><div class="step-no">2</div><h3>Choose one workflow</h3><p>Tell us where your team loses time and what would be useful to test.</p></article>
+      <article class="step"><div class="step-no">3</div><h3>Use a safe example</h3><p>Use one synthetic or properly anonymised matter. No live client data is required for the first test.</p></article>
+      <article class="step"><div class="step-no">4</div><h3>Compare the process</h3><p>Compare Lylo's draft or workflow against the way your firm normally handles the task.</p></article>
+      <article class="step"><div class="step-no">5</div><h3>Review the result</h3><p>Meet again, review what worked and decide whether a paid pilot is worth discussing.</p></article>
+    </div>
+    <div class="pilot-note"><strong>The experiment comes first.</strong> The purpose of the founding pilot is to prove value before asking a firm to buy anything.</div>
+  </div>
+</section>
+<section class="section" id="workflow">
+  <div class="section-inner workflow-grid">
+    <div class="workflow-copy">
+      <h2>Bring one workflow.</h2>
+      <p>You do not need to change your whole firm. Pick one task that takes too much time and use that as the test.</p>
+      <div class="small-points">
+        <div class="small-point">Schedule of Loss drafting and calculations</div>
+        <div class="small-point">ET1 or other form automation</div>
+        <div class="small-point">Case-file questions and source-grounded answers</div>
+        <div class="small-point">Another repetitive document workflow your firm wants to explore</div>
+      </div>
+    </div>
+    <div class="form-card" id="book">
+      <h3>Book a 20-minute demo.</h3>
+      <p class="sub">Send a few details and I’ll get back to arrange a suitable time.</p>
+      <form id="pilotForm">
+        <div class="fields">
+          <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="firm">Firm</label><input id="firm" name="firm" autocomplete="organization" required></div>
+          <div class="field full"><label for="email">Work email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field full"><label for="workflowSelect">What would you like to test?</label><select id="workflowSelect" name="workflow"><option value="">Choose one</option><option>Schedule of Loss</option><option>ET1 / form automation</option><option>Case-file Q&A</option><option>Another legal workflow</option></select></div>
+          <div class="field full"><label for="time">Best time to speak</label><input id="time" name="time" placeholder="e.g. Tuesday afternoon or after 4pm"></div>
+          <div class="field full"><label for="notes">Anything useful to know? <span style="font-weight:400;color:#6d7d91">(optional)</span></label><textarea id="notes" name="notes" placeholder="A sentence about the workflow is enough."></textarea></div>
+        </div>
+        <button class="form-submit" type="submit">Request a 20-minute demo</button>
+        <div class="form-status" id="formStatus" aria-live="polite"></div>
+        <div class="privacy-line">For the first test, use synthetic or properly anonymised matter information only.</div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="footer">Lylo is in development. <a href="/preview">Back to Lylo</a></footer>
+<script>
+(() => {
+  const menuButton=document.getElementById('menuButton');
+  const mobileMenu=document.getElementById('mobileMenu');
+  const closeMenu=()=>{mobileMenu.classList.remove('open');mobileMenu.setAttribute('aria-hidden','true');menuButton.setAttribute('aria-expanded','false');menuButton.setAttribute('aria-label','Open menu')};
+  menuButton.addEventListener('click',()=>{const open=!mobileMenu.classList.contains('open');mobileMenu.classList.toggle('open',open);mobileMenu.setAttribute('aria-hidden',open?'false':'true');menuButton.setAttribute('aria-expanded',open?'true':'false');menuButton.setAttribute('aria-label',open?'Close menu':'Open menu')});
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+
+  const params=new URLSearchParams(location.search);
+  const workflow=params.get('workflow');
+  const select=document.getElementById('workflowSelect');
+  if(workflow){
+    const aliases={schedule:'Schedule of Loss',et1:'ET1 / form automation',case:'Case-file Q&A'};
+    const wanted=aliases[workflow.toLowerCase()]||workflow;
+    const match=Array.from(select.options).find(o=>o.text.toLowerCase()===wanted.toLowerCase());
+    if(match) select.value=match.value;
+  }
+
+  const form=document.getElementById('pilotForm');
+  const status=document.getElementById('formStatus');
+  const button=form.querySelector('button[type="submit"]');
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const data=new FormData(form);
+    const name=(data.get('name')||'').toString().trim();
+    const firm=(data.get('firm')||'').toString().trim();
+    const email=(data.get('email')||'').toString().trim();
+    if(!name||!firm||!email){status.className='form-status error';status.textContent='Please add your name, firm and work email.';return}
+    button.disabled=true;status.className='form-status';status.textContent='Sending…';
+    try{
+      const body=new FormData();
+      body.append('name',name);
+      body.append('email',email);
+      body.append('answers',`Founding pilot demo request\nFirm: ${firm}\nWorkflow: ${data.get('workflow')||'Not selected'}\nBest time: ${data.get('time')||'Not provided'}\nNotes: ${data.get('notes')||'None'}`);
+      body.append('transcript','');
+      const response=await fetch('/api/submit',{method:'POST',body});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok||result.ok===false) throw new Error(result.error||'Could not send');
+      status.className='form-status success';status.textContent='Request sent. I’ll get back to arrange a time.';form.reset();
+      if(workflow){const aliases={schedule:'Schedule of Loss',et1:'ET1 / form automation',case:'Case-file Q&A'};const wanted=aliases[workflow.toLowerCase()]||workflow;const match=Array.from(select.options).find(o=>o.text.toLowerCase()===wanted.toLowerCase());if(match)select.value=match.value}
+    }catch(_){status.className='form-status error';status.textContent='Could not send that just now. Please try again.'}
+    finally{button.disabled=false}
+  });
+})();
+</script>
+</body>
+</html>
