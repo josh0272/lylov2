@@ -5,6 +5,16 @@
     return node;
   };
 
+  const initSectionAnchors = () => {
+    const intro = document.querySelector('.demo-intro');
+    const warning = document.querySelector('.reg-trust');
+    const demoHeading = document.querySelector('.demo-heading');
+
+    if (intro?.id === 'demos') intro.removeAttribute('id');
+    if (warning) warning.id = 'sra-warning';
+    if (demoHeading) demoHeading.id = 'demos';
+  };
+
   const initDesktopNav = () => {
     const headerInner = document.querySelector('.site-header .header-inner');
     const hamburger = document.getElementById('hamburger');
@@ -21,15 +31,21 @@
     headerInner.insertBefore(nav, hamburger);
   };
 
-  const init = () => {
-    initDesktopNav();
+  const initMobileNav = () => {
+    const panel = document.querySelector('#mobileMenu .panel-inner');
+    if (!panel) return;
+    panel.innerHTML = `
+      <a href="#sra-warning">SRA warning</a>
+      <a href="#demos">Demos</a>
+      <a href="#privacy">Private AI</a>
+      <a href="/founding-pilot">Founding Pilot</a>
+    `;
+  };
 
-    const navLinks = document.querySelectorAll('#mobileMenu .panel-inner a');
-    if (navLinks.length) {
-      const last = navLinks[navLinks.length - 1];
-      last.textContent = 'Founding Pilot';
-      last.setAttribute('href', '/founding-pilot');
-    }
+  const init = () => {
+    initSectionAnchors();
+    initDesktopNav();
+    initMobileNav();
 
     const heroCta = document.querySelector('.hero .cta');
     if (heroCta) {
@@ -107,6 +123,7 @@
       const style = document.createElement('style');
       style.id = 'preview-cta-styles';
       style.textContent = `
+        #sra-warning,#demos,#privacy{scroll-margin-top:84px}
         .phone-call-helper{margin-top:11px;color:#77879a;font-size:11px;line-height:1.45}
         .et1-book-demo{display:none;height:44px;padding:0 17px;border:1px solid rgba(120,187,255,.28);border-radius:13px;background:rgba(31,58,92,.92);color:#f2f7fd;font:600 12px/1 inherit;text-decoration:none;align-items:center;justify-content:center;white-space:nowrap;box-shadow:0 8px 22px rgba(34,94,162,.12);transition:transform .18s ease,border-color .18s ease,background .18s ease,opacity .22s ease}
         .et1-book-demo:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.38);background:rgba(38,67,104,.98)}
@@ -120,6 +137,8 @@
         @media(min-width:980px){.site-header .hamburger{display:none!important}}
         @media(max-width:979px){
           .desktop-nav{display:none!important}
+          #mobileMenu .panel-inner a{font-size:21px;padding:17px 2px}
+          #mobileMenu .panel-inner a:last-child{color:#eef5fd}
           .phone-call-helper{margin-top:10px;font-size:10.5px}
           .et1-book-demo{height:41px;padding:0 12px;border-radius:11px;font-size:11px}
           .et1-suggest.is-submitted .et1-suggest-row{align-items:center}
