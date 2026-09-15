@@ -91,6 +91,7 @@
         <div class="et1-suggest-row">
           <input id="et1-form-input" name="form_suggestion" type="text" autocomplete="off" maxlength="140" placeholder="e.g. ET3, Form E, our client intake form…" aria-describedby="et1-form-status">
           <button type="submit">Suggest a form</button>
+          <a class="et1-book-demo" href="/research">Book a 20-minute demo</a>
         </div>
         <div class="et1-suggest-status" id="et1-form-status" aria-live="polite"></div>
       </form>
@@ -112,25 +113,30 @@
     }
 
     const existingCta = section.querySelector('.demo-copy .demo-cta');
-    if (existingCta && existingCta.id !== 'et1-suggest-jump') {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.id = 'et1-suggest-jump';
-      button.className = 'demo-cta et1-suggest-jump';
-      button.textContent = 'Suggest a form';
-      existingCta.replaceWith(button);
+    if (existingCta) {
+      if (existingCta.tagName === 'A') {
+        existingCta.href = '/research';
+        existingCta.textContent = 'Explore the founding pilot';
+      } else {
+        const link = document.createElement('a');
+        link.href = '/research';
+        link.className = 'demo-cta';
+        link.textContent = 'Explore the founding pilot';
+        existingCta.replaceWith(link);
+      }
     }
 
     const form = document.getElementById('et1-form-suggest');
     const input = document.getElementById('et1-form-input');
     const status = document.getElementById('et1-form-status');
-    const jump = document.getElementById('et1-suggest-jump');
     const submitButton = form?.querySelector('button[type="submit"]');
-    if (!form || !input || !status || !submitButton) return;
+    const label = form?.querySelector('label');
+    if (!form || !input || !status || !submitButton || !label) return;
 
     const chips = Array.from(section.querySelectorAll('.et1-form-chip'));
 
     const setReadyState = (ready, selectedValue = '') => {
+      if (form.classList.contains('is-submitted')) return;
       submitButton.classList.toggle('is-ready', ready);
       submitButton.textContent = ready ? 'Send suggestion' : 'Suggest a form';
 
@@ -142,6 +148,7 @@
     };
 
     const chooseChip = (chip) => {
+      if (form.classList.contains('is-submitted')) return;
       const value = chip.textContent.trim();
       input.value = value;
       status.className = 'et1-suggest-status';
@@ -185,18 +192,9 @@
       }
     });
 
-    const focusInput = () => {
-      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      window.setTimeout(() => input.focus({ preventScroll: true }), 320);
-    };
-
-    jump?.addEventListener('click', (event) => {
-      event.preventDefault();
-      focusInput();
-    });
-
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (form.classList.contains('is-submitted')) return;
 
       const value = input.value.trim();
       if (!value) {
@@ -221,14 +219,18 @@
         const data = await response.json().catch(() => ({}));
         if (!response.ok || data.ok === false) throw new Error(data.error || 'Could not send');
 
-        status.className = 'et1-suggest-status success';
-        status.textContent = 'Thanks. This helps decide what Lylo builds next.';
+        form.classList.add('is-submitted');
+        label.textContent = 'Thanks — want to see Lylo on your workflow?';
+        status.className = 'et1-suggest-status';
+        status.textContent = '';
+        submitButton.classList.remove('is-ready', 'ready-cue');
+        submitButton.textContent = '✓ Suggestion sent';
+        submitButton.disabled = true;
         input.value = '';
-        setReadyState(false);
+        chips.forEach((chip) => chip.classList.remove('is-selected'));
       } catch (_) {
         status.className = 'et1-suggest-status error';
         status.textContent = 'Could not send that just now. Please try again.';
-      } finally {
         submitButton.disabled = false;
       }
     });
