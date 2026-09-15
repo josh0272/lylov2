@@ -5,12 +5,6 @@
     return node;
   };
 
-  const href = (selector, value) => {
-    const node = document.querySelector(selector);
-    if (node) node.setAttribute('href', value);
-    return node;
-  };
-
   const init = () => {
     const navLinks = document.querySelectorAll('#mobileMenu .panel-inner a');
     if (navLinks.length) {
@@ -34,6 +28,23 @@
     if (caseCta) {
       caseCta.textContent = 'Explore the founding pilot';
       caseCta.setAttribute('href', '/research');
+    }
+
+    const et1Section = byHeading('Turn case files into a completed form.');
+    const et1Cta = et1Section?.querySelector('.demo-copy .demo-cta');
+    if (et1Cta) {
+      et1Cta.textContent = 'Explore the founding pilot';
+      et1Cta.setAttribute('href', '/research');
+    }
+
+    const et1Form = et1Section?.querySelector('#et1-form-suggest');
+    const et1Row = et1Form?.querySelector('.et1-suggest-row');
+    if (et1Row && !et1Row.querySelector('.et1-book-demo')) {
+      const demoLink = document.createElement('a');
+      demoLink.className = 'et1-book-demo';
+      demoLink.href = '/research';
+      demoLink.textContent = 'Book a 20-minute demo';
+      et1Row.appendChild(demoLink);
     }
 
     const scheduleSection = byHeading('Know what the claim is worth.');
@@ -76,7 +87,20 @@
       style.id = 'preview-cta-styles';
       style.textContent = `
         .phone-call-helper{margin-top:11px;color:#77879a;font-size:11px;line-height:1.45}
-        @media(max-width:979px){.phone-call-helper{margin-top:10px;font-size:10.5px}}
+        .et1-book-demo{display:none;height:44px;padding:0 17px;border:1px solid rgba(120,187,255,.28);border-radius:13px;background:rgba(31,58,92,.92);color:#f2f7fd;font:600 12px/1 inherit;text-decoration:none;align-items:center;justify-content:center;white-space:nowrap;box-shadow:0 8px 22px rgba(34,94,162,.12);transition:transform .18s ease,border-color .18s ease,background .18s ease,opacity .22s ease}
+        .et1-book-demo:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.38);background:rgba(38,67,104,.98)}
+        .et1-suggest.is-submitted .et1-book-demo{display:inline-flex;animation:et1BookReveal .26s ease both}
+        @keyframes et1BookReveal{from{opacity:0;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
+        @media(max-width:979px){
+          .phone-call-helper{margin-top:10px;font-size:10.5px}
+          .et1-book-demo{height:41px;padding:0 12px;border-radius:11px;font-size:11px}
+          .et1-suggest.is-submitted .et1-suggest-row{align-items:center}
+          .et1-suggest.is-submitted button,.et1-suggest.is-submitted .et1-book-demo{flex:1 1 0}
+        }
+        @media(max-width:430px){
+          .et1-suggest.is-submitted .et1-suggest-row{flex-direction:column}
+          .et1-suggest.is-submitted button,.et1-suggest.is-submitted .et1-book-demo{width:100%}
+        }
       `;
       document.head.appendChild(style);
     }
