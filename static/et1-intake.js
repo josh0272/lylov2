@@ -76,7 +76,65 @@
     const input = document.getElementById('et1-form-input');
     const status = document.getElementById('et1-form-status');
     const jump = document.getElementById('et1-suggest-jump');
-    if (!form || !input || !status) return;
+    const submitButton = form?.querySelector('button[type="submit"]');
+    if (!form || !input || !status || !submitButton) return;
+
+    const chips = Array.from(section.querySelectorAll('.et1-form-chip'));
+
+    const setReadyState = (ready, selectedValue = '') => {
+      submitButton.classList.toggle('is-ready', ready);
+      submitButton.textContent = ready ? 'Send suggestion' : 'Suggest a form';
+
+      chips.forEach((chip) => {
+        const selected = Boolean(selectedValue) && chip.textContent.trim() === selectedValue;
+        chip.classList.toggle('is-selected', selected);
+        chip.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      });
+    };
+
+    const chooseChip = (chip) => {
+      const value = chip.textContent.trim();
+      input.value = value;
+      status.className = 'et1-suggest-status';
+      status.textContent = '';
+      setReadyState(true, value);
+
+      submitButton.classList.remove('ready-cue');
+      void submitButton.offsetWidth;
+      submitButton.classList.add('ready-cue');
+      window.setTimeout(() => submitButton.classList.remove('ready-cue'), 900);
+
+      form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    };
+
+    chips.forEach((chip) => {
+      const duplicateSet = chip.closest('.et1-form-set')?.getAttribute('aria-hidden') === 'true';
+      if (!duplicateSet) {
+        chip.setAttribute('role', 'button');
+        chip.setAttribute('tabindex', '0');
+        chip.setAttribute('aria-pressed', 'false');
+      }
+
+      chip.addEventListener('click', () => chooseChip(chip));
+      if (!duplicateSet) {
+        chip.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            chooseChip(chip);
+          }
+        });
+      }
+    });
+
+    input.addEventListener('input', () => {
+      const value = input.value.trim();
+      const exactChip = chips.find((chip) => chip.textContent.trim() === value);
+      setReadyState(Boolean(value), exactChip ? value : '');
+      if (status.textContent) {
+        status.className = 'et1-suggest-status';
+        status.textContent = '';
+      }
+    });
 
     const focusInput = () => {
       input.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -99,8 +157,7 @@
         return;
       }
 
-      const button = form.querySelector('button[type="submit"]');
-      button.disabled = true;
+      submitButton.disabled = true;
       status.className = 'et1-suggest-status';
       status.textContent = 'Sending…';
 
@@ -118,11 +175,12 @@
         status.className = 'et1-suggest-status success';
         status.textContent = 'Thanks. This helps decide what Lylo builds next.';
         input.value = '';
+        setReadyState(false);
       } catch (_) {
         status.className = 'et1-suggest-status error';
         status.textContent = 'Could not send that just now. Please try again.';
       } finally {
-        button.disabled = false;
+        submitButton.disabled = false;
       }
     });
   };
