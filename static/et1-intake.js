@@ -236,9 +236,19 @@
     });
   };
 
+  const loadPreviewCtas = () => {
+    if (document.getElementById('preview-cta-script')) return;
+    const script = document.createElement('script');
+    script.id = 'preview-cta-script';
+    script.src = '/static/preview-cta.js?v=1';
+    script.defer = true;
+    document.body.appendChild(script);
+  };
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init, { once: true });
+    document.addEventListener('DOMContentLoaded', () => { init(); loadPreviewCtas(); }, { once: true });
   } else {
     init();
+    loadPreviewCtas();
   }
 })();
