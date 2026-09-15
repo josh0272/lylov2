@@ -10,8 +10,6 @@
   if (demo.dataset.phoneDemoV2 === '1') return;
   demo.dataset.phoneDemoV2 = '1';
 
-  // Clone the interactive elements to strip the old inline demo listeners.
-  // This leaves this file as the single controller on desktop and mobile.
   const button = oldButton.cloneNode(true);
   oldButton.replaceWith(button);
 
@@ -107,13 +105,8 @@
     document.head.appendChild(style);
   }
 
-  // Start times are the relative timestamps from the recorded call log.
-  // End times use the next speaker turn so the text can reveal naturally
-  // throughout each spoken turn.
   const turns = [
-    { who:'lylo', speaker:'Lylo', start:2.96, text:'Hello.' },
-    { who:'caller', speaker:'Caller', start:3.04, text:'Hello?' },
-    { who:'lylo', speaker:'Lylo', start:3.49, text:'You can ask me about Lylo or try the out of hours receptionist demo.' },
+    { who:'lylo', speaker:'Lylo', start:2.96, end:6.45, text:'Hello. You can ask me about Lylo or try the out of hours receptionist demo.' },
     { who:'caller', speaker:'Caller', start:12.24, text:'This is good.' },
     { who:'lylo', speaker:'Lylo', start:15.30, text:'Good. Lylo is designed to make legal AI feel practical, private, and straightforward.' },
     { who:'caller', speaker:'Caller', start:22.45, text:'How is it private? What does it even mean to be on premise? Can you tell me in simple terms?' },
@@ -130,7 +123,7 @@
     { who:'lylo', speaker:'Lylo', start:134.39, text:'Goodbye.' }
   ].map((turn, index, all) => ({
     ...turn,
-    end: index < all.length - 1 ? Math.max(turn.start + 0.35, all[index + 1].start - 0.12) : FALLBACK_DURATION
+    end: turn.end ?? (index < all.length - 1 ? Math.max(turn.start + 0.35, all[index + 1].start - 0.12) : FALLBACK_DURATION)
   }));
 
   const setIcon = (playing) => {
