@@ -13,24 +13,29 @@
 .et1-form-chip.is-own{color:#dce8f7;border-color:rgba(126,186,255,.14);background:rgba(91,151,221,.045)}
 .et1-form-chip.is-own.is-selected{border-color:rgba(112,177,255,.30);background:rgba(86,145,216,.12)}
 @keyframes et1FormDrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.et1-suggest{width:min(100%,640px);margin:30px auto 0;padding:20px 22px 18px;border-radius:18px;border:1px solid rgba(255,255,255,.07);background:rgba(4,10,18,.23);box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}
+.et1-suggest{width:min(100%,680px);margin:30px auto 0;padding:20px 22px 18px;border-radius:18px;border:1px solid rgba(255,255,255,.07);background:rgba(4,10,18,.23);box-shadow:inset 0 1px 0 rgba(255,255,255,.025);transition:border-color .24s ease,background .24s ease}
 .et1-suggest label{display:block;margin:0 0 12px;color:#e8eef6;font-size:14px;font-weight:600}
-.et1-suggest-row{display:flex;gap:8px;align-items:stretch}
-.et1-suggest input{min-width:0;flex:1;height:44px;padding:0 15px;border-radius:13px;border:1px solid rgba(255,255,255,.09);outline:none;background:rgba(5,11,20,.64);color:#f4f7fb;font:inherit;font-size:13px;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease}
+.et1-suggest-row{display:flex;gap:8px;align-items:stretch;justify-content:center}
+.et1-suggest input{min-width:0;flex:1;height:44px;padding:0 15px;border-radius:13px;border:1px solid rgba(255,255,255,.09);outline:none;background:rgba(5,11,20,.64);color:#f4f7fb;font:inherit;font-size:13px;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease,opacity .22s ease,max-width .28s ease,padding .28s ease,border-width .28s ease}
 .et1-suggest input::placeholder{color:#65758a}
 .et1-suggest input:focus{border-color:rgba(112,177,255,.34);background:rgba(8,16,29,.82);box-shadow:0 0 0 3px rgba(99,168,255,.055)}
-.et1-suggest button{height:44px;padding:0 17px;border:1px solid rgba(127,184,255,.17);border-radius:13px;background:rgba(19,36,58,.74);color:#f2f7fd;font:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}
-.et1-suggest button:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.3);background:rgba(24,45,72,.86)}
+.et1-suggest button,.et1-book-demo{height:44px;padding:0 17px;border:1px solid rgba(127,184,255,.17);border-radius:13px;background:rgba(19,36,58,.74);color:#f2f7fd;font:inherit;font-size:12px;font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease,opacity .22s ease}
+.et1-suggest button{cursor:pointer}
+.et1-suggest button:hover,.et1-book-demo:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.3);background:rgba(24,45,72,.86)}
 .et1-suggest button.is-ready{border-color:rgba(115,181,255,.30);background:rgba(28,53,85,.92);box-shadow:0 8px 20px rgba(41,103,177,.10),inset 0 1px 0 rgba(255,255,255,.05)}
 .et1-suggest button.ready-cue{transform:translateY(-1px);box-shadow:0 10px 24px rgba(55,120,196,.16),0 0 0 3px rgba(99,168,255,.04),inset 0 1px 0 rgba(255,255,255,.05)}
 .et1-suggest button:disabled{cursor:wait;opacity:.62;transform:none}
+.et1-book-demo{display:none;background:rgba(31,58,92,.92);border-color:rgba(120,187,255,.28);box-shadow:0 8px 22px rgba(34,94,162,.12)}
 .et1-suggest-status{min-height:17px;margin-top:10px;color:#77889c;font-size:11px;line-height:1.45}
 .et1-suggest-status.success{color:#9fcdbd}
 .et1-suggest-status.error{color:#d7a6a6}
-.et1-suggest-jump{font-family:inherit;cursor:pointer}
+.et1-suggest.is-submitted{border-color:rgba(111,197,164,.11);background:rgba(5,12,20,.28)}
+.et1-suggest.is-submitted input{opacity:0;max-width:0;flex:0 0 0;padding-left:0;padding-right:0;border-width:0;pointer-events:none}
+.et1-suggest.is-submitted button{cursor:default;opacity:1;color:#a8d9c6;background:rgba(34,74,61,.34);border-color:rgba(116,214,176,.18);box-shadow:none}
+.et1-suggest.is-submitted .et1-book-demo{display:inline-flex;animation:et1BookReveal .26s ease both}
+@keyframes et1BookReveal{from{opacity:0;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
 @media(max-width:979px){
   .et1-section{padding-bottom:52px!important}
-  .et1-section .et1-suggest-jump{display:none!important}
   .et1-extension{margin-top:28px;padding-top:24px;width:100%}
   .et1-extension-head{padding:0 10px}
   .et1-extension-head h4{font-size:27px;line-height:1.08;margin-bottom:7px}
@@ -45,12 +50,19 @@
   .et1-suggest label{font-size:12.5px;line-height:1.35;margin-bottom:9px}
   .et1-suggest-row{flex-direction:row;gap:7px}
   .et1-suggest input{height:41px;padding:0 12px;border-radius:11px;font-size:12px}
-  .et1-suggest button{flex:0 0 auto;height:41px;padding:0 12px;border-radius:11px;font-size:11px;background:rgba(19,36,58,.62)}
+  .et1-suggest button,.et1-book-demo{flex:0 0 auto;height:41px;padding:0 12px;border-radius:11px;font-size:11px}
+  .et1-suggest button{background:rgba(19,36,58,.62)}
   .et1-suggest-status{min-height:0;margin-top:0;font-size:10.5px}
   .et1-suggest-status:not(:empty){margin-top:8px}
+  .et1-suggest.is-submitted .et1-suggest-row{align-items:center}
+  .et1-suggest.is-submitted button,.et1-suggest.is-submitted .et1-book-demo{flex:1 1 0}
+}
+@media(max-width:430px){
+  .et1-suggest.is-submitted .et1-suggest-row{flex-direction:column}
+  .et1-suggest.is-submitted button,.et1-suggest.is-submitted .et1-book-demo{width:100%}
 }
 @media(max-width:380px){
   .et1-suggest-row{flex-direction:column}
-  .et1-suggest button{width:100%}
+  .et1-suggest button,.et1-book-demo{width:100%}
 }
-@media(prefers-reduced-motion:reduce){.et1-form-track{animation:none}.et1-form-set[aria-hidden="true"]{display:none}.et1-form-chip,.et1-suggest button{transition:none}}
+@media(prefers-reduced-motion:reduce){.et1-form-track{animation:none}.et1-form-set[aria-hidden="true"]{display:none}.et1-form-chip,.et1-suggest button,.et1-book-demo{transition:none}.et1-suggest.is-submitted .et1-book-demo{animation:none}}
