@@ -23,18 +23,28 @@
 .et1-suggest-status.error{color:#d7a6a6}
 .et1-suggest-jump{font-family:inherit;cursor:pointer}
 @media(max-width:979px){
-  .et1-section{padding-bottom:88px!important}
-  .et1-extension{margin-top:52px;padding-top:30px}
-  .et1-extension-head h4{font-size:30px}
-  .et1-form-strip{width:calc(100vw - 28px);margin-top:22px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-mask-image:none;mask-image:none;overscroll-behavior-x:contain}
+  .et1-section{padding-bottom:52px!important}
+  .et1-section .et1-suggest-jump{display:none!important}
+  .et1-extension{margin-top:28px;padding-top:24px;width:100%}
+  .et1-extension-head{padding:0 10px}
+  .et1-extension-head h4{font-size:27px;line-height:1.08;margin-bottom:7px}
+  .et1-extension-head p{font-size:13px;line-height:1.48;max-width:350px}
+  .et1-form-strip{width:min(100%,430px);margin:18px auto 0;padding:0 10px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-mask-image:none;mask-image:none;overscroll-behavior-x:contain;scroll-padding-inline:10px}
   .et1-form-strip::-webkit-scrollbar{display:none}
-  .et1-form-track{animation:none;padding:0 4px}
+  .et1-form-track{animation:none;padding:0}
   .et1-form-set[aria-hidden="true"]{display:none}
-  .et1-form-set{gap:8px;padding-right:0}
-  .et1-form-chip{min-height:32px;padding:0 13px;font-size:11px}
-  .et1-suggest{width:min(100%,430px);margin-top:25px;padding:18px 14px 15px;border-radius:16px}
-  .et1-suggest label{font-size:13px;margin-bottom:11px}
-  .et1-suggest-row{flex-direction:column;gap:8px}
-  .et1-suggest input,.et1-suggest button{width:100%;height:44px}
+  .et1-form-set{gap:7px;padding-right:0}
+  .et1-form-chip{min-height:30px;padding:0 12px;font-size:10.5px}
+  .et1-suggest{width:min(calc(100% - 20px),410px);margin:20px auto 0;padding:14px 12px 12px;border-radius:14px;background:rgba(4,10,18,.18)}
+  .et1-suggest label{font-size:12.5px;line-height:1.35;margin-bottom:9px}
+  .et1-suggest-row{flex-direction:row;gap:7px}
+  .et1-suggest input{height:41px;padding:0 12px;border-radius:11px;font-size:12px}
+  .et1-suggest button{flex:0 0 auto;height:41px;padding:0 12px;border-radius:11px;font-size:11px;background:rgba(19,36,58,.62)}
+  .et1-suggest-status{min-height:0;margin-top:0;font-size:10.5px}
+  .et1-suggest-status:not(:empty){margin-top:8px}
+}
+@media(max-width:380px){
+  .et1-suggest-row{flex-direction:column}
+  .et1-suggest button{width:100%}
 }
 @media(prefers-reduced-motion:reduce){.et1-form-track{animation:none}.et1-form-set[aria-hidden="true"]{display:none}}
