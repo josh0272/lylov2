@@ -18,28 +18,48 @@
   const initDesktopNav = () => {
     const headerInner = document.querySelector('.site-header .header-inner');
     const hamburger = document.getElementById('hamburger');
-    if (!headerInner || !hamburger || headerInner.querySelector('.desktop-nav')) return;
+    if (!headerInner || !hamburger) return;
 
-    const nav = document.createElement('nav');
-    nav.className = 'desktop-nav';
-    nav.setAttribute('aria-label', 'Primary');
+    let nav = headerInner.querySelector('.desktop-nav');
+    if (!nav) {
+      nav = document.createElement('nav');
+      nav.className = 'desktop-nav';
+      nav.setAttribute('aria-label', 'Primary');
+      headerInner.insertBefore(nav, hamburger);
+    }
+
     nav.innerHTML = `
+      <a href="#sra-warning">SRA warning</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
       <a class="desktop-pilot-link" href="/founding-pilot">Founding Pilot</a>
     `;
-    headerInner.insertBefore(nav, hamburger);
+  };
+
+  const closeMobileMenu = () => {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburger');
+    if (!menu || !hamburger) return;
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
   };
 
   const initMobileNav = () => {
     const panel = document.querySelector('#mobileMenu .panel-inner');
     if (!panel) return;
+
     panel.innerHTML = `
       <a href="#sra-warning">SRA warning</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
       <a href="/founding-pilot">Founding Pilot</a>
     `;
+
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMobileMenu);
+    });
   };
 
   const init = () => {
@@ -96,6 +116,10 @@
       const label = phoneSection.querySelector('.call-label');
       if (label) label.textContent = 'Try the live receptionist';
 
+      phoneSection.querySelectorAll('.call-number').forEach((call) => {
+        call.classList.add('phone-live-cta');
+      });
+
       const extraCta = phoneSection.querySelector('.demo-copy > .demo-cta');
       if (extraCta) extraCta.remove();
 
@@ -125,11 +149,17 @@
       style.textContent = `
         #sra-warning,#demos,#privacy{scroll-margin-top:84px}
         .phone-call-helper{margin-top:11px;color:#77879a;font-size:11px;line-height:1.45}
+        .phone-section .phone-live-cta{position:relative;isolation:isolate;overflow:hidden;gap:12px;margin-top:0;min-height:50px;padding:0 21px;border-radius:999px;border:1px solid transparent;background:linear-gradient(180deg,rgba(16,29,48,.96),rgba(9,18,31,.98)) padding-box,linear-gradient(115deg,rgba(124,191,255,.72),rgba(111,221,183,.38),rgba(151,122,255,.52)) border-box;color:#f5f9ff!important;-webkit-text-fill-color:#f5f9ff!important;text-decoration:none;font-size:14px;font-weight:600;letter-spacing:.005em;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 12px 34px rgba(42,112,210,.13),0 0 0 1px rgba(255,255,255,.018);transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
+        .phone-section .phone-live-cta::after{content:"→";font-size:17px;line-height:1;transition:transform .25s ease}
+        .phone-section .phone-live-cta::before{content:"";position:absolute;z-index:-1;top:-120%;left:-35%;width:42%;height:340%;transform:rotate(24deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);transition:left .55s ease;pointer-events:none}
+        .phone-section .phone-live-cta:hover{transform:translateY(-3px);filter:brightness(1.06);border-color:transparent;background:linear-gradient(180deg,rgba(16,29,48,.96),rgba(9,18,31,.98)) padding-box,linear-gradient(115deg,rgba(124,191,255,.72),rgba(111,221,183,.38),rgba(151,122,255,.52)) border-box;box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 46px rgba(42,112,210,.22),0 0 26px rgba(99,168,255,.09)}
+        .phone-section .phone-live-cta:hover::after{transform:translateX(4px)}
+        .phone-section .phone-live-cta:hover::before{left:105%}
         .et1-book-demo{display:none;height:44px;padding:0 17px;border:1px solid rgba(120,187,255,.28);border-radius:13px;background:rgba(31,58,92,.92);color:#f2f7fd;font:600 12px/1 inherit;text-decoration:none;align-items:center;justify-content:center;white-space:nowrap;box-shadow:0 8px 22px rgba(34,94,162,.12);transition:transform .18s ease,border-color .18s ease,background .18s ease,opacity .22s ease}
         .et1-book-demo:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.38);background:rgba(38,67,104,.98)}
         .et1-suggest.is-submitted .et1-book-demo{display:inline-flex;animation:et1BookReveal .26s ease both}
         @keyframes et1BookReveal{from{opacity:0;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
-        .desktop-nav{display:flex;align-items:center;gap:28px}
+        .desktop-nav{display:flex;align-items:center;gap:24px}
         .desktop-nav a{color:#aeb8c8;text-decoration:none;font-size:13px;font-weight:500;line-height:1;transition:color .2s ease,background .2s ease,border-color .2s ease,transform .2s ease}
         .desktop-nav a:hover{color:#fff}
         .desktop-nav .desktop-pilot-link{min-height:36px;padding:0 15px;display:inline-flex;align-items:center;border-radius:999px;color:#eef5fd;border:1px solid rgba(120,187,255,.22);background:rgba(19,36,58,.54);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
@@ -140,6 +170,7 @@
           #mobileMenu .panel-inner a{font-size:21px;padding:17px 2px}
           #mobileMenu .panel-inner a:last-child{color:#eef5fd}
           .phone-call-helper{margin-top:10px;font-size:10.5px}
+          .phone-section .phone-live-cta{min-height:48px;padding:0 20px;font-size:14px}
           .et1-book-demo{height:41px;padding:0 12px;border-radius:11px;font-size:11px}
           .et1-suggest.is-submitted .et1-suggest-row{align-items:center}
           .et1-suggest.is-submitted button,.et1-suggest.is-submitted .et1-book-demo{flex:1 1 0}
