@@ -123,6 +123,7 @@ def render_landing(template_path: str, live: bool = False):
         html = html.replace('/static/', '/static/live/')
         for name in ('mobile-preview.js','video-audio-state.js','phone-demo.js','et1-intake.js','preview-cta.js','lylo-voice.js'):
             html = html.replace(f'/static/live/{name}', f'/live-assets/{name}')
+        html = html.replace('/live-assets/phone-demo.js?v=4', '/live-assets/phone-demo.js?v=5')
 
     return HTMLResponse(content=html)
 
@@ -148,6 +149,11 @@ def live_asset(name: str):
     path = os.path.join("static", "live", name)
     with open(path, "r", encoding="utf-8") as f:
         content = f.read().replace('/static/', '/static/live/')
+    if name == 'phone-demo.js':
+        content = content.replace(
+            "      const naturalTypingDuration = Math.max(0.35, turn.text.length / TYPE_CHARS_PER_SECOND);\n      const typingDuration = Math.min(availableDuration, naturalTypingDuration);",
+            "      const typingDuration = availableDuration;"
+        )
     return Response(content=content, media_type="application/javascript")
 
 
