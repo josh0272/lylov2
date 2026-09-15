@@ -240,7 +240,7 @@
     if (document.getElementById('preview-cta-script')) return;
     const script = document.createElement('script');
     script.id = 'preview-cta-script';
-    script.src = '/static/preview-cta.js?v=2';
+    script.src = '/static/preview-cta.js?v=3';
     script.defer = true;
     document.body.appendChild(script);
   };
