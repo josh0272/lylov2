@@ -303,7 +303,7 @@ def preview():
 
     html = html.replace(
         "</body>",
-        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=3" defer></script><script src="/static/et1-intake.js?v=1" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
+        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=4" defer></script><script src="/static/et1-intake.js?v=1" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
     )
 
     return HTMLResponse(content=html)
