@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lylo. — Founding Pilot</title>
-<meta name="description" content="Join the Lylo founding pilot. See Lylo in a short demo, test one legal workflow and compare it with your current process.">
+<meta name="description" content="Join the Lylo founding pilot. See Lylo in a short demo, test one or more workflows and compare them with your current process.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#08101d;--panel:#0b1524;--text:#f5f7fa;--muted:#9eabba;--line:rgba(255,255,255,.075);--blue:#63a8ff;--green:#6ad9b0;--container:1120px;--gutter:clamp(20px,4vw,42px);--font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif}
@@ -42,7 +42,7 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
   <div class="hero-inner">
     <div class="eyebrow">Founding Pilot</div>
     <h1>See if Lylo fits your firm before you commit.</h1>
-    <p>We are looking for a small number of law firms to pilot Lylo with us. Start with a short demonstration, choose one workflow and help us test where Lylo saves time, where it needs work and whether it is worth taking further.</p>
+    <p>We are looking for a small number of law firms to pilot Lylo with us. Start with a short demonstration, choose what you want to test and help us learn where Lylo saves time, where it needs work and whether it is worth taking further.</p>
     <div class="hero-actions">
       <a class="primary" href="#book">Book a 20-minute demo</a>
       <a class="secondary" href="#how-it-works">See how the pilot works</a>
@@ -54,13 +54,13 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
   <div class="section-inner">
     <div class="section-head">
       <h2>A small test, not a big rollout.</h2>
-      <p>The aim is simple: find out whether Lylo can save useful time on a real legal workflow.</p>
+      <p>The aim is simple: find out whether Lylo can save useful time on the workflows that matter to your firm.</p>
     </div>
     <div class="steps">
       <article class="step"><div class="step-no">1</div><h3>See Lylo live</h3><p>A short 20–30 minute demonstration of the current system and demos.</p></article>
-      <article class="step"><div class="step-no">2</div><h3>Choose one workflow</h3><p>Tell us where your team loses time and what would be useful to test.</p></article>
-      <article class="step"><div class="step-no">3</div><h3>Use a safe example</h3><p>Use one synthetic or properly anonymised matter. No live client data is required for the first test.</p></article>
-      <article class="step"><div class="step-no">4</div><h3>Compare the process</h3><p>Compare Lylo's draft or workflow against the way your firm normally handles the task.</p></article>
+      <article class="step"><div class="step-no">2</div><h3>Choose what to test</h3><p>Start with one task, or tell us if you want to explore more than one workflow.</p></article>
+      <article class="step"><div class="step-no">3</div><h3>Use a safe example</h3><p>Use synthetic or properly anonymised material. No live client data is required for the first test.</p></article>
+      <article class="step"><div class="step-no">4</div><h3>Compare the process</h3><p>Compare Lylo's output or workflow against the way your firm normally handles the task.</p></article>
       <article class="step"><div class="step-no">5</div><h3>Review the result</h3><p>Meet again, review what worked and decide whether a paid pilot is worth discussing.</p></article>
     </div>
     <div class="pilot-note"><strong>The experiment comes first.</strong> The purpose of the founding pilot is to prove value before asking a firm to buy anything.</div>
@@ -69,13 +69,14 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
 <section class="section" id="workflow">
   <div class="section-inner workflow-grid">
     <div class="workflow-copy">
-      <h2>Bring one workflow.</h2>
-      <p>You do not need to change your whole firm. Pick one task that takes too much time and use that as the test.</p>
+      <h2>Bring a workflow.</h2>
+      <p>Pick one task that takes too much time, or tell us if there are a few areas you want to explore.</p>
       <div class="small-points">
         <div class="small-point">Schedule of Loss drafting and calculations</div>
         <div class="small-point">ET1 or other form automation</div>
         <div class="small-point">Case-file questions and source-grounded answers</div>
-        <div class="small-point">Another repetitive document workflow your firm wants to explore</div>
+        <div class="small-point">AI receptionist and out-of-hours calls</div>
+        <div class="small-point">More than one workflow</div>
       </div>
     </div>
     <div class="form-card" id="book">
@@ -85,14 +86,15 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
         <div class="fields">
           <div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div>
           <div class="field"><label for="firm">Firm</label><input id="firm" name="firm" autocomplete="organization" required></div>
-          <div class="field full"><label for="email">Work email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
-          <div class="field full"><label for="workflowSelect">What would you like to test?</label><select id="workflowSelect" name="workflow"><option value="">Choose one</option><option>Schedule of Loss</option><option>ET1 / form automation</option><option>Case-file Q&A</option><option>Another legal workflow</option></select></div>
+          <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="phone">Phone number <span style="font-weight:400;color:#6d7d91">(optional)</span></label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="e.g. 0141 123 4567"></div>
+          <div class="field full"><label for="workflowSelect">What would you like to test?</label><select id="workflowSelect" name="workflow"><option value="">Choose one</option><option>Schedule of Loss</option><option>ET1 / form automation</option><option>Case-file Q&A</option><option>AI receptionist / out-of-hours calls</option><option>Multiple workflows</option><option>Another legal workflow</option></select></div>
           <div class="field full"><label for="time">Best time to speak</label><input id="time" name="time" placeholder="e.g. Tuesday afternoon or after 4pm"></div>
           <div class="field full"><label for="notes">Anything useful to know? <span style="font-weight:400;color:#6d7d91">(optional)</span></label><textarea id="notes" name="notes" placeholder="A sentence about the workflow is enough."></textarea></div>
         </div>
         <button class="form-submit" type="submit">Request a 20-minute demo</button>
         <div class="form-status" id="formStatus" aria-live="polite"></div>
-        <div class="privacy-line">For the first test, use synthetic or properly anonymised matter information only.</div>
+        <div class="privacy-line">For an initial test, use synthetic or properly anonymised matter information only.</div>
       </form>
     </div>
   </div>
@@ -111,7 +113,7 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
   const workflow=params.get('workflow');
   const select=document.getElementById('workflowSelect');
   if(workflow){
-    const aliases={schedule:'Schedule of Loss',et1:'ET1 / form automation',case:'Case-file Q&A'};
+    const aliases={schedule:'Schedule of Loss',et1:'ET1 / form automation',case:'Case-file Q&A',receptionist:'AI receptionist / out-of-hours calls',multiple:'Multiple workflows'};
     const wanted=aliases[workflow.toLowerCase()]||workflow;
     const match=Array.from(select.options).find(o=>o.text.toLowerCase()===wanted.toLowerCase());
     if(match) select.value=match.value;
@@ -126,19 +128,19 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
     const name=(data.get('name')||'').toString().trim();
     const firm=(data.get('firm')||'').toString().trim();
     const email=(data.get('email')||'').toString().trim();
-    if(!name||!firm||!email){status.className='form-status error';status.textContent='Please add your name, firm and work email.';return}
+    if(!name||!firm||!email){status.className='form-status error';status.textContent='Please add your name, firm and email.';return}
     button.disabled=true;status.className='form-status';status.textContent='Sending…';
     try{
       const body=new FormData();
       body.append('name',name);
       body.append('email',email);
-      body.append('answers',`Founding pilot demo request\nFirm: ${firm}\nWorkflow: ${data.get('workflow')||'Not selected'}\nBest time: ${data.get('time')||'Not provided'}\nNotes: ${data.get('notes')||'None'}`);
+      body.append('answers',`Founding pilot demo request\nFirm: ${firm}\nPhone: ${data.get('phone')||'Not provided'}\nWorkflow: ${data.get('workflow')||'Not selected'}\nBest time: ${data.get('time')||'Not provided'}\nNotes: ${data.get('notes')||'None'}`);
       body.append('transcript','');
       const response=await fetch('/api/submit',{method:'POST',body});
       const result=await response.json().catch(()=>({}));
       if(!response.ok||result.ok===false) throw new Error(result.error||'Could not send');
       status.className='form-status success';status.textContent='Request sent. I’ll get back to arrange a time.';form.reset();
-      if(workflow){const aliases={schedule:'Schedule of Loss',et1:'ET1 / form automation',case:'Case-file Q&A'};const wanted=aliases[workflow.toLowerCase()]||workflow;const match=Array.from(select.options).find(o=>o.text.toLowerCase()===wanted.toLowerCase());if(match)select.value=match.value}
+      if(workflow){const aliases={schedule:'Schedule of Loss',et1:'ET1 / form automation',case:'Case-file Q&A',receptionist:'AI receptionist / out-of-hours calls',multiple:'Multiple workflows'};const wanted=aliases[workflow.toLowerCase()]||workflow;const match=Array.from(select.options).find(o=>o.text.toLowerCase()===wanted.toLowerCase());if(match)select.value=match.value}
     }catch(_){status.className='form-status error';status.textContent='Could not send that just now. Please try again.'}
     finally{button.disabled=false}
   });
