@@ -6,6 +6,7 @@
   };
 
   const pilotPath = '/preview/founding-pilot';
+  const aboutPath = '/static/preview-about.html';
 
   const initSectionAnchors = () => {
     const intro = document.querySelector('.demo-intro');
@@ -64,10 +65,38 @@
     });
   };
 
+  const initCommunitySections = () => {
+    const final = document.querySelector('.final');
+    if (!final || document.querySelector('.lylo-community')) return;
+
+    const section = document.createElement('section');
+    section.className = 'lylo-community';
+    section.innerHTML = `
+      <div class="lylo-community-inner">
+        <article class="lylo-community-card lylo-research-card">
+          <div class="lylo-community-kicker">Help shape Lylo</div>
+          <h3>Are you a solicitor, trainee or law student?</h3>
+          <p>We are speaking to people in law to understand where AI could really save time — and where it should stay out of the way.</p>
+          <a class="lylo-community-link" href="/research">Share your experience <span>→</span></a>
+          <div class="lylo-community-note">A short research questionnaire. No sales pitch.</div>
+        </article>
+        <article class="lylo-community-card lylo-team-card">
+          <div class="lylo-community-kicker">The people behind Lylo</div>
+          <h3>Built from engineering and legal perspectives.</h3>
+          <p>See who is building Lylo, why we are testing it and the backgrounds we bring to the project.</p>
+          <a class="lylo-community-link" href="${aboutPath}">Meet the team <span>→</span></a>
+          <div class="lylo-community-note">Backgrounds, roles and CVs.</div>
+        </article>
+      </div>
+    `;
+    final.parentNode.insertBefore(section, final);
+  };
+
   const init = () => {
     initSectionAnchors();
     initDesktopNav();
     initMobileNav();
+    initCommunitySections();
 
     const heroCta = document.querySelector('.hero .cta');
     if (heroCta) {
@@ -150,6 +179,15 @@
       style.id = 'preview-cta-styles';
       style.textContent = `
         #sra-warning,#demos,#privacy{scroll-margin-top:84px}
+        .lylo-community{padding:98px var(--gutter);border-top:1px solid rgba(255,255,255,.055);background:linear-gradient(180deg,rgba(9,17,29,.18),rgba(8,16,29,0))}
+        .lylo-community-inner{width:100%;max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .lylo-community-card{min-height:310px;padding:34px 32px;border:1px solid rgba(255,255,255,.075);border-radius:22px;background:linear-gradient(155deg,rgba(255,255,255,.026),rgba(255,255,255,.011));box-shadow:0 22px 60px rgba(0,0,0,.13);display:flex;flex-direction:column;align-items:flex-start}
+        .lylo-community-kicker{margin-bottom:17px;color:#88a8cf;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+        .lylo-community-card h3{max-width:430px;margin:0 0 14px;font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;line-height:1.06;letter-spacing:-.025em;color:#f5f7fa}
+        .lylo-community-card p{max-width:450px;margin:0;color:#96a5b8;font-size:13.5px;line-height:1.65}
+        .lylo-community-link{margin-top:auto;padding-top:25px;display:inline-flex;align-items:center;gap:9px;color:#edf4fc;text-decoration:none;font-size:12px;font-weight:600}
+        .lylo-community-link span{font-size:15px;transition:transform .2s ease}.lylo-community-link:hover span{transform:translateX(3px)}
+        .lylo-community-note{margin-top:8px;color:#63758b;font-size:10px;line-height:1.45}
         .phone-call-helper{margin-top:11px;color:#77879a;font-size:11px;line-height:1.45}
         .phone-section .phone-live-cta{position:relative;isolation:isolate;overflow:hidden;gap:12px;margin-top:0;min-height:50px;padding:0 21px;border-radius:999px;border:1px solid transparent;background:linear-gradient(180deg,rgba(16,29,48,.96),rgba(9,18,31,.98)) padding-box,linear-gradient(115deg,rgba(124,191,255,.72),rgba(111,221,183,.38),rgba(151,122,255,.52)) border-box;color:#f5f9ff!important;-webkit-text-fill-color:#f5f9ff!important;text-decoration:none;font-size:14px;font-weight:600;letter-spacing:.005em;box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 12px 34px rgba(42,112,210,.13),0 0 0 1px rgba(255,255,255,.018);transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
         .phone-section .phone-live-cta::after{content:"→";font-size:17px;line-height:1;transition:transform .25s ease}
@@ -171,6 +209,13 @@
           .desktop-nav{display:none!important}
           #mobileMenu .panel-inner a{font-size:21px;padding:17px 2px}
           #mobileMenu .panel-inner a:last-child{color:#eef5fd}
+          .lylo-community{padding:64px 20px}
+          .lylo-community-inner{grid-template-columns:1fr;gap:11px;max-width:390px}
+          .lylo-community-card{min-height:0;padding:24px 20px;border-radius:17px;text-align:center;align-items:center}
+          .lylo-community-kicker{margin-bottom:12px}
+          .lylo-community-card h3{font-size:32px;max-width:330px;margin-bottom:10px}
+          .lylo-community-card p{font-size:12.5px;max-width:335px;line-height:1.58}
+          .lylo-community-link{margin-top:18px;padding-top:0}
           .phone-call-helper{margin-top:10px;font-size:10.5px}
           .phone-section .phone-live-cta{min-height:48px;padding:0 20px;font-size:14px}
           .et1-book-demo{height:41px;padding:0 12px;border-radius:11px;font-size:11px}
