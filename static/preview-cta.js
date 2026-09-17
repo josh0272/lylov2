@@ -8,6 +8,6 @@
   };
 
   load('/static/preview-cta-base.js?v=1', () => {
-    load('/static/preview-team-v2.js?v=1');
+    load('/static/preview-team-v2.js?v=2');
   });
 })();
