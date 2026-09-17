@@ -8,8 +8,21 @@
         tag.classList.add('reg-date-pills');
       }
 
+      const heading = reg.querySelector('.reg-question');
+      if (heading) heading.textContent = 'AI use in legal work is changing.';
+
       const lead = reg.querySelector('.reg-lead');
       if (lead) lead.textContent = 'Legal regulators and professional bodies are increasingly addressing inaccurate AI output, confidentiality, supervision and professional responsibility. Lylo is being designed around those risks.';
+
+      reg.querySelectorAll('.reg-card').forEach((card) => {
+        const title = card.querySelector('strong')?.textContent.trim();
+        const lylo = card.querySelector('em');
+        if (title === 'Accuracy & quality' && lylo) {
+          lylo.textContent = 'Lylo is being designed to ground answers in the firm’s own documents and show the source material for review.';
+        } else if (title === 'Human oversight' && lylo) {
+          lylo.textContent = 'Lylo is being designed to keep the solicitor in control, with checking, editing and review built into the workflow.';
+        }
+      });
 
       const line = reg.querySelector('.reg-line');
       if (line) {
@@ -20,26 +33,70 @@
     const tagline = document.querySelector('.hero .tagline');
     if (tagline) tagline.textContent = 'Private AI, designed for solicitors.';
 
+    const heroSupportingCopy = document.querySelector('.hero .bullet');
+    if (heroSupportingCopy) heroSupportingCopy.textContent = 'Retrieval-based AI system in development, with specialist modules being designed to support drafting Statements of Fact, ET1s, Schedules of Loss and Simple Procedure claim forms for solicitor review.';
+
+    const demoHeading = document.querySelector('.demo-heading');
+    if (demoHeading) {
+      const title = demoHeading.querySelector('h2');
+      const copy = demoHeading.querySelector('p');
+      if (title) title.textContent = 'See what we’re building.';
+      if (copy) copy.textContent = 'Four proof-of-concept demos. Each one shows a real task Lylo is being designed to help with.';
+    }
+
     document.querySelectorAll('.demo-section').forEach((section) => {
-      const heading = section.querySelector('.demo-copy h3')?.textContent.trim();
+      const heading = section.querySelector('.demo-copy h3');
+      const headingText = heading?.textContent.trim();
       const copy = section.querySelector('.demo-copy p');
-      if (!copy) return;
-      if (heading === 'Ask the case. Get the answer.') {
+      if (!heading || !copy) return;
+
+      if (headingText === 'Ask the case. Get the answer.') {
         copy.textContent = 'Upload the case files and ask Lylo a question. It is being designed to search the documents, find the key facts and bring the answer back in one place.';
-      } else if (heading === 'Turn case files into a completed form.') {
+        heading.textContent = 'Ask the case. Find the source.';
+      } else if (headingText === 'Turn case files into a completed form.') {
         copy.textContent = 'Lylo is being designed to pull names, dates and case details from uploaded documents, fill the ET1 and prepare the information for review. You stay in control before it is used.';
-      } else if (heading === 'Know what the claim is worth.') {
+        heading.textContent = 'Turn case files into a draft form.';
+      } else if (headingText === 'Know what the claim is worth.') {
         copy.textContent = 'Lylo’s Schedule of Loss calculator is being designed to use the claimant’s pay, dates and losses to calculate the figure and build a clear schedule for review.';
+        heading.textContent = 'Build a Schedule of Loss.';
       }
     });
 
-    document.querySelectorAll('.privacy-node').forEach((node) => {
-      const title = node.querySelector('strong')?.textContent.trim();
-      const copy = node.querySelector('span');
-      if (title === 'On-premise AI' && copy) {
-        copy.textContent = 'The private legal AI is being designed to run on hardware inside the firm.';
+    const et1ExtensionHead = document.querySelector('.et1-extension-head');
+    if (et1ExtensionHead) {
+      const extensionCopy = et1ExtensionHead.querySelector('p');
+      if (extensionCopy) extensionCopy.textContent = 'The same approach could be extended to other forms your firm uses.';
+      if (!et1ExtensionHead.querySelector('.et1-potential-modules-label')) {
+        const label = document.createElement('p');
+        label.className = 'et1-potential-modules-label';
+        label.textContent = 'Potential form modules include:';
+        et1ExtensionHead.appendChild(label);
       }
-    });
+    }
+
+    const privacySection = document.querySelector('.privacy');
+    if (privacySection) {
+      const heading = privacySection.querySelector('h3');
+      if (heading) heading.textContent = 'Private AI, designed to run inside your firm.';
+
+      const intro = privacySection.querySelector('.privacy-main');
+      if (intro) intro.textContent = 'What if your firm could use the benefits of AI without sending sensitive client data to a public AI service? Lylo is being designed so case files can stay on the firm’s own systems.';
+
+      privacySection.querySelectorAll('.privacy-node').forEach((node) => {
+        const title = node.querySelector('strong')?.textContent.trim();
+        const copy = node.querySelector('span');
+        if (title === 'On-premise AI' && copy) {
+          copy.textContent = 'The private legal AI is being designed to run on hardware inside the firm.';
+        } else if (title === 'Local case files' && copy) {
+          copy.textContent = 'The on-premise design is intended to keep sensitive documents on the firm’s own network.';
+        } else if (title === 'Clear cloud boundary' && copy) {
+          copy.textContent = 'The private legal AI is being designed to keep legal work local, while phone and voice services remain separate.';
+        }
+      });
+
+      const note = privacySection.querySelector('.privacy-note');
+      if (note) note.textContent = 'Lylo is being designed around UK GDPR principles including privacy by design, data minimisation and controlled access. Final compliance still depends on each firm’s deployment, policies and use.';
+    }
 
     const heroCta = document.querySelector('.hero .cta');
     if (heroCta) heroCta.setAttribute('href', '/founding-pilot');
@@ -48,6 +105,9 @@
     if (people) {
       const kicker = people.querySelector('.lylo-section-kicker');
       if (kicker) kicker.textContent = 'Meet the co-founders of Lylo';
+
+      const intro = people.querySelector('.lylo-people-intro');
+      if (intro) intro.textContent = 'A small team combining engineering and legal backgrounds while Lylo is being researched, tested and shaped.';
 
       const link = people.querySelector('.lylo-secondary-link');
       if (link) link.innerHTML = 'Meet the people behind Lylo <span class="arrow">→</span>';
@@ -68,7 +128,7 @@
       const note = research.querySelector('.lylo-research-note');
       if (heading) heading.textContent = 'Help us develop Lylo around real legal work.';
       if (body) body.textContent = 'We are speaking with people in law about the work that takes the most time, where AI could genuinely help, and what firms would need before trusting it. Our short questionnaire helps guide Lylo’s development.';
-      if (note) note.textContent = 'Around 5 minutes · Used for product research · Data handling is subject to the UK data-protection framework, including the Data (Use and Access) Act 2025.';
+      if (note) note.innerHTML = 'Around 5 minutes · Used for product research · We use responses for product research. See our <a href="/static/privacy.html">Privacy notice</a> for how personal data is collected, used and retained.';
     }
 
     const final = document.querySelector('.final .reveal');
