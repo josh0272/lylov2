@@ -14,7 +14,7 @@
       if (heading && !reg.querySelector('.reg-mobile-framework')) {
         const framework = document.createElement('div');
         framework.className = 'reg-mobile-framework';
-        framework.innerHTML = '<p>UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.</p><strong>Lylo is designed with these responsibilities in mind from the beginning.</strong><span>Law Society of Scotland: Guide to Generative AI &nbsp;·&nbsp; ICO: data protection by design &nbsp;·&nbsp; England &amp; Wales: SRA AI warning</span>';
+        framework.innerHTML = '<p>UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.</p><strong>Lylo is designed with these responsibilities in mind from the beginning.</strong><span><a href="https://lawscot.org.uk/media/pl1lnu5n/ai-guide.pdf" target="_blank" rel="noopener">Law Society of Scotland: Guide to Generative AI</a> &nbsp;·&nbsp; <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/data-protection-by-design-and-by-default/" target="_blank" rel="noopener">ICO: data protection by design</a> &nbsp;·&nbsp; <a href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/" target="_blank" rel="noopener">England &amp; Wales: SRA AI warning</a></span>';
         heading.insertAdjacentElement('afterend', framework);
       }
 
@@ -181,10 +181,11 @@
           .reg-trust>.reg-lead:not(.reg-lead-mobile){display:none}
           .reg-lead-mobile{display:block;margin:13px auto 20px}
           .reg-trust>.reg-line,.reg-trust>.reg-sources{display:none}
-          .reg-mobile-framework{display:block;margin:24px auto 18px;max-width:700px;padding:18px 0;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);color:#91a0b3;text-align:center}
+          .reg-mobile-framework{display:block;margin:36px auto 20px;max-width:700px;padding:20px 0;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);color:#91a0b3;text-align:center}
           .reg-mobile-framework p{margin:0;font-size:11px;line-height:1.55}
           .reg-mobile-framework strong{display:block;margin-top:9px;color:#dce6f2;font-size:11.5px;line-height:1.5;font-weight:600}
           .reg-mobile-framework span{display:block;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.055);color:#73859b;font-size:9.5px;line-height:1.55}
+          .reg-mobile-framework span a{color:inherit;text-decoration:underline;text-decoration-color:rgba(115,133,155,.6);text-underline-offset:2px}
         }
       `;
       document.head.appendChild(style);
