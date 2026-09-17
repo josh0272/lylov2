@@ -17,6 +17,8 @@
       .lylo-people-intro{max-width:610px;margin:0 auto;color:#8f9daf;font-size:14px;line-height:1.65}
       .lylo-people-list{display:flex;justify-content:center;gap:64px;margin:38px auto 29px}
       .lylo-person{display:flex;align-items:center;gap:18px;text-align:left;min-width:280px}
+      .lylo-person-photo{display:block;border-radius:50%;text-decoration:none;line-height:0;transition:transform .2s ease,filter .2s ease}
+      .lylo-person-photo:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.06)}
       .lylo-person img{width:90px;height:90px;flex:0 0 90px;display:block;border-radius:50%;object-fit:cover;object-position:center;border:1px solid rgba(255,255,255,.11);box-shadow:0 14px 34px rgba(0,0,0,.24);background:#101a29}
       .lylo-person strong{display:block;color:#edf3fa;font-size:14.5px;font-weight:600;margin-bottom:5px}
       .lylo-person .role{display:block;color:#75869b;font-size:11px;line-height:1.45;max-width:205px}
@@ -35,7 +37,7 @@
         .lylo-people-list{gap:25px;margin-top:31px;flex-direction:column;align-items:center}.lylo-person{min-width:0;width:100%;max-width:330px;justify-content:flex-start;gap:16px}.lylo-person img{width:78px;height:78px;flex-basis:78px}
         .lylo-research-strip{padding:62px 20px}.lylo-research-strip h3{font-size:36px}.lylo-research-strip p{font-size:13px;max-width:350px}
       }
-      @media(prefers-reduced-motion:reduce){.lylo-secondary-link,.lylo-secondary-link .arrow{transition:none!important}}
+      @media(prefers-reduced-motion:reduce){.lylo-secondary-link,.lylo-secondary-link .arrow,.lylo-person-photo{transition:none!important}.lylo-person-photo:hover{transform:none}}
     `;
     document.head.appendChild(style);
   };
@@ -57,11 +59,11 @@
         <p class="lylo-people-intro">A small team combining engineering and legal experience while Lylo is still being researched, tested and shaped.</p>
         <div class="lylo-people-list" aria-label="People behind Lylo">
           <div class="lylo-person">
-            <img src="/static/joshua-profile.jpg" alt="Joshua Sam">
+            <a class="lylo-person-photo" href="${ABOUT_PATH}#joshua" aria-label="Read more about Joshua Sam"><img src="/static/joshua-profile.jpg" alt="Joshua Sam"></a>
             <div><strong>Joshua Sam</strong><span class="role">Engineering · product & technology</span><span class="credential">MEng Electrical & Mechanical Engineering · University of Strathclyde</span></div>
           </div>
           <div class="lylo-person">
-            <img src="/static/jessica-profile.jpg" alt="Jessica Jayan">
+            <a class="lylo-person-photo" href="${ABOUT_PATH}#jessica" aria-label="Read more about Jessica Jayan"><img src="/static/jessica-profile.jpg" alt="Jessica Jayan"></a>
             <div><strong>Jessica Jayan</strong><span class="role">Legal research · workflow input</span><span class="credential">Scots (Clinical) LLB · DPLP · University of Strathclyde</span></div>
           </div>
         </div>
