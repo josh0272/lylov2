@@ -19,7 +19,8 @@
       .lylo-person{display:flex;align-items:center;gap:18px;text-align:left;min-width:280px}
       .lylo-person img{width:90px;height:90px;flex:0 0 90px;display:block;border-radius:50%;object-fit:cover;object-position:center;border:1px solid rgba(255,255,255,.11);box-shadow:0 14px 34px rgba(0,0,0,.24);background:#101a29}
       .lylo-person strong{display:block;color:#edf3fa;font-size:14.5px;font-weight:600;margin-bottom:5px}
-      .lylo-person span{display:block;color:#75869b;font-size:11px;line-height:1.45;max-width:190px}
+      .lylo-person .role{display:block;color:#75869b;font-size:11px;line-height:1.45;max-width:205px}
+      .lylo-person .credential{display:block;margin-top:4px;color:#9fb0c4;font-size:10.5px;line-height:1.42;max-width:225px}
       .lylo-secondary-link{display:inline-flex;align-items:center;gap:8px;color:#9db4cf;text-decoration:none;font-size:12px;font-weight:600;border-bottom:1px solid rgba(157,180,207,.20);padding-bottom:3px;transition:color .2s ease,border-color .2s ease}
       .lylo-secondary-link:hover{color:#e7f0fb;border-color:rgba(231,240,251,.42)}
       .lylo-secondary-link .arrow{font-size:14px;transition:transform .2s ease}.lylo-secondary-link:hover .arrow{transform:translateX(3px)}
@@ -31,7 +32,7 @@
       .lylo-research-note{margin-top:10px;color:#607187;font-size:10px;line-height:1.45}
       @media(max-width:720px){
         .lylo-people{padding:68px 20px 64px}.lylo-people h3{font-size:36px}.lylo-people-intro{font-size:13px;max-width:340px}
-        .lylo-people-list{gap:25px;margin-top:31px;flex-direction:column;align-items:center}.lylo-person{min-width:0;width:100%;max-width:320px;justify-content:flex-start;gap:16px}.lylo-person img{width:78px;height:78px;flex-basis:78px}
+        .lylo-people-list{gap:25px;margin-top:31px;flex-direction:column;align-items:center}.lylo-person{min-width:0;width:100%;max-width:330px;justify-content:flex-start;gap:16px}.lylo-person img{width:78px;height:78px;flex-basis:78px}
         .lylo-research-strip{padding:62px 20px}.lylo-research-strip h3{font-size:36px}.lylo-research-strip p{font-size:13px;max-width:350px}
       }
     `;
@@ -56,11 +57,11 @@
         <div class="lylo-people-list" aria-label="People behind Lylo">
           <div class="lylo-person">
             <img src="/static/joshua-profile.jpg" alt="Joshua Sam">
-            <div><strong>Joshua Sam</strong><span>Engineering · product & technology</span></div>
+            <div><strong>Joshua Sam</strong><span class="role">Engineering · product & technology</span><span class="credential">MEng Electrical & Mechanical Engineering · University of Strathclyde</span></div>
           </div>
           <div class="lylo-person">
             <img src="/static/jessica-profile.jpg" alt="Jessica Jayan">
-            <div><strong>Jessica Jayan</strong><span>Legal research · workflow input</span></div>
+            <div><strong>Jessica Jayan</strong><span class="role">Legal research · workflow input</span><span class="credential">Scots (Clinical) LLB · DPLP · University of Strathclyde</span></div>
           </div>
         </div>
         <a class="lylo-secondary-link" href="${ABOUT_PATH}">Meet the people behind Lylo <span class="arrow">→</span></a>
