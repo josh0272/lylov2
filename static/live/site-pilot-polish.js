@@ -7,14 +7,6 @@
       if (note) {
         note.textContent = 'No preparation. No client data. No commitment. See the demos, ask questions and decide whether Lylo is worth exploring further.';
       }
-
-      if (!hero.querySelector('.lylo-demo-explainer')) {
-        const explainer = document.createElement('p');
-        explainer.className = 'lylo-demo-explainer';
-        explainer.textContent = 'In the demo: see the document Q&A, ET1 and Schedule of Loss workflows, hear how the private/on-premise system is being designed, and tell us where it would—or wouldn’t—fit your firm.';
-        if (note) note.insertAdjacentElement('afterend', explainer);
-        else heroCta.insertAdjacentElement('afterend', explainer);
-      }
     }
 
     const final = document.querySelector('.final .reveal');
@@ -42,6 +34,15 @@
       const cta = final.querySelector('.cta');
       if (cta) cta.insertAdjacentElement('beforebegin', brief);
       else final.appendChild(brief);
+    }
+
+    if (final && !final.querySelector('.lylo-demo-explainer')) {
+      const cta = final.querySelector('.cta');
+      const explainer = document.createElement('p');
+      explainer.className = 'lylo-demo-explainer';
+      explainer.textContent = 'In the demo: see the document Q&A, ET1 and Schedule of Loss workflows, hear how the private/on-premise system is being designed, and tell us where it would—or wouldn’t—fit your firm.';
+      if (cta) cta.insertAdjacentElement('afterend', explainer);
+      else final.appendChild(explainer);
     }
 
     if (!document.getElementById('lylo-pilot-polish-styles')) {
