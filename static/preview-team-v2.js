@@ -1,5 +1,5 @@
 (() => {
-  const ABOUT_PATH = '/preview/about';
+  const ABOUT_PATH = '/static/preview-about.html';
   const RESEARCH_PATH = '/research';
 
   const injectStyles = () => {
