@@ -62,6 +62,49 @@
     });
   };
 
+  const initTeamResearch = () => {
+    const finalSection = document.querySelector('.final');
+    if (!finalSection || document.querySelector('.lylo-people')) return;
+
+    const aboutPath = 'static/preview-about.html';
+    const joshPhoto = 'static/joshua-profile.jpg';
+    const jessPhoto = 'static/jessica-profile.jpg';
+
+    const people = document.createElement('section');
+    people.className = 'lylo-people';
+    people.innerHTML = `
+      <div class="lylo-people-inner reveal in">
+        <div class="lylo-section-kicker">The people behind Lylo</div>
+        <h3>Built by Joshua and Jessica.</h3>
+        <p class="lylo-people-intro">A small team combining engineering and legal experience while Lylo is being researched, tested and shaped.</p>
+        <div class="lylo-people-list" aria-label="People behind Lylo">
+          <div class="lylo-person">
+            <a class="lylo-person-photo" href="${aboutPath}#joshua" aria-label="Read more about Joshua Sam"><img src="${joshPhoto}" alt="Joshua Sam"></a>
+            <div><strong>Joshua Sam</strong><span class="role">Product & engineering</span><span class="credential">MEng Electrical & Mechanical Engineering · University of Strathclyde</span></div>
+          </div>
+          <div class="lylo-person">
+            <a class="lylo-person-photo" href="${aboutPath}#jessica" aria-label="Read more about Jessica Jayan"><img src="${jessPhoto}" alt="Jessica Jayan"></a>
+            <div><strong>Jessica Jayan</strong><span class="role">Legal research & workflow</span><span class="credential">Scots (Clinical) LLB · DPLP · University of Strathclyde</span></div>
+          </div>
+        </div>
+        <a class="lylo-secondary-link" href="${aboutPath}">Meet the people behind Lylo <span class="arrow">→</span></a>
+      </div>`;
+
+    const research = document.createElement('section');
+    research.className = 'lylo-research-strip';
+    research.innerHTML = `
+      <div class="lylo-research-inner reveal in">
+        <div class="lylo-section-kicker">Research</div>
+        <h3>Help us build Lylo around real legal work.</h3>
+        <p>We are speaking with people in law about the work that takes the most time, where AI could genuinely help, and what firms would need before trusting it. Our short questionnaire helps shape what Lylo should become.</p>
+        <div class="lylo-research-action"><a class="lylo-secondary-link" href="/research">Take the questionnaire <span class="arrow">→</span></a></div>
+        <div class="lylo-research-note">Around 5 minutes · used for product research.</div>
+      </div>`;
+
+    finalSection.parentNode.insertBefore(people, finalSection);
+    finalSection.parentNode.insertBefore(research, finalSection);
+  };
+
   const init = () => {
     initSectionAnchors();
     initDesktopNav();
@@ -157,6 +200,8 @@
       }
     }
 
+    initTeamResearch();
+
     if (!document.getElementById('preview-cta-styles')) {
       const style = document.createElement('style');
       style.id = 'preview-cta-styles';
@@ -164,7 +209,7 @@
         #sra-warning,#demos,#privacy{scroll-margin-top:84px}
         .beyond-casework{padding:82px var(--gutter) 18px;text-align:center;border-top:1px solid rgba(255,255,255,.055);background:linear-gradient(180deg,rgba(11,20,34,.12),rgba(8,16,29,0))}
         .beyond-casework-inner{width:100%;max-width:720px;margin:0 auto}
-        .beyond-kicker{margin-bottom:13px;color:#88a8cf;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+        .beyond-kicker,.lylo-section-kicker{margin-bottom:13px;color:#88a8cf;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
         .beyond-casework h3{max-width:680px;margin:0 auto 15px;font-family:'Cormorant Garamond',serif;font-size:clamp(38px,4.5vw,54px);font-weight:400;line-height:1.04;letter-spacing:-.03em;color:#f5f7fa}
         .beyond-casework p{max-width:610px;margin:0 auto;color:#9eabba;font-size:15px;line-height:1.65}
         .beyond-boundary{max-width:610px;margin:17px auto 0;padding-top:15px;border-top:1px solid rgba(255,255,255,.055);color:#68798e;font-size:10.5px;line-height:1.55}
@@ -185,6 +230,31 @@
         .desktop-nav a:hover{color:#fff}
         .desktop-nav .desktop-pilot-link{min-height:36px;padding:0 15px;display:inline-flex;align-items:center;border-radius:999px;color:#eef5fd;border:1px solid rgba(120,187,255,.22);background:rgba(19,36,58,.54);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
         .desktop-nav .desktop-pilot-link:hover{transform:translateY(-1px);border-color:rgba(127,184,255,.34);background:rgba(24,45,72,.74)}
+
+        .lylo-people,.lylo-research-strip{border-top:1px solid rgba(255,255,255,.055)}
+        .lylo-people{padding:86px var(--gutter) 80px}
+        .lylo-people-inner{width:100%;max-width:940px;margin:0 auto;text-align:center}
+        .lylo-people h3,.lylo-research-strip h3{font-family:'Cormorant Garamond',serif;font-weight:400;letter-spacing:-.03em;color:#f5f7fa}
+        .lylo-people h3{font-size:clamp(36px,3.7vw,46px);line-height:1.05;margin:0 0 14px}
+        .lylo-people-intro{max-width:610px;margin:0 auto;color:#8f9daf;font-size:14px;line-height:1.65}
+        .lylo-people-list{display:flex;justify-content:center;gap:64px;margin:38px auto 29px}
+        .lylo-person{display:flex;align-items:center;gap:18px;text-align:left;min-width:280px}
+        .lylo-person-photo{display:block;border-radius:50%;transition:transform .2s ease,filter .2s ease}
+        .lylo-person-photo:hover{transform:translateY(-2px);filter:brightness(1.06)}
+        .lylo-person img{width:90px;height:90px;display:block;border-radius:50%;object-fit:cover;object-position:center;border:1px solid rgba(255,255,255,.11);box-shadow:0 14px 34px rgba(0,0,0,.24);background:#101a29}
+        .lylo-person strong{display:block;color:#edf3fa;font-size:14.5px;font-weight:600;margin-bottom:5px}
+        .lylo-person .role{display:block;color:#75869b;font-size:11px;line-height:1.45;max-width:205px}
+        .lylo-person .credential{display:block;margin-top:4px;color:#9fb0c4;font-size:10.5px;line-height:1.42;max-width:225px}
+        .lylo-secondary-link{display:inline-flex;align-items:center;gap:8px;color:#9db4cf;text-decoration:none;font-size:12px;font-weight:600;border-bottom:1px solid rgba(157,180,207,.20);padding-bottom:3px;transition:color .2s ease,border-color .2s ease}
+        .lylo-secondary-link:hover{color:#e7f0fb;border-color:rgba(231,240,251,.42)}
+        .lylo-secondary-link .arrow{font-size:14px;transition:transform .2s ease}.lylo-secondary-link:hover .arrow{transform:translateX(3px)}
+        .lylo-research-strip{padding:76px var(--gutter);background:linear-gradient(180deg,rgba(255,255,255,.008),rgba(255,255,255,0))}
+        .lylo-research-inner{width:100%;max-width:740px;margin:0 auto;text-align:center}
+        .lylo-research-strip h3{font-size:clamp(36px,3.7vw,46px);line-height:1.06;margin:0 0 16px}
+        .lylo-research-strip p{max-width:620px;margin:0 auto;color:#8f9daf;font-size:14px;line-height:1.68}
+        .lylo-research-action{margin-top:23px}
+        .lylo-research-note{margin-top:10px;color:#607187;font-size:10px;line-height:1.45}
+
         @media(min-width:980px){.site-header .hamburger{display:none!important}}
         @media(max-width:979px){
           .desktop-nav{display:none!important}
@@ -200,6 +270,9 @@
           .et1-book-demo{height:41px;padding:0 12px;border-radius:11px;font-size:11px}
           .et1-suggest.is-submitted .et1-suggest-row{align-items:center}
           .et1-suggest.is-submitted button,.et1-suggest.is-submitted .et1-book-demo{flex:1 1 0}
+          .lylo-people{padding:68px 20px 64px}.lylo-people h3{font-size:36px}.lylo-people-intro{font-size:13px;max-width:340px}
+          .lylo-people-list{gap:25px;margin-top:31px;flex-direction:column;align-items:center}.lylo-person{min-width:0;width:100%;max-width:330px;justify-content:flex-start;gap:16px}.lylo-person img{width:78px;height:78px}
+          .lylo-research-strip{padding:62px 20px}.lylo-research-strip h3{font-size:36px}.lylo-research-strip p{font-size:13px;max-width:350px}
         }
         @media(max-width:430px){
           .et1-suggest.is-submitted .et1-suggest-row{flex-direction:column}
