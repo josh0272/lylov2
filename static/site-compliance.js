@@ -14,6 +14,9 @@
       }
     }
 
+    const heroCta = document.querySelector('.hero .cta');
+    if (heroCta) heroCta.setAttribute('href', '/founding-pilot');
+
     const people = document.querySelector('.lylo-people');
     if (people) {
       const kicker = people.querySelector('.lylo-section-kicker');
@@ -46,7 +49,7 @@
       const copy = final.querySelector('p');
       const cta = final.querySelector('.cta');
       if (copy) copy.textContent = 'The demos shown above are proof-of-concept demonstrations. Start with a short demo. If it looks useful, test Lylo on one synthetic or properly anonymised matter and compare it with your normal workflow.';
-      if (cta) cta.setAttribute('href', '/founding-pilot#book');
+      if (cta) cta.setAttribute('href', '/founding-pilot');
     }
 
     const footer = document.querySelector('body > footer');
