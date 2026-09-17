@@ -35,6 +35,10 @@
           lylo.textContent = 'Lylo is being designed to ground answers in the firm’s own documents and show the source material for review.';
         } else if (title === 'Human oversight' && lylo) {
           lylo.textContent = 'Lylo is being designed to keep the solicitor in control, with checking, editing and review built into the workflow.';
+        } else if (title === 'Confidentiality & security' && lylo) {
+          lylo.textContent = 'Lylo’s private legal AI is being designed so sensitive case work can remain inside the firm’s environment.';
+        } else if (title === 'Client consent & transparency' && lylo) {
+          lylo.textContent = 'Lylo is being designed as a controlled workflow so firms can decide where AI is used and how it fits their process.';
         }
       });
 
@@ -153,7 +157,7 @@
     if (final) {
       const copy = final.querySelector('p');
       const cta = final.querySelector('.cta');
-      if (copy) copy.textContent = 'The demos shown above are proof-of-concept demonstrations. Start with a short demo. If it looks useful, test Lylo on one synthetic or properly anonymised matter and compare it with your normal workflow.';
+      if (copy) copy.textContent = 'The demos shown above are proof-of-concept demonstrations. Start with a short demo. If it looks useful, work with us towards testing Lylo on one synthetic or properly anonymised matter and comparing it with your normal workflow.';
       if (cta) cta.setAttribute('href', '/founding-pilot');
     }
 
