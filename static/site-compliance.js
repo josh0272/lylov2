@@ -16,6 +16,9 @@
 
     const people = document.querySelector('.lylo-people');
     if (people) {
+      const kicker = people.querySelector('.lylo-section-kicker');
+      if (kicker) kicker.textContent = 'Meet the people behind Lylo';
+
       const link = people.querySelector('.lylo-secondary-link');
       if (link) link.innerHTML = 'Meet the co-founders of Lylo <span class="arrow">→</span>';
     }
