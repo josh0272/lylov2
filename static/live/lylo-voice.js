@@ -128,7 +128,6 @@
 
       try {
         await vapi.stop();
-        // Give mobile browsers a brief moment to release the previous audio/WebRTC session.
         await sleep(350);
         setState('idle', 'Call ended · tap to speak again');
       } catch (error) {
@@ -176,4 +175,11 @@
   } else {
     init();
   }
+})();
+
+(() => {
+  const s = document.createElement('script');
+  s.src = '/static/site-copy-overrides.js?v=1';
+  s.defer = true;
+  document.head.appendChild(s);
 })();
