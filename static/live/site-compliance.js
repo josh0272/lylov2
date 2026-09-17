@@ -16,8 +16,19 @@
 
     const people = document.querySelector('.lylo-people');
     if (people) {
+      const kicker = people.querySelector('.lylo-section-kicker');
+      if (kicker) kicker.textContent = 'Meet the people behind Lylo';
+
       const link = people.querySelector('.lylo-secondary-link');
-      if (link) link.innerHTML = 'Meet the co-founders of Lylo <span class="arrow">→</span>';
+      if (link) link.innerHTML = 'Meet the people behind Lylo <span class="arrow">→</span>';
+
+      people.querySelectorAll('.lylo-person').forEach((person) => {
+        const name = person.querySelector('strong')?.textContent.trim();
+        const credential = person.querySelector('.credential');
+        if (name === 'Jessica Jayan' && credential) {
+          credential.textContent = 'Scots (Clinical) LLB · University of Strathclyde';
+        }
+      });
     }
 
     const research = document.querySelector('.lylo-research-strip');
@@ -27,7 +38,15 @@
       const note = research.querySelector('.lylo-research-note');
       if (heading) heading.textContent = 'Help us develop Lylo around real legal work.';
       if (body) body.textContent = 'We are speaking with people in law about the work that takes the most time, where AI could genuinely help, and what firms would need before trusting it. Our short questionnaire helps guide Lylo’s development.';
-      if (note) note.textContent = 'Around 5 minutes · Used for product research.';
+      if (note) note.textContent = 'Around 5 minutes · Used for product research · Data handling is subject to the UK data-protection framework, including the Data (Use and Access) Act 2025.';
+    }
+
+    const final = document.querySelector('.final .reveal');
+    if (final) {
+      const copy = final.querySelector('p');
+      const cta = final.querySelector('.cta');
+      if (copy) copy.textContent = 'The demos shown above are proof-of-concept demonstrations. Start with a short demo. If it looks useful, test Lylo on one synthetic or properly anonymised matter and compare it with your normal workflow.';
+      if (cta) cta.setAttribute('href', '/founding-pilot#book');
     }
 
     const footer = document.querySelector('body > footer');
