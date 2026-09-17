@@ -11,7 +11,7 @@
     const demoHeading = document.querySelector('.demo-heading');
 
     if (intro?.id === 'demos') intro.removeAttribute('id');
-    if (warning) warning.id = 'sra-warning';
+    if (warning) warning.id = 'ai-duties';
     if (demoHeading) demoHeading.id = 'demos';
   };
 
@@ -29,7 +29,7 @@
     }
 
     nav.innerHTML = `
-      <a href="#sra-warning">SRA warning</a>
+      <a href="#ai-duties">AI & professional duties</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
       <a class="desktop-pilot-link" href="/founding-pilot">Founding Pilot</a>
@@ -51,7 +51,7 @@
     if (!panel) return;
 
     panel.innerHTML = `
-      <a href="#sra-warning">SRA warning</a>
+      <a href="#ai-duties">AI & professional duties</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
       <a href="/founding-pilot">Founding Pilot</a>
@@ -62,11 +62,78 @@
     });
   };
 
+  const initRegulatoryCopy = () => {
+    const section = document.querySelector('.reg-trust');
+    if (!section) return;
+
+    const heading = section.querySelector('.reg-question');
+    const sourceLabel = section.querySelector('.reg-date');
+    const lead = section.querySelector('.reg-lead');
+    const cards = Array.from(section.querySelectorAll('.reg-card'));
+    const line = section.querySelector('.reg-line');
+    const sources = section.querySelector('.reg-sources');
+    const carousel = section.querySelector('.reg-cards');
+
+    if (heading) heading.textContent = 'AI use in law is changing. Is your firm ready?';
+    if (sourceLabel) sourceLabel.textContent = 'Law Society of Scotland · Guide to Generative AI';
+    if (lead) lead.textContent = 'For Scottish solicitors, the Law Society of Scotland highlights questions around accuracy and quality, client confidentiality, firm security, consent and oversight when generative AI is used. Lylo is being designed around those concerns.';
+    if (carousel) carousel.setAttribute('aria-label', 'Key AI considerations for Scottish solicitors and how Lylo is being designed around them');
+
+    const cardContent = [
+      {
+        title: 'Accuracy & quality',
+        risk: 'Generative AI can produce inaccurate, incomplete or convincing-looking output.',
+        lylo: 'Lylo is built to ground answers in the firm’s own documents and show the source material for review.'
+      },
+      {
+        title: 'Confidentiality & security',
+        risk: 'Client information and firm systems need careful protection when AI tools are used.',
+        lylo: 'Lylo’s private legal AI is designed so sensitive case work can remain inside the firm’s environment.'
+      },
+      {
+        title: 'Human oversight',
+        risk: 'AI output still needs proper human review before it is relied on in legal work.',
+        lylo: 'Lylo keeps the solicitor in control, with checking, editing and review built into the workflow.'
+      },
+      {
+        title: 'Client consent & transparency',
+        risk: 'Firms should consider when clients need to be informed or consent may be required for particular AI uses.',
+        lylo: 'Lylo is designed as a controlled workflow so firms can decide where AI is used and how it fits their process.'
+      },
+      {
+        title: 'Professional duties',
+        risk: 'Using AI does not remove the professional duties that apply to solicitors and firms.',
+        lylo: 'Lylo supports <u>your</u> informed decisions.'
+      }
+    ];
+
+    cards.forEach((card, index) => {
+      const content = cardContent[index % cardContent.length];
+      const title = card.querySelector('strong');
+      const risk = card.querySelector('span');
+      const lylo = card.querySelector('em');
+      if (title) title.textContent = content.title;
+      if (risk) risk.textContent = content.risk;
+      if (lylo) {
+        if (index % cardContent.length === 4) lylo.innerHTML = content.lylo;
+        else lylo.textContent = content.lylo;
+      }
+    });
+
+    if (line) {
+      line.innerHTML = 'UK GDPR works alongside these professional responsibilities: data protection by design, data minimisation and security still apply.<span class="reg-built">Lylo is designed with these responsibilities in mind from the beginning.</span>';
+    }
+
+    if (sources) {
+      sources.innerHTML = '<a href="https://lawscot.org.uk/media/pl1lnu5n/ai-guide.pdf" target="_blank" rel="noopener">Law Society of Scotland: Guide to Generative AI</a> &nbsp;·&nbsp; <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/data-protection-by-design-and-by-default/" target="_blank" rel="noopener">ICO: data protection by design</a> &nbsp;·&nbsp; <a href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/" target="_blank" rel="noopener">England & Wales: SRA AI warning</a>';
+    }
+  };
+
   const initTeamResearch = () => {
     const finalSection = document.querySelector('.final');
     if (!finalSection || document.querySelector('.lylo-people')) return;
 
-    const aboutPath = 'static/preview-about.html';
+    const aboutPath = '/about';
     const joshPhoto = 'static/joshua-profile.jpg';
     const jessPhoto = 'static/jessica-profile.jpg';
 
@@ -74,20 +141,20 @@
     people.className = 'lylo-people';
     people.innerHTML = `
       <div class="lylo-people-inner reveal in">
-        <div class="lylo-section-kicker">The people behind Lylo</div>
+        <div class="lylo-section-kicker">Co-founders</div>
         <h3>Built by Joshua and Jessica.</h3>
         <p class="lylo-people-intro">A small team combining engineering and legal experience while Lylo is being researched, tested and shaped.</p>
         <div class="lylo-people-list" aria-label="People behind Lylo">
           <div class="lylo-person">
             <a class="lylo-person-photo" href="${aboutPath}#joshua" aria-label="Read more about Joshua Sam"><img src="${joshPhoto}" alt="Joshua Sam"></a>
-            <div><strong>Joshua Sam</strong><span class="role">Product & engineering</span><span class="credential">MEng Electrical & Mechanical Engineering · University of Strathclyde</span></div>
+            <div><strong>Joshua Sam</strong><span class="role">Product & Engineering</span><span class="credential">MEng Electrical & Mechanical Engineering · University of Strathclyde</span></div>
           </div>
           <div class="lylo-person">
             <a class="lylo-person-photo" href="${aboutPath}#jessica" aria-label="Read more about Jessica Jayan"><img src="${jessPhoto}" alt="Jessica Jayan"></a>
-            <div><strong>Jessica Jayan</strong><span class="role">Legal research & workflow</span><span class="credential">Scots (Clinical) LLB · DPLP · University of Strathclyde</span></div>
+            <div><strong>Jessica Jayan</strong><span class="role">Legal Research & Workflow</span><span class="credential">Scots (Clinical) LLB · DPLP · University of Strathclyde</span></div>
           </div>
         </div>
-        <a class="lylo-secondary-link" href="${aboutPath}">Meet the people behind Lylo <span class="arrow">→</span></a>
+        <a class="lylo-secondary-link" href="${aboutPath}">About the co-founders <span class="arrow">→</span></a>
       </div>`;
 
     const research = document.createElement('section');
@@ -109,6 +176,7 @@
     initSectionAnchors();
     initDesktopNav();
     initMobileNav();
+    initRegulatoryCopy();
 
     const heroCta = document.querySelector('.hero .cta');
     if (heroCta) {
@@ -116,6 +184,7 @@
       heroCta.setAttribute('href', '/founding-pilot#book');
     }
     text('.hero .note', 'See Lylo, ask questions, and decide if the pilot is worth testing.');
+    text('.privacy-main', 'What if your firm could use the benefits of AI without sending sensitive client data to a public AI service? With Lylo, case files stay on the firm’s own systems.');
 
     const sections = Array.from(document.querySelectorAll('.demo-section'));
     const byHeading = (heading) => sections.find((section) => section.querySelector('.demo-copy h3')?.textContent.trim() === heading);
@@ -206,7 +275,7 @@
       const style = document.createElement('style');
       style.id = 'preview-cta-styles';
       style.textContent = `
-        #sra-warning,#demos,#privacy{scroll-margin-top:84px}
+        #ai-duties,#demos,#privacy{scroll-margin-top:84px}
         .beyond-casework{padding:82px var(--gutter) 18px;text-align:center;border-top:1px solid rgba(255,255,255,.055);background:linear-gradient(180deg,rgba(11,20,34,.12),rgba(8,16,29,0))}
         .beyond-casework-inner{width:100%;max-width:720px;margin:0 auto}
         .beyond-kicker,.lylo-section-kicker{margin-bottom:13px;color:#88a8cf;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
