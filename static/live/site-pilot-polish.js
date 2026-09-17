@@ -1,9 +1,12 @@
 (() => {
   const run = () => {
+    const bookingHref = '/founding-pilot#book';
+    const pilotHref = '/founding-pilot';
+
     const hero = document.querySelector('.hero');
     const heroCta = hero?.querySelector('.cta');
     if (hero && heroCta) {
-      heroCta.setAttribute('href', '/founding-pilot#book');
+      heroCta.setAttribute('href', bookingHref);
 
       const note = hero.querySelector('.note');
       if (note) {
@@ -21,17 +24,34 @@
       const researchLink = document.createElement('a');
       researchLink.href = '/research';
       researchLink.textContent = 'Research';
-      const pilotLink = desktopNav.querySelector('.desktop-pilot-link');
-      if (pilotLink) desktopNav.insertBefore(researchLink, pilotLink);
+      const bookingButton = desktopNav.querySelector('.desktop-pilot-link');
+      if (bookingButton) desktopNav.insertBefore(researchLink, bookingButton);
       else desktopNav.appendChild(researchLink);
     }
     if (desktopNav) {
+      const bookingButton = desktopNav.querySelector('.desktop-pilot-link');
+      if (bookingButton) {
+        bookingButton.textContent = 'Book a 20-minute demo';
+        bookingButton.setAttribute('href', bookingHref);
+      }
+
+      let pilotTextLink = desktopNav.querySelector('.lylo-pilot-nav-text');
+      if (!pilotTextLink) {
+        pilotTextLink = document.createElement('a');
+        pilotTextLink.className = 'lylo-pilot-nav-text';
+        pilotTextLink.href = pilotHref;
+        pilotTextLink.textContent = 'Founding Pilot';
+        if (bookingButton) desktopNav.insertBefore(pilotTextLink, bookingButton);
+        else desktopNav.appendChild(pilotTextLink);
+      }
+
       const ordered = [
         desktopNav.querySelector('a[href="#demos"]'),
         desktopNav.querySelector('a[href="#privacy"]'),
         desktopNav.querySelector('a[href="#ai-duties"]'),
         desktopNav.querySelector('a[href="/research"]'),
-        desktopNav.querySelector('.desktop-pilot-link')
+        pilotTextLink,
+        bookingButton
       ];
       ordered.forEach((link) => { if (link) desktopNav.appendChild(link); });
     }
@@ -41,17 +61,39 @@
       const researchLink = document.createElement('a');
       researchLink.href = '/research';
       researchLink.textContent = 'Research';
-      const pilotLink = Array.from(mobilePanel.querySelectorAll('a')).find((link) => link.getAttribute('href') === '/founding-pilot');
-      if (pilotLink) mobilePanel.insertBefore(researchLink, pilotLink);
-      else mobilePanel.appendChild(researchLink);
+      mobilePanel.appendChild(researchLink);
     }
     if (mobilePanel) {
+      let pilotTextLink = mobilePanel.querySelector('.lylo-pilot-nav-text');
+      if (!pilotTextLink) {
+        const existingPilot = Array.from(mobilePanel.querySelectorAll('a')).find((link) => link.getAttribute('href') === pilotHref);
+        if (existingPilot) {
+          pilotTextLink = existingPilot;
+          pilotTextLink.classList.add('lylo-pilot-nav-text');
+          pilotTextLink.textContent = 'Founding Pilot';
+        } else {
+          pilotTextLink = document.createElement('a');
+          pilotTextLink.className = 'lylo-pilot-nav-text';
+          pilotTextLink.href = pilotHref;
+          pilotTextLink.textContent = 'Founding Pilot';
+        }
+      }
+
+      let bookingLink = mobilePanel.querySelector('.lylo-mobile-booking-link');
+      if (!bookingLink) {
+        bookingLink = document.createElement('a');
+        bookingLink.className = 'lylo-mobile-booking-link';
+        bookingLink.href = bookingHref;
+        bookingLink.textContent = 'Book a 20-minute demo';
+      }
+
       const ordered = [
         mobilePanel.querySelector('a[href="#demos"]'),
         mobilePanel.querySelector('a[href="#privacy"]'),
         mobilePanel.querySelector('a[href="#ai-duties"]'),
         mobilePanel.querySelector('a[href="/research"]'),
-        mobilePanel.querySelector('a[href="/founding-pilot"]')
+        pilotTextLink,
+        bookingLink
       ];
       ordered.forEach((link) => { if (link) mobilePanel.appendChild(link); });
     }
@@ -171,14 +213,22 @@
     if (lastLegal && privacy) lastLegal.insertAdjacentElement('afterend', privacy);
     if (privacy && regStage) privacy.insertAdjacentElement('afterend', regStage);
 
+    let midBooking = document.querySelector('.lylo-mid-booking');
+    if (regStage && !midBooking) {
+      midBooking = document.createElement('section');
+      midBooking.className = 'lylo-mid-booking';
+      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20-minute demo</a><p>No preparation. No client data. No commitment.</p>`;
+      regStage.insertAdjacentElement('afterend', midBooking);
+    }
+
     const beyond = document.querySelector('.beyond-casework');
-    if (regStage && beyond) regStage.insertAdjacentElement('afterend', beyond);
+    const preBeyondAnchor = midBooking || regStage;
+    if (preBeyondAnchor && beyond) preBeyondAnchor.insertAdjacentElement('afterend', beyond);
     if (phoneSection) {
-      const anchor = beyond || regStage || privacy || lastLegal;
+      const anchor = beyond || midBooking || regStage || privacy || lastLegal;
       if (anchor) anchor.insertAdjacentElement('afterend', phoneSection);
     }
 
-    const bookingHref = '/founding-pilot#book';
     const demoHeadings = new Set([
       'Ask the case. Get the answer.',
       'Ask the case. Find the source.',
@@ -218,20 +268,21 @@
 
       const finalCta = final.querySelector('.cta');
       if (finalCta) {
-        finalCta.textContent = 'Explore the founding pilot';
-        finalCta.setAttribute('href', '/founding-pilot');
+        finalCta.textContent = 'Book a 20-minute demo';
+        finalCta.setAttribute('href', bookingHref);
       }
     }
 
-    if (final && !final.querySelector('.lylo-pilot-brief')) {
-      const brief = document.createElement('div');
+    let brief = final?.querySelector('.lylo-pilot-brief');
+    if (final && !brief) {
+      brief = document.createElement('div');
       brief.className = 'lylo-pilot-brief';
       brief.setAttribute('aria-label', 'Founding pilot steps');
       brief.innerHTML = `
         <div class="lylo-pilot-step">
           <span class="lylo-pilot-step-no">01</span>
           <strong>See Lylo live</strong>
-          <span>Start with a short 20–30 minute demonstration of the current system and demos.</span>
+          <span>Start with a short 20-minute demonstration of the current system and demos.</span>
         </div>
         <div class="lylo-pilot-step">
           <span class="lylo-pilot-step-no">02</span>
@@ -247,6 +298,20 @@
       const cta = final.querySelector('.cta');
       if (cta) cta.insertAdjacentElement('beforebegin', brief);
       else final.appendChild(brief);
+    } else if (brief) {
+      const firstStepCopy = brief.querySelector('.lylo-pilot-step>span:last-child');
+      if (firstStepCopy) firstStepCopy.textContent = 'Start with a short 20-minute demonstration of the current system and demos.';
+    }
+
+    if (final && brief) {
+      let more = final.querySelector('.lylo-pilot-more');
+      if (!more) {
+        more = document.createElement('a');
+        more.className = 'lylo-pilot-more';
+        more.href = pilotHref;
+        more.textContent = 'Learn more about the founding pilot →';
+      }
+      brief.insertAdjacentElement('afterend', more);
     }
 
     if (!document.getElementById('lylo-pilot-polish-styles')) {
@@ -255,15 +320,20 @@
       style.textContent = `
         .lylo-demos-first .demo-heading{margin-top:0;padding-top:0;border-top:0}
         .lylo-regulatory-stage{padding-top:105px;padding-bottom:92px}
-        .lylo-pilot-brief{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,820px);margin:30px auto 28px;border-top:1px solid rgba(255,255,255,.065);border-bottom:1px solid rgba(255,255,255,.065)}
+        .lylo-mid-booking{padding:52px var(--gutter) 68px;text-align:center;border-top:1px solid rgba(255,255,255,.045)}
+        .lylo-mid-booking .cta{margin:0 auto 12px}
+        .lylo-mid-booking p{margin:0;color:#7e8da1;font-size:12px;line-height:1.5}
+        .lylo-pilot-brief{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,820px);margin:30px auto 20px;border-top:1px solid rgba(255,255,255,.065);border-bottom:1px solid rgba(255,255,255,.065)}
         .lylo-pilot-step{position:relative;padding:19px 24px;text-align:left}
         .lylo-pilot-step+.lylo-pilot-step{border-left:1px solid rgba(255,255,255,.055)}
         .lylo-pilot-step-no{display:block;margin-bottom:8px;color:#7896bb;font-size:9px;font-weight:700;letter-spacing:.13em}
         .lylo-pilot-step strong{display:block;margin-bottom:6px;color:#e7edf5;font-size:12.5px;font-weight:600;line-height:1.35}
         .lylo-pilot-step>span:last-child{display:block;color:#7e8da1;font-size:10.5px;line-height:1.5}
+        .lylo-pilot-more{display:block;width:max-content;max-width:100%;margin:0 auto 24px;color:#8fa8c7;text-decoration:none;border-bottom:1px solid rgba(143,168,199,.28);font-size:12px;line-height:1.5}
+        .lylo-pilot-more:hover{color:#c7dcf5}
         @media(min-width:980px){
           .final .reveal>p{max-width:820px;font-size:18px;line-height:1.7;margin-bottom:34px}
-          .lylo-pilot-brief{width:min(100%,980px);margin:38px auto 34px}
+          .lylo-pilot-brief{width:min(100%,980px);margin:38px auto 22px}
           .lylo-pilot-step{padding:27px 32px}
           .lylo-pilot-step-no{font-size:11px;margin-bottom:10px}
           .lylo-pilot-step strong{font-size:15px;margin-bottom:8px}
@@ -273,12 +343,15 @@
         }
         @media(max-width:700px){
           .lylo-regulatory-stage{padding-top:74px;padding-bottom:64px}
-          .lylo-pilot-brief{grid-template-columns:1fr;width:min(100%,350px);margin:26px auto 24px}
+          .lylo-mid-booking{padding:38px 18px 52px}
+          .lylo-mid-booking p{font-size:11px}
+          .lylo-pilot-brief{grid-template-columns:1fr;width:min(100%,350px);margin:26px auto 18px}
           .lylo-pilot-step{padding:15px 4px;text-align:center}
           .lylo-pilot-step+.lylo-pilot-step{border-left:0;border-top:1px solid rgba(255,255,255,.055)}
           .lylo-pilot-step-no{margin-bottom:6px}
           .lylo-pilot-step strong{font-size:12px}
           .lylo-pilot-step>span:last-child{max-width:300px;margin:0 auto;font-size:10.5px}
+          .lylo-pilot-more{margin-bottom:20px;font-size:11px}
         }
       `;
       document.head.appendChild(style);
