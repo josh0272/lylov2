@@ -26,7 +26,7 @@
         status.textContent = message || (
           next === 'active'
             ? 'Connected — speak to Lylo'
-            : 'Browser voice call · no phone number needed'
+            : 'Browser voice call · No phone number needed'
         );
       }
     };
