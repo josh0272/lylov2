@@ -57,7 +57,7 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
       <p>The aim is simple: find out whether Lylo can save useful time on a real legal workflow.</p>
     </div>
     <div class="steps">
-      <article class="step"><div class="step-no">1</div><h3>See Lylo live</h3><p>A short 20–30 minute demonstration of the current system and demos.</p></article>
+      <article class="step"><div class="step-no">1</div><h3>See Lylo live</h3><p>A short 20-minute demonstration of the current system and demos.</p></article>
       <article class="step"><div class="step-no">2</div><h3>Choose one workflow</h3><p>Tell us where your team loses time and what would be useful to test.</p></article>
       <article class="step"><div class="step-no">3</div><h3>Use a safe example</h3><p>Use one synthetic or properly anonymised matter. No live client data is required for the first test.</p></article>
       <article class="step"><div class="step-no">4</div><h3>Compare the process</h3><p>Compare Lylo's draft or workflow against the way your firm normally handles the task.</p></article>
@@ -132,7 +132,11 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
       const body=new FormData();
       body.append('name',name);
       body.append('email',email);
-      body.append('answers',`Founding pilot demo request\nFirm: ${firm}\nWorkflow: ${data.get('workflow')||'Not selected'}\nBest time: ${data.get('time')||'Not provided'}\nNotes: ${data.get('notes')||'None'}`);
+      body.append('answers',`Founding pilot demo request\
+Firm: ${firm}\
+Workflow: ${data.get('workflow')||'Not selected'}\
+Best time: ${data.get('time')||'Not provided'}\
+Notes: ${data.get('notes')||'None'}`);
       body.append('transcript','');
       const response=await fetch('/api/submit',{method:'POST',body});
       const result=await response.json().catch(()=>({}));
