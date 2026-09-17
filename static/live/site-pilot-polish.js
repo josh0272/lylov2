@@ -7,9 +7,73 @@
       if (note) {
         note.textContent = 'No preparation. No client data. No commitment. See the demos, ask questions and decide whether Lylo is worth exploring further.';
       }
+
+      const subheading = hero.querySelector('.bullet');
+      if (subheading) {
+        subheading.textContent = 'See how Lylo is being designed to draft Statements of Fact, ET1s and Schedules of Loss — without sending client data to a public AI service.';
+      }
     }
 
+    const desktopNav = document.querySelector('.desktop-nav');
+    if (desktopNav && !desktopNav.querySelector('a[href="/research"]')) {
+      const researchLink = document.createElement('a');
+      researchLink.href = '/research';
+      researchLink.textContent = 'Research';
+      const pilotLink = desktopNav.querySelector('.desktop-pilot-link');
+      if (pilotLink) desktopNav.insertBefore(researchLink, pilotLink);
+      else desktopNav.appendChild(researchLink);
+    }
+
+    const mobilePanel = document.querySelector('#mobileMenu .panel-inner');
+    if (mobilePanel && !mobilePanel.querySelector('a[href="/research"]')) {
+      const researchLink = document.createElement('a');
+      researchLink.href = '/research';
+      researchLink.textContent = 'Research';
+      const pilotLink = Array.from(mobilePanel.querySelectorAll('a')).find((link) => link.getAttribute('href') === '/founding-pilot');
+      if (pilotLink) mobilePanel.insertBefore(researchLink, pilotLink);
+      else mobilePanel.appendChild(researchLink);
+    }
+
+    document.querySelector('.lylo-research-strip')?.remove();
+
+    const bookingHref = '/founding-pilot#book';
+    const demoHeadings = new Set([
+      'Ask the case. Get the answer.',
+      'Ask the case. Find the source.',
+      'Turn case files into a completed form.',
+      'Turn case files into a draft form.',
+      'Know what the claim is worth.',
+      'Build a Schedule of Loss.'
+    ]);
+
+    document.querySelectorAll('.demo-section').forEach((section) => {
+      const heading = section.querySelector('.demo-copy h3')?.textContent.trim();
+      if (!demoHeadings.has(heading)) return;
+
+      const cta = section.querySelector('.demo-copy .demo-cta');
+      if (!cta) return;
+
+      if (cta.tagName === 'BUTTON') {
+        const link = document.createElement('a');
+        link.className = Array.from(cta.classList).filter((name) => name !== 'et1-suggest-jump').join(' ');
+        link.href = bookingHref;
+        link.textContent = 'Book a 20-minute demo';
+        cta.replaceWith(link);
+      } else {
+        cta.textContent = 'Book a 20-minute demo';
+        cta.setAttribute('href', bookingHref);
+      }
+    });
+
     const final = document.querySelector('.final .reveal');
+    if (final) {
+      const finalCta = final.querySelector('.cta');
+      if (finalCta) {
+        finalCta.textContent = 'Explore the founding pilot';
+        finalCta.setAttribute('href', '/founding-pilot');
+      }
+    }
+
     if (final && !final.querySelector('.lylo-pilot-brief')) {
       const brief = document.createElement('div');
       brief.className = 'lylo-pilot-brief';
