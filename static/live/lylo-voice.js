@@ -176,10 +176,3 @@
     init();
   }
 })();
-
-(() => {
-  const s = document.createElement('script');
-  s.src = '/static/site-copy-overrides.js?v=1';
-  s.defer = true;
-  document.head.appendChild(s);
-})();
