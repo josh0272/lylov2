@@ -162,6 +162,10 @@
     style.id = 'preview-cta-styles';
     style.textContent = `
       #sra-warning,#demos,#privacy{scroll-margin-top:84px}
+      .hero .cta,.final .cta{position:relative;isolation:isolate;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
+      .hero .cta::before,.final .cta::before{content:"";position:absolute;z-index:-1;top:-120%;left:-38%;width:42%;height:340%;transform:rotate(24deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.11),transparent);transition:left .58s ease;pointer-events:none}
+      .hero .cta:hover,.final .cta:hover{transform:translateY(-3px);filter:brightness(1.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 18px 44px rgba(42,112,210,.22),0 0 28px rgba(99,168,255,.08)}
+      .hero .cta:hover::before,.final .cta:hover::before{left:108%}
       .lylo-community{padding:100px var(--gutter);border-top:1px solid rgba(255,255,255,.055);background:linear-gradient(180deg,rgba(12,22,37,.26),rgba(8,16,29,0))}
       .lylo-community-inner{width:100%;max-width:1040px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:18px}
       .lylo-community-card{min-height:390px;padding:34px;border:1px solid rgba(255,255,255,.075);border-radius:24px;background:linear-gradient(155deg,rgba(255,255,255,.028),rgba(255,255,255,.01));box-shadow:0 26px 70px rgba(0,0,0,.15);display:flex;flex-direction:column;align-items:flex-start;overflow:hidden;position:relative}
@@ -188,7 +192,9 @@
       @media(max-width:979px){
         .desktop-nav{display:none!important}#mobileMenu .panel-inner a{font-size:21px;padding:17px 2px}#mobileMenu .panel-inner a:last-child{color:#eef5fd}
         .lylo-community{padding:64px 20px}.lylo-community-inner{grid-template-columns:1fr;gap:12px;max-width:390px}.lylo-community-card{min-height:0;padding:25px 21px;border-radius:18px;text-align:center;align-items:center}.lylo-community-card h3{font-size:33px;max-width:335px;margin-bottom:11px}.lylo-community-card p{font-size:12.5px;max-width:340px;line-height:1.58}.lylo-research-meta{margin-top:15px}.lylo-team-mini{max-width:340px}.lylo-mini-person{text-align:left}.lylo-community-button{margin-top:20px;width:100%;max-width:290px}.phone-call-helper{margin-top:10px;font-size:10.5px}.phone-section .phone-live-cta{min-height:48px;padding:0 20px;font-size:14px}
-      }`;
+      }
+      @media(prefers-reduced-motion:reduce){.hero .cta,.final .cta,.hero .cta::before,.final .cta::before{transition:none!important}.hero .cta:hover,.final .cta:hover{transform:none}}
+    `;
     document.head.appendChild(style);
   };
 
