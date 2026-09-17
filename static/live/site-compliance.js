@@ -11,6 +11,13 @@
       const heading = reg.querySelector('.reg-question');
       if (heading) heading.textContent = 'AI use in legal work is changing.';
 
+      if (heading && !reg.querySelector('.reg-mobile-framework')) {
+        const framework = document.createElement('div');
+        framework.className = 'reg-mobile-framework';
+        framework.innerHTML = '<p>UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.</p><strong>Lylo is designed with these responsibilities in mind from the beginning.</strong><span>Law Society of Scotland: Guide to Generative AI &nbsp;·&nbsp; ICO: data protection by design &nbsp;·&nbsp; England &amp; Wales: SRA AI warning</span>';
+        heading.insertAdjacentElement('afterend', framework);
+      }
+
       const lead = reg.querySelector('.reg-lead');
       if (lead) lead.textContent = 'Legal regulators and professional bodies are increasingly addressing inaccurate AI output, confidentiality, supervision and professional responsibility. Lylo is being designed around those risks.';
 
@@ -34,28 +41,6 @@
       const line = reg.querySelector('.reg-line');
       if (line) {
         line.innerHTML = 'UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.<span class="reg-built">Lylo is designed with these responsibilities in mind from the beginning.</span>';
-      }
-
-      const cards = reg.querySelector('.reg-cards');
-      const sources = reg.querySelector('.reg-sources');
-      if (cards && !reg.querySelector('.reg-mobile-trust-summary')) {
-        const mobileSummary = document.createElement('p');
-        mobileSummary.className = 'reg-mobile-trust-summary';
-        mobileSummary.textContent = 'Lylo is being designed around privacy, security and professional oversight from the beginning.';
-        cards.insertAdjacentElement('afterend', mobileSummary);
-
-        const details = document.createElement('details');
-        details.className = 'reg-mobile-guidance';
-        const summary = document.createElement('summary');
-        summary.textContent = 'Read the guidance and sources →';
-        details.appendChild(summary);
-
-        const detailBody = document.createElement('div');
-        detailBody.className = 'reg-mobile-guidance-body';
-        if (line) detailBody.appendChild(line.cloneNode(true));
-        if (sources) detailBody.appendChild(sources.cloneNode(true));
-        details.appendChild(detailBody);
-        mobileSummary.insertAdjacentElement('afterend', details);
       }
     }
 
@@ -185,20 +170,17 @@
         .reg-date-pills{display:flex!important;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;text-transform:none!important;letter-spacing:0!important}
         .reg-pill{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border:1px solid rgba(99,168,255,.18);border-radius:999px;background:rgba(36,69,108,.16);color:#9fc8fa;font-size:10px;font-weight:600;letter-spacing:.02em}
         .reg-pill-secondary{border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.025);color:#9aa9bc}
-        .reg-lead-mobile,.reg-mobile-trust-summary,.reg-mobile-guidance{display:none}
+        .reg-lead-mobile,.reg-mobile-framework{display:none}
         .lylo-research-note a{color:inherit!important;text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:2px}
         @media(max-width:700px){
           .reg-date-pills{gap:6px}.reg-pill{min-height:26px;padding:0 9px;font-size:9px;text-align:center}
           .reg-trust>.reg-lead:not(.reg-lead-mobile){display:none}
           .reg-lead-mobile{display:block;margin:13px auto 20px}
           .reg-trust>.reg-line,.reg-trust>.reg-sources{display:none}
-          .reg-mobile-trust-summary{display:block;margin:22px auto 10px;max-width:680px;color:#b9c5d5;font-size:13px;line-height:1.55;font-weight:500}
-          .reg-mobile-guidance{display:block;margin:0 auto;max-width:680px;color:#8fa8c7;font-size:11px}
-          .reg-mobile-guidance summary{display:inline-block;cursor:pointer;list-style:none;text-decoration:underline;text-underline-offset:3px}
-          .reg-mobile-guidance summary::-webkit-details-marker{display:none}
-          .reg-mobile-guidance-body{padding-top:12px}
-          .reg-mobile-guidance .reg-line{display:block;margin-top:0}
-          .reg-mobile-guidance .reg-sources{display:block;margin-top:12px}
+          .reg-mobile-framework{display:block;margin:16px auto 18px;max-width:700px;padding:16px 15px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:rgba(255,255,255,.018);color:#91a0b3;text-align:center}
+          .reg-mobile-framework p{margin:0;font-size:11px;line-height:1.55}
+          .reg-mobile-framework strong{display:block;margin-top:9px;color:#dce6f2;font-size:11.5px;line-height:1.5;font-weight:600}
+          .reg-mobile-framework span{display:block;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.055);color:#73859b;font-size:9.5px;line-height:1.55}
         }
       `;
       document.head.appendChild(style);
