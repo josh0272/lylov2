@@ -8,11 +8,38 @@
         tag.classList.add('reg-date-pills');
       }
 
+      const lead = reg.querySelector('.reg-lead');
+      if (lead) lead.textContent = 'Legal regulators and professional bodies are increasingly addressing inaccurate AI output, confidentiality, supervision and professional responsibility. Lylo is being designed around those risks.';
+
       const line = reg.querySelector('.reg-line');
       if (line) {
         line.innerHTML = 'UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.<span class="reg-built">Lylo is designed with these responsibilities in mind from the beginning.</span>';
       }
     }
+
+    const tagline = document.querySelector('.hero .tagline');
+    if (tagline) tagline.textContent = 'Private AI, designed for solicitors.';
+
+    document.querySelectorAll('.demo-section').forEach((section) => {
+      const heading = section.querySelector('.demo-copy h3')?.textContent.trim();
+      const copy = section.querySelector('.demo-copy p');
+      if (!copy) return;
+      if (heading === 'Ask the case. Get the answer.') {
+        copy.textContent = 'Upload the case files and ask Lylo a question. It is being designed to search the documents, find the key facts and bring the answer back in one place.';
+      } else if (heading === 'Turn case files into a completed form.') {
+        copy.textContent = 'Lylo is being designed to pull names, dates and case details from uploaded documents, fill the ET1 and prepare the information for review. You stay in control before it is used.';
+      } else if (heading === 'Know what the claim is worth.') {
+        copy.textContent = 'Lylo’s Schedule of Loss calculator is being designed to use the claimant’s pay, dates and losses to calculate the figure and build a clear schedule for review.';
+      }
+    });
+
+    document.querySelectorAll('.privacy-node').forEach((node) => {
+      const title = node.querySelector('strong')?.textContent.trim();
+      const copy = node.querySelector('span');
+      if (title === 'On-premise AI' && copy) {
+        copy.textContent = 'The private legal AI is being designed to run on hardware inside the firm.';
+      }
+    });
 
     const heroCta = document.querySelector('.hero .cta');
     if (heroCta) heroCta.setAttribute('href', '/founding-pilot');
