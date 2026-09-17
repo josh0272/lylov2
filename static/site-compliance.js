@@ -7,6 +7,14 @@
 
       const link = people.querySelector('.lylo-secondary-link');
       if (link) link.innerHTML = 'Meet the co-founders of Lylo <span class="arrow">→</span>';
+
+      people.querySelectorAll('.lylo-person').forEach((person) => {
+        const name = person.querySelector('strong')?.textContent.trim();
+        const credential = person.querySelector('.credential');
+        if (name === 'Jessica Jayan' && credential) {
+          credential.textContent = 'Scots (Clinical) LLB · University of Strathclyde';
+        }
+      });
     }
 
     const research = document.querySelector('.lylo-research-strip');
