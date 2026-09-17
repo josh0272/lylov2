@@ -116,7 +116,7 @@ def render_landing(template_path: str, live: bool = False):
 
     html = html.replace(
         "</body>",
-        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=4" defer></script><script src="/static/et1-intake.js?v=2" defer></script><script id="preview-cta-script" src="/static/preview-cta.js?v=4" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
+        '<script src="/static/mobile-preview.js?v=10" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=4" defer></script><script src="/static/et1-intake.js?v=2" defer></script><script id="preview-cta-script" src="/static/preview-cta.js?v=5" defer></script><script src="/static/lylo-voice.js?v=5" defer></script></body>'
     )
 
     if live:
@@ -131,6 +131,11 @@ def render_landing(template_path: str, live: bool = False):
 @app.get("/", response_class=HTMLResponse)
 def home():
     return render_landing("static/live/index.html", live=True)
+
+
+@app.get("/about", response_class=FileResponse)
+def about():
+    return FileResponse("static/preview-about.html")
 
 
 @app.get("/preview", response_class=HTMLResponse)
@@ -149,6 +154,8 @@ def live_asset(name: str):
     path = os.path.join("static", "live", name)
     with open(path, "r", encoding="utf-8") as f:
         content = f.read().replace('/static/', '/static/live/')
+    if name == 'preview-cta.js':
+        content = content.replace("const aboutPath = 'static/preview-about.html';", "const aboutPath = '/about';")
     if name == 'phone-demo.js':
         content = content.replace(
             "      const naturalTypingDuration = Math.max(0.35, turn.text.length / TYPE_CHARS_PER_SECOND);\n      const typingDuration = Math.min(availableDuration, naturalTypingDuration);",
