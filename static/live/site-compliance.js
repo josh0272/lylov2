@@ -42,6 +42,10 @@
       if (line) {
         line.innerHTML = 'UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.<span class="reg-built">Lylo is designed with these responsibilities in mind from the beginning.</span>';
       }
+
+      const cards = reg.querySelector('.reg-cards');
+      const framework = reg.querySelector('.reg-mobile-framework');
+      if (cards && framework) cards.insertAdjacentElement('afterend', framework);
     }
 
     const tagline = document.querySelector('.hero .tagline');
@@ -177,7 +181,7 @@
           .reg-trust>.reg-lead:not(.reg-lead-mobile){display:none}
           .reg-lead-mobile{display:block;margin:13px auto 20px}
           .reg-trust>.reg-line,.reg-trust>.reg-sources{display:none}
-          .reg-mobile-framework{display:block;margin:16px auto 18px;max-width:700px;padding:16px 15px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:rgba(255,255,255,.018);color:#91a0b3;text-align:center}
+          .reg-mobile-framework{display:block;margin:24px auto 18px;max-width:700px;padding:18px 0;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);color:#91a0b3;text-align:center}
           .reg-mobile-framework p{margin:0;font-size:11px;line-height:1.55}
           .reg-mobile-framework strong{display:block;margin-top:9px;color:#dce6f2;font-size:11.5px;line-height:1.5;font-weight:600}
           .reg-mobile-framework span{display:block;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.055);color:#73859b;font-size:9.5px;line-height:1.55}
