@@ -1,19 +1,5 @@
 (() => {
-  const run = () => {
-    const reg = document.querySelector('.reg-trust');
-    if (reg) {
-      const tag = reg.querySelector('.reg-date');
-      if (tag) {
-        tag.innerHTML = '<span class="reg-pill">Law Society of Scotland · Guide to Generative AI</span><span class="reg-pill reg-pill-secondary">England & Wales · 17 Aug 2026 · SRA Misuse of AI warning</span>';
-        tag.classList.add('reg-date-pills');
-      }
-
-      const line = reg.querySelector('.reg-line');
-      if (line) {
-        line.innerHTML = 'UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.<span class="reg-built">Lylo is designed with these responsibilities in mind from the beginning.</span>';
-      }
-    }
-
+  const applyDynamicCopy = () => {
     const people = document.querySelector('.lylo-people');
     if (people) {
       const kicker = people.querySelector('.lylo-section-kicker');
@@ -32,6 +18,27 @@
       if (body) body.textContent = 'We are speaking with people in law about the work that takes the most time, where AI could genuinely help, and what firms would need before trusting it. Our short questionnaire helps guide Lylo’s development.';
       if (note) note.textContent = 'Around 5 minutes · Used for product research.';
     }
+  };
+
+  const run = () => {
+    const reg = document.querySelector('.reg-trust');
+    if (reg) {
+      const tag = reg.querySelector('.reg-date');
+      if (tag) {
+        tag.innerHTML = '<span class="reg-pill">Law Society of Scotland · Guide to Generative AI</span><span class="reg-pill reg-pill-secondary">England & Wales · 17 Aug 2026 · SRA Misuse of AI warning</span>';
+        tag.classList.add('reg-date-pills');
+      }
+
+      const line = reg.querySelector('.reg-line');
+      if (line) {
+        line.innerHTML = 'UK GDPR works alongside these professional responsibilities. The wider UK framework also includes the Data Protection Act 2018, the Data (Use and Access) Act 2025, and PECR 2003 where relevant.<span class="reg-built">Lylo is designed with these responsibilities in mind from the beginning.</span>';
+      }
+    }
+
+    applyDynamicCopy();
+    setTimeout(applyDynamicCopy, 50);
+    setTimeout(applyDynamicCopy, 200);
+    setTimeout(applyDynamicCopy, 600);
 
     const footer = document.querySelector('body > footer');
     if (footer && !footer.querySelector('.lylo-privacy-link')) {
