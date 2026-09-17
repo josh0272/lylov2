@@ -183,3 +183,10 @@
   s.defer = true;
   document.head.appendChild(s);
 })();
+
+(() => {
+  const s = document.createElement('script');
+  s.src = '/static/site-pilot-polish.js?v=1';
+  s.defer = true;
+  document.head.appendChild(s);
+})();
