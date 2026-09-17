@@ -58,6 +58,96 @@
 
     document.querySelector('.lylo-research-strip')?.remove();
 
+    if (window.innerWidth >= 980 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const oldCarousel = document.querySelector('.reg-cards');
+      if (oldCarousel && !oldCarousel.classList.contains('lylo-smooth-carousel')) {
+        const carousel = oldCarousel.cloneNode(true);
+        carousel.querySelectorAll('[aria-hidden="true"]').forEach((clone) => clone.remove());
+        carousel.classList.add('lylo-smooth-carousel');
+        oldCarousel.replaceWith(carousel);
+
+        const originals = Array.from(carousel.children);
+        originals.forEach((card) => {
+          const clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          clone.setAttribute('tabindex', '-1');
+          carousel.appendChild(clone);
+        });
+
+        const track = document.createElement('div');
+        track.className = 'lylo-reg-track';
+        while (carousel.firstChild) track.appendChild(carousel.firstChild);
+        carousel.appendChild(track);
+
+        const firstClone = track.children[originals.length];
+        let offset = 0;
+        let lastTime = performance.now();
+        let interactionUntil = 0;
+        let dragging = false;
+        let dragStartX = 0;
+        let dragStartOffset = 0;
+
+        const loopWidth = () => firstClone ? firstClone.offsetLeft - track.children[0].offsetLeft : 0;
+        const normalise = () => {
+          const width = loopWidth();
+          if (!width) return;
+          while (offset >= width) offset -= width;
+          while (offset < 0) offset += width;
+        };
+        const render = () => {
+          normalise();
+          track.style.transform = `translate3d(${-offset}px,0,0)`;
+        };
+        const pause = (ms = 750) => { interactionUntil = performance.now() + ms; };
+
+        carousel.addEventListener('wheel', (event) => {
+          const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+          if (!delta) return;
+          event.preventDefault();
+          offset += delta;
+          pause(900);
+          render();
+        }, { passive: false });
+
+        carousel.addEventListener('pointerdown', (event) => {
+          if (event.pointerType !== 'mouse' || event.button !== 0) return;
+          dragging = true;
+          dragStartX = event.clientX;
+          dragStartOffset = offset;
+          carousel.classList.add('dragging');
+          carousel.setPointerCapture?.(event.pointerId);
+          pause(5000);
+        });
+        carousel.addEventListener('pointermove', (event) => {
+          if (!dragging) return;
+          offset = dragStartOffset - (event.clientX - dragStartX);
+          pause(5000);
+          render();
+        });
+        const endDrag = (event) => {
+          if (!dragging) return;
+          dragging = false;
+          carousel.classList.remove('dragging');
+          try { carousel.releasePointerCapture?.(event.pointerId); } catch (_) {}
+          pause(800);
+        };
+        carousel.addEventListener('pointerup', endDrag);
+        carousel.addEventListener('pointercancel', endDrag);
+
+        const animate = (now) => {
+          const dt = Math.min(now - lastTime, 24);
+          if (!dragging && now > interactionUntil) {
+            offset += dt * 0.032;
+            render();
+          }
+          lastTime = now;
+          requestAnimationFrame(animate);
+        };
+        render();
+        requestAnimationFrame(animate);
+      }
+    }
+
     const demoIntro = document.querySelector('.demo-intro');
     const reg = document.querySelector('.reg-trust');
     const privacy = document.querySelector('.privacy');
@@ -171,6 +261,16 @@
         .lylo-pilot-step-no{display:block;margin-bottom:8px;color:#7896bb;font-size:9px;font-weight:700;letter-spacing:.13em}
         .lylo-pilot-step strong{display:block;margin-bottom:6px;color:#e7edf5;font-size:12.5px;font-weight:600;line-height:1.35}
         .lylo-pilot-step>span:last-child{display:block;color:#7e8da1;font-size:10.5px;line-height:1.5}
+        @media(min-width:980px){
+          .final .reveal>p{max-width:820px;font-size:18px;line-height:1.7;margin-bottom:34px}
+          .lylo-pilot-brief{width:min(100%,980px);margin:38px auto 34px}
+          .lylo-pilot-step{padding:27px 32px}
+          .lylo-pilot-step-no{font-size:11px;margin-bottom:10px}
+          .lylo-pilot-step strong{font-size:15px;margin-bottom:8px}
+          .lylo-pilot-step>span:last-child{font-size:12.5px;line-height:1.58}
+          .reg-cards.lylo-smooth-carousel{display:block;overflow:hidden;scroll-behavior:auto;will-change:transform;transform:translateZ(0);backface-visibility:hidden}
+          .reg-cards.lylo-smooth-carousel .lylo-reg-track{display:flex;gap:18px;width:max-content;padding:8px 4px 10px;will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
+        }
         @media(max-width:700px){
           .lylo-regulatory-stage{padding-top:74px;padding-bottom:64px}
           .lylo-pilot-brief{grid-template-columns:1fr;width:min(100%,350px);margin:26px auto 24px}
