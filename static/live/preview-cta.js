@@ -189,14 +189,14 @@
     const sections = Array.from(document.querySelectorAll('.demo-section'));
     const byHeading = (heading) => sections.find((section) => section.querySelector('.demo-copy h3')?.textContent.trim() === heading);
 
-    const caseSection = byHeading('Ask the case. Get the answer.');
+    const caseSection = byHeading('Ask the case. Get the answer.') || byHeading('Ask the case. Find the source.');
     const caseCta = caseSection?.querySelector('.demo-cta');
     if (caseCta) {
       caseCta.textContent = 'Explore the founding pilot';
       caseCta.setAttribute('href', '/founding-pilot');
     }
 
-    const et1Section = byHeading('Turn case files into a completed form.');
+    const et1Section = byHeading('Turn case files into a completed form.') || byHeading('Turn case files into a draft form.');
     const et1Cta = et1Section?.querySelector('.demo-copy .demo-cta');
     if (et1Cta) {
       et1Cta.textContent = 'Explore the founding pilot';
@@ -216,7 +216,7 @@
       if (demoLink) demoLink.href = '/founding-pilot?workflow=et1#book';
     }
 
-    const scheduleSection = byHeading('Know what the claim is worth.');
+    const scheduleSection = byHeading('Know what the claim is worth.') || byHeading('Build a Schedule of Loss.');
     const scheduleCta = scheduleSection?.querySelector('.demo-cta');
     if (scheduleCta) {
       scheduleCta.textContent = 'Test this with your workflow';
