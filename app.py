@@ -3,7 +3,7 @@
 import os, sys, tempfile, shutil, smtplib, ssl
 from email.message import EmailMessage
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
-from fastapi.responses import JSONResponse, FileResponse, HTMLResponse, Response
+from fastapi.responses import JSONResponse, FileResponse, HTMLResponse, Response, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from faster_whisper import WhisperModel
@@ -164,17 +164,27 @@ def live_asset(name: str):
     return Response(content=content, media_type="application/javascript")
 
 
-@app.get("/founding-pilot", response_class=HTMLResponse)
-def founding_pilot():
+@app.get("/call", response_class=HTMLResponse)
+def call_page():
     with open("static/live/founding-pilot.html", "r", encoding="utf-8") as f:
         html = f.read()
     html = html.replace('href="/preview#', 'href="/#').replace('href="/preview"', 'href="/"')
     return HTMLResponse(content=html)
 
 
-@app.get("/preview/founding-pilot", response_class=FileResponse)
-def preview_founding_pilot():
+@app.get("/founding-pilot")
+def founding_pilot_redirect():
+    return RedirectResponse(url="/call", status_code=308)
+
+
+@app.get("/preview/call", response_class=FileResponse)
+def preview_call():
     return FileResponse("static/founding-pilot.html")
+
+
+@app.get("/preview/founding-pilot")
+def preview_founding_pilot_redirect():
+    return RedirectResponse(url="/preview/call", status_code=308)
 
 
 @app.get("/call-lylo-out-of-hours-demo-record-for-jess", response_class=FileResponse)
