@@ -330,57 +330,7 @@
 
     final?.querySelector('.lylo-pilot-more')?.remove();
 
-    if (!document.getElementById('lylo-pilot-polish-styles')) {
-      const style = document.createElement('style');
-      style.id = 'lylo-pilot-polish-styles';
-      style.textContent = `
-        .lylo-mission{padding:96px var(--gutter) 92px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);text-align:center}
-        .lylo-mission-inner{width:min(100%,1120px);margin:0 auto}
-        .lylo-mission-kicker{margin-bottom:22px;color:#7fa4cf;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-        .lylo-mission h2{max-width:920px;margin:0 auto;color:#f1f4f8;font-family:'Cormorant Garamond',serif;font-size:clamp(38px,4vw,58px);font-weight:400;letter-spacing:-.03em;line-height:1.08}
-        .lylo-mission p{max-width:800px;margin:24px auto 0;color:#9aa9bb;font-size:18px;line-height:1.62}
-        .lylo-demos-first .demo-heading{margin-top:0;padding-top:0;border-top:0}
-        .lylo-regulatory-stage{padding-top:105px;padding-bottom:92px}
-        .lylo-mid-booking{padding:52px var(--gutter) 68px;text-align:center;border-top:1px solid rgba(255,255,255,.045)}
-        .lylo-mid-booking .cta{margin:0 auto 12px}
-        .lylo-mid-booking p{margin:0;color:#7e8da1;font-size:12px;line-height:1.5}
-        .lylo-pilot-brief{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,820px);margin:30px auto 20px;border-top:1px solid rgba(255,255,255,.065);border-bottom:1px solid rgba(255,255,255,.065)}
-        .lylo-pilot-step{position:relative;padding:19px 24px;text-align:left}
-        .lylo-pilot-step+.lylo-pilot-step{border-left:1px solid rgba(255,255,255,.055)}
-        .lylo-pilot-step-no{display:block;margin-bottom:8px;color:#7896bb;font-size:9px;font-weight:700;letter-spacing:.13em}
-        .lylo-pilot-step strong{display:block;margin-bottom:6px;color:#e7edf5;font-size:12.5px;font-weight:600;line-height:1.35}
-        .lylo-pilot-step>span:last-child{display:block;color:#7e8da1;font-size:10.5px;line-height:1.5}
-        .lylo-pilot-more{display:block;width:max-content;max-width:100%;margin:0 auto 24px;color:#8fa8c7;text-decoration:none;border-bottom:1px solid rgba(143,168,199,.28);font-size:12px;line-height:1.5}
-        .lylo-pilot-more:hover{color:#c7dcf5}
-        @media(min-width:980px){
-          .final .reveal>p{max-width:820px;font-size:18px;line-height:1.7;margin-bottom:34px}
-          .lylo-pilot-brief{width:min(100%,980px);margin:38px auto 22px}
-          .lylo-pilot-step{padding:27px 32px}
-          .lylo-pilot-step-no{font-size:11px;margin-bottom:10px}
-          .lylo-pilot-step strong{font-size:15px;margin-bottom:8px}
-          .lylo-pilot-step>span:last-child{font-size:12.5px;line-height:1.58}
-          .reg-cards.lylo-smooth-carousel{display:block;overflow:hidden;scroll-behavior:auto;will-change:transform;transform:translateZ(0);backface-visibility:hidden}
-          .reg-cards.lylo-smooth-carousel .lylo-reg-track{display:flex;gap:18px;width:max-content;padding:8px 4px 10px;will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
-        }
-        @media(max-width:700px){
-          .lylo-mission{padding:64px 20px 62px}
-          .lylo-mission-kicker{margin-bottom:16px;font-size:9px}
-          .lylo-mission h2{max-width:350px;font-size:31px;line-height:1.12}
-          .lylo-mission p{max-width:345px;margin-top:18px;font-size:15px;line-height:1.58}
-          .lylo-regulatory-stage{padding-top:74px;padding-bottom:64px}
-          .lylo-mid-booking{padding:38px 18px 52px}
-          .lylo-mid-booking p{font-size:11px}
-          .lylo-pilot-brief{grid-template-columns:1fr;width:min(100%,350px);margin:26px auto 18px}
-          .lylo-pilot-step{padding:15px 4px;text-align:center}
-          .lylo-pilot-step+.lylo-pilot-step{border-left:0;border-top:1px solid rgba(255,255,255,.055)}
-          .lylo-pilot-step-no{margin-bottom:6px}
-          .lylo-pilot-step strong{font-size:12px}
-          .lylo-pilot-step>span:last-child{max-width:300px;margin:0 auto;font-size:10.5px}
-          .lylo-pilot-more{margin-bottom:20px;font-size:11px}
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
