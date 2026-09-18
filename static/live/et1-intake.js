@@ -62,7 +62,7 @@
     section.classList.add('et1-section');
     initEt1Captions(section);
 
-    const extension = document.querySelector('.lylo-other-workflows .et1-extension');
+    const extension = section.querySelector('.et1-extension');
     if (!extension) return;
 
     const form = document.getElementById('et1-form-suggest');

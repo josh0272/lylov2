@@ -76,9 +76,9 @@ def about():
     return html_file("static/preview-about.html")
 
 
-@app.get("/preview")
-def preview_redirect():
-    return RedirectResponse(url="/", status_code=308)
+@app.get("/preview", response_class=HTMLResponse)
+def preview():
+    return html_file("static/live/preview.html")
 
 
 @app.get("/live-assets/{name}")
