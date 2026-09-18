@@ -6,7 +6,7 @@
     const hero = document.querySelector('.hero');
     const heroCta = hero?.querySelector('.cta');
     if (hero && heroCta) {
-      heroCta.textContent = 'Book a 20-minute call';
+      heroCta.textContent = 'Book a 20 minute call with us';
       heroCta.setAttribute('href', bookingHref);
 
       const note = hero.querySelector('.note');
@@ -16,7 +16,7 @@
 
       const subheading = hero.querySelector('.bullet');
       if (subheading) {
-        subheading.textContent = 'See how Lylo is being designed to draft Statements of Fact, ET1s and Schedules of Loss — without sending client data to a public AI service.';
+        subheading.textContent = 'We are developing private AI for legal work, so solicitors can use the benefits of AI without sending confidential client data to public AI services such as ChatGPT.';
       }
     }
 
@@ -32,7 +32,7 @@
     if (desktopNav) {
       const bookingButton = desktopNav.querySelector('.desktop-pilot-link');
       if (bookingButton) {
-        bookingButton.textContent = 'Book a 20-minute call';
+        bookingButton.textContent = 'Book a 20 minute call with us';
         bookingButton.setAttribute('href', bookingHref);
       }
 
@@ -85,7 +85,7 @@
         bookingLink = document.createElement('a');
         bookingLink.className = 'lylo-mobile-booking-link';
         bookingLink.href = bookingHref;
-        bookingLink.textContent = 'Book a 20-minute call';
+        bookingLink.textContent = 'Book a 20 minute call with us';
       }
 
       const ordered = [
@@ -231,7 +231,7 @@
     if (regStage && !midBooking) {
       midBooking = document.createElement('section');
       midBooking.className = 'lylo-mid-booking';
-      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20-minute call</a><p>No preparation. No client data. No commitment.</p>`;
+      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20 minute call with us</a><p>No preparation. No client data. No commitment.</p>`;
       regStage.insertAdjacentElement('afterend', midBooking);
     }
 
@@ -263,10 +263,10 @@
         const link = document.createElement('a');
         link.className = Array.from(cta.classList).filter((name) => name !== 'et1-suggest-jump').join(' ');
         link.href = bookingHref;
-        link.textContent = 'Book a 20-minute call';
+        link.textContent = 'Book a 20 minute call with us';
         cta.replaceWith(link);
       } else {
-        cta.textContent = 'Book a 20-minute call';
+        cta.textContent = 'Book a 20 minute call with us';
         cta.setAttribute('href', bookingHref);
       }
     });
@@ -282,7 +282,7 @@
 
       const finalCta = final.querySelector('.cta');
       if (finalCta) {
-        finalCta.textContent = 'Book a 20-minute call';
+        finalCta.textContent = 'Book a 20 minute call with us';
         finalCta.setAttribute('href', bookingHref);
       }
     }
@@ -295,7 +295,7 @@
       brief.innerHTML = `
         <div class="lylo-pilot-step">
           <span class="lylo-pilot-step-no">01</span>
-          <strong>Start with a 20-minute call</strong>
+          <strong>Start with a 20-minute call with a co founder</strong>
           <span>Tell us which legal processes take time and see the most relevant proof-of-concept demonstrations.</span>
         </div>
         <div class="lylo-pilot-step">
@@ -315,7 +315,7 @@
     } else if (brief) {
       const steps = brief.querySelectorAll('.lylo-pilot-step');
       const copy = [
-        ['Start with a 20-minute call', 'Tell us which legal processes take time and see the most relevant proof-of-concept demonstrations.'],
+        ['Start with a 20-minute call with a co founder', 'Tell us which legal processes take time and see the most relevant proof-of-concept demonstrations.'],
         ['Test one safe workflow', 'If Lylo looks useful, choose one workflow to evaluate using synthetic or properly anonymised material and compare it with your normal process.'],
         ['Review the evidence', 'Review what worked, what needs improvement and whether Lylo provided real value. Only discuss a paid pilot if the results justify taking it further.']
       ];
