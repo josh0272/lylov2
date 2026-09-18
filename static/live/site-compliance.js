@@ -157,7 +157,7 @@
     if (final) {
       const copy = final.querySelector('p');
       const cta = final.querySelector('.cta');
-      if (copy) copy.textContent = 'The demos shown above are proof-of-concept demonstrations. Start with a short demo. If it looks useful, work with us towards testing Lylo on one synthetic or properly anonymised matter and comparing it with your normal workflow.';
+      if (copy) copy.textContent = 'Our proof-of-concept demos show what we can build, but Lylo is not limited to these examples. Start with a 20-minute call to discuss the processes that take time in your firm and explore a private AI workflow built around the way you work.';
       if (cta) cta.setAttribute('href', '/founding-pilot');
     }
 
