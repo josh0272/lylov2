@@ -6,7 +6,7 @@
     const hero = document.querySelector('.hero');
     const heroCta = hero?.querySelector('.cta');
     if (hero && heroCta) {
-      heroCta.textContent = 'Book a 20 minute call with us';
+      heroCta.textContent = 'Book a 20 minute call';
       heroCta.setAttribute('href', bookingHref);
 
       const note = hero.querySelector('.note');
@@ -32,7 +32,7 @@
     if (desktopNav) {
       const bookingButton = desktopNav.querySelector('.desktop-pilot-link');
       if (bookingButton) {
-        bookingButton.textContent = 'Book a 20 minute call with us';
+        bookingButton.textContent = 'Book a 20 minute call';
         bookingButton.setAttribute('href', bookingHref);
       }
 
@@ -85,7 +85,7 @@
         bookingLink = document.createElement('a');
         bookingLink.className = 'lylo-mobile-booking-link';
         bookingLink.href = bookingHref;
-        bookingLink.textContent = 'Book a 20 minute call with us';
+        bookingLink.textContent = 'Book a 20 minute call';
       }
 
       const ordered = [
@@ -231,7 +231,7 @@
     if (regStage && !midBooking) {
       midBooking = document.createElement('section');
       midBooking.className = 'lylo-mid-booking';
-      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20 minute call with us</a><p>No preparation. No client data. No commitment.</p>`;
+      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20 minute call</a><p>No preparation. No client data. No commitment.</p>`;
       regStage.insertAdjacentElement('afterend', midBooking);
     }
 
@@ -263,10 +263,10 @@
         const link = document.createElement('a');
         link.className = Array.from(cta.classList).filter((name) => name !== 'et1-suggest-jump').join(' ');
         link.href = bookingHref;
-        link.textContent = 'Book a 20 minute call with us';
+        link.textContent = 'Book a 20 minute call';
         cta.replaceWith(link);
       } else {
-        cta.textContent = 'Book a 20 minute call with us';
+        cta.textContent = 'Book a 20 minute call';
         cta.setAttribute('href', bookingHref);
       }
     });
@@ -282,7 +282,7 @@
 
       const finalCta = final.querySelector('.cta');
       if (finalCta) {
-        finalCta.textContent = 'Book a 20 minute call with us';
+        finalCta.textContent = 'Book a 20 minute call';
         finalCta.setAttribute('href', bookingHref);
       }
     }
