@@ -443,3 +443,35 @@
   .lylo-reg-principles{gap:9px!important}
   .lylo-duty-details summary{padding:15px 16px;line-height:1.5}
 }
+
+
+/* Guidance, workflow and mission polish */
+.lylo-reg-principles .reg-card{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+  padding:28px 26px!important;
+}
+.lylo-reg-principles .reg-card strong{width:100%;text-align:center!important}
+.lylo-reg-principles .reg-card span{width:100%;max-width:310px;text-align:center!important}
+.lylo-guidance-context{max-width:900px;margin:0 auto 30px;text-align:center}
+.lylo-guidance-context>span{display:block;margin-bottom:13px;color:#7890ad;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.lylo-guidance-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.lylo-guidance-links a{display:inline-flex;align-items:center;min-height:32px;padding:7px 13px;border:1px solid rgba(119,170,231,.14);border-radius:999px;background:rgba(77,128,189,.045);color:#a8bad0;text-decoration:none;font-size:10.5px;line-height:1.35;transition:border-color .18s ease,background .18s ease,color .18s ease}
+.lylo-guidance-links a:hover{border-color:rgba(119,170,231,.26);background:rgba(77,128,189,.085);color:#d5e1ef}
+.lylo-modules-label{margin:19px auto 0!important;color:#a9b9cc!important;font-size:11px!important;font-weight:700!important;letter-spacing:.08em!important;text-transform:uppercase!important}
+.lylo-mission{padding:70px var(--gutter,clamp(20px,4vw,42px))!important;background:radial-gradient(560px 210px at 50% 40%,rgba(85,149,222,.07),transparent 72%),rgba(255,255,255,.012)!important}
+.lylo-mission-inner{width:min(100%,820px)!important}
+.lylo-mission-kicker{margin-bottom:14px;color:#7896b9;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.lylo-mission-inner h2{margin:0!important;font-family:'Cormorant Garamond',serif!important;font-size:clamp(36px,4.4vw,50px)!important;font-weight:400!important;line-height:1.08!important;letter-spacing:-.025em!important;color:#edf3fa!important}
+@media(max-width:620px){
+  .lylo-reg-principles .reg-card{padding:23px 20px!important}
+  .lylo-guidance-context{margin-bottom:23px}
+  .lylo-guidance-links{display:grid;max-width:350px;margin:0 auto}
+  .lylo-guidance-links a{justify-content:center;border-radius:13px;padding:9px 12px}
+  .lylo-mission{padding:54px 20px!important}
+  .lylo-mission-inner h2{font-size:34px!important}
+  .lylo-modules-label{font-size:9.5px!important}
+}

@@ -105,7 +105,15 @@
       const title = other.querySelector('.et1-extension-head h4');
       const copy = other.querySelector('.et1-extension-head p');
       if (title) title.textContent = 'Other forms and workflows.';
-      if (copy) copy.textContent = 'These demonstrations are a starting point. Lylo could be developed around another repeatable process or form used by your firm.';
+      if (copy) copy.textContent = 'These demonstrations are a starting point. Lylo could be developed around any repeatable process or form used by your firm.';
+      let modulesLabel = other.querySelector('.lylo-modules-label');
+      if (!modulesLabel) {
+        modulesLabel = document.createElement('p');
+        modulesLabel.className = 'lylo-modules-label';
+        if (copy) copy.insertAdjacentElement('afterend', modulesLabel);
+        else other.querySelector('.et1-extension-head')?.appendChild(modulesLabel);
+      }
+      modulesLabel.textContent = 'Potential form or workflow modules include:';
     }
 
     let mission = document.querySelector('.lylo-mission');
@@ -113,7 +121,7 @@
       mission = document.createElement('section');
       mission.className = 'lylo-mission';
     }
-    mission.innerHTML = '<div class="lylo-mission-inner"><span>Our mission is to make secure, firm-controlled AI practical for law firms of every size.</span></div>';
+    mission.innerHTML = '<div class="lylo-mission-inner"><div class="lylo-mission-kicker">Our mission</div><h2>Make secure, firm-controlled AI practical for law firms of every size.</h2></div>';
 
     const privacy = document.querySelector('.privacy');
     const lastPrincipal = scheduleSection || et1Section || caseSection;
@@ -151,6 +159,7 @@
       reg.innerHTML = [
         '<h2 class="reg-question">AI that supports professional judgement.</h2>',
         '<p class="reg-lead">Lylo is being designed around three principles that matter when AI is used in legal work.</p>',
+        '<div class="lylo-guidance-context"><span>Developed with current professional guidance in view</span><div class="lylo-guidance-links"><a href="https://lawscot.org.uk/media/pl1lnu5n/ai-guide.pdf" target="_blank" rel="noopener">Law Society of Scotland · Guide to Generative AI</a><a href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/" target="_blank" rel="noopener">England &amp; Wales · 17 Aug 2026 · SRA Misuse of AI warning</a></div></div>',
         '<div class="reg-cards lylo-reg-principles" aria-label="Three principles guiding Lylo">',
           '<article class="reg-card"><strong>Keep sensitive work controlled</strong><span>Lylo is being designed so private legal work can remain within the firm’s environment.</span></article>',
           '<article class="reg-card"><strong>Show the evidence</strong><span>Answers and drafts can be checked against their source documents.</span></article>',

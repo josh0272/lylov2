@@ -82,7 +82,7 @@ def render_landing(template_path: str, live: bool = False):
 
     html = html.replace(
         "</body>",
-        '<script src="/static/mobile-preview.js?v=11" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=4" defer></script><script src="/static/et1-intake.js?v=3" defer></script><script id="preview-cta-script" src="/static/preview-cta.js?v=7" defer></script><script src="/static/lylo-voice.js?v=8" defer></script></body>'
+        '<script src="/static/mobile-preview.js?v=11" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=4" defer></script><script src="/static/et1-intake.js?v=3" defer></script><script id="preview-cta-script" src="/static/preview-cta.js?v=7" defer></script><script src="/static/lylo-voice.js?v=9" defer></script></body>'
     )
 
     if live:
