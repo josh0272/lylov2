@@ -710,6 +710,16 @@
   .preview-faq-list {
     margin-top: 32px;
   }
+  .preview-faq-list summary {
+    padding-left: 34px;
+    padding-right: 34px;
+    text-align: center;
+  }
+  .preview-faq-list details p {
+    padding-left: 24px;
+    padding-right: 24px;
+    text-align: center;
+  }
   .preview-mobile-booking {
     position: fixed;
     left: 50%;
