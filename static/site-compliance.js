@@ -171,29 +171,7 @@
       footer.insertBefore(privacy, footer.firstChild);
     }
 
-    if (!document.getElementById('lylo-compliance-styles')) {
-      const style = document.createElement('style');
-      style.id = 'lylo-compliance-styles';
-      style.textContent = `
-        .reg-date-pills{display:flex!important;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;text-transform:none!important;letter-spacing:0!important}
-        .reg-pill{display:inline-flex;align-items:center;min-height:28px;padding:0 10px;border:1px solid rgba(99,168,255,.18);border-radius:999px;background:rgba(36,69,108,.16);color:#9fc8fa;font-size:10px;font-weight:600;letter-spacing:.02em}
-        .reg-pill-secondary{border-color:rgba(255,255,255,.10);background:rgba(255,255,255,.025);color:#9aa9bc}
-        .reg-lead-mobile,.reg-mobile-framework{display:none}
-        .lylo-research-note a{color:inherit!important;text-decoration:underline;text-decoration-color:currentColor;text-underline-offset:2px}
-        @media(max-width:700px){
-          .reg-date-pills{gap:6px}.reg-pill{min-height:26px;padding:0 9px;font-size:9px;text-align:center}
-          .reg-trust>.reg-lead:not(.reg-lead-mobile){display:none}
-          .reg-lead-mobile{display:block;margin:13px auto 20px}
-          .reg-trust>.reg-line,.reg-trust>.reg-sources{display:none}
-          .reg-mobile-framework{display:block;margin:36px auto 20px;max-width:700px;padding:20px 0;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);color:#91a0b3;text-align:center}
-          .reg-mobile-framework p{margin:0;font-size:11px;line-height:1.55}
-          .reg-mobile-framework strong{display:block;margin-top:9px;color:#dce6f2;font-size:11.5px;line-height:1.5;font-weight:600}
-          .reg-mobile-framework span{display:block;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.055);color:#73859b;font-size:9.5px;line-height:1.55}
-          .reg-mobile-framework span a{color:inherit;text-decoration:underline;text-decoration-color:rgba(115,133,155,.6);text-underline-offset:2px}
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
