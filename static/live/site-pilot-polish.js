@@ -1,218 +1,143 @@
-(() => {
+(function livePolish(){
   const run = () => {
     const bookingHref = '/call#book';
-    const pilotHref = '/call';
+    const bookingLabel = 'See Lylo in a 20-minute call';
 
     const hero = document.querySelector('.hero');
-    const heroCta = hero?.querySelector('.cta');
-    if (hero && heroCta) {
-      heroCta.textContent = 'Book a 20 minute call';
-      heroCta.setAttribute('href', bookingHref);
-
+    if (hero) {
+      const tagline = hero.querySelector('.tagline');
+      const value = hero.querySelector('.bullet');
+      const cta = hero.querySelector('.cta');
       const note = hero.querySelector('.note');
+      if (tagline) tagline.textContent = 'Private AI, designed for solicitors.';
+      if (value) value.textContent = 'Search case files, prepare legal drafts and reduce repetitive work—while keeping confidential client information under your firm’s control.';
+      if (cta) {
+        cta.textContent = bookingLabel;
+        cta.href = bookingHref;
+      }
       if (note) {
-        note.textContent = 'No preparation. No client data. No commitment. See the demos, ask questions and decide whether Lylo is worth exploring further.';
-      }
-
-      const subheading = hero.querySelector('.bullet');
-      if (subheading) {
-        subheading.textContent = 'We are developing private AI for legal work, so solicitors can use the benefits of AI without sending confidential client data to public AI services such as ChatGPT.';
+        note.innerHTML = '<strong>No preparation. No client data. No sales commitment.</strong><span>See the most relevant working demonstration and identify one process in your firm that may suit a safe AI test.</span>';
       }
     }
 
-    const desktopNav = document.querySelector('.desktop-nav');
-    if (desktopNav && !desktopNav.querySelector('a[href="/research"]')) {
-      const researchLink = document.createElement('a');
-      researchLink.href = '/research';
-      researchLink.textContent = 'Research';
-      const bookingButton = desktopNav.querySelector('.desktop-pilot-link');
-      if (bookingButton) desktopNav.insertBefore(researchLink, bookingButton);
-      else desktopNav.appendChild(researchLink);
-    }
-    if (desktopNav) {
-      const bookingButton = desktopNav.querySelector('.desktop-pilot-link');
-      if (bookingButton) {
-        bookingButton.textContent = 'Book a 20 minute call';
-        bookingButton.setAttribute('href', bookingHref);
+    const orderNav = (nav, mobile = false) => {
+      if (!nav) return;
+      const find = (href) => Array.from(nav.querySelectorAll('a')).find((a) => a.getAttribute('href') === href);
+      let research = find('/research');
+      if (!research) {
+        research = document.createElement('a');
+        research.href = '/research';
+        research.textContent = 'Research';
       }
-
-      let pilotTextLink = desktopNav.querySelector('.lylo-pilot-nav-text');
-      if (!pilotTextLink) {
-        pilotTextLink = document.createElement('a');
-        pilotTextLink.className = 'lylo-pilot-nav-text';
-        pilotTextLink.href = pilotHref;
-        pilotTextLink.textContent = 'What happens next';
-        if (bookingButton) desktopNav.insertBefore(pilotTextLink, bookingButton);
-        else desktopNav.appendChild(pilotTextLink);
-      }
-
-      const ordered = [
-        desktopNav.querySelector('a[href="#demos"]'),
-        desktopNav.querySelector('a[href="#privacy"]'),
-        desktopNav.querySelector('a[href="#ai-duties"]'),
-        desktopNav.querySelector('a[href="/research"]'),
-        pilotTextLink,
-        bookingButton
-      ];
-      ordered.forEach((link) => { if (link) desktopNav.appendChild(link); });
-    }
-
-    const mobilePanel = document.querySelector('#mobileMenu .panel-inner');
-    if (mobilePanel && !mobilePanel.querySelector('a[href="/research"]')) {
-      const researchLink = document.createElement('a');
-      researchLink.href = '/research';
-      researchLink.textContent = 'Research';
-      mobilePanel.appendChild(researchLink);
-    }
-    if (mobilePanel) {
-      let pilotTextLink = mobilePanel.querySelector('.lylo-pilot-nav-text');
-      if (!pilotTextLink) {
-        const existingPilot = Array.from(mobilePanel.querySelectorAll('a')).find((link) => link.getAttribute('href') === pilotHref);
-        if (existingPilot) {
-          pilotTextLink = existingPilot;
-          pilotTextLink.classList.add('lylo-pilot-nav-text');
-          pilotTextLink.textContent = 'What happens next';
-        } else {
-          pilotTextLink = document.createElement('a');
-          pilotTextLink.className = 'lylo-pilot-nav-text';
-          pilotTextLink.href = pilotHref;
-          pilotTextLink.textContent = 'What happens next';
-        }
-      }
-
-      let bookingLink = mobilePanel.querySelector('.lylo-mobile-booking-link');
-      if (!bookingLink) {
-        bookingLink = document.createElement('a');
-        bookingLink.className = 'lylo-mobile-booking-link';
-        bookingLink.href = bookingHref;
-        bookingLink.textContent = 'Book a 20 minute call';
-      }
-
-      const ordered = [
-        mobilePanel.querySelector('a[href="#demos"]'),
-        mobilePanel.querySelector('a[href="#privacy"]'),
-        mobilePanel.querySelector('a[href="#ai-duties"]'),
-        mobilePanel.querySelector('a[href="/research"]'),
-        pilotTextLink,
-        bookingLink
-      ];
-      ordered.forEach((link) => { if (link) mobilePanel.appendChild(link); });
-    }
-
+      let next = nav.querySelector('.lylo-pilot-nav-text') || find('/call');
+      if (!next) next = document.createElement('a');
+      next.className = 'lylo-pilot-nav-text';
+      next.href = '/call';
+      next.textContent = 'What happens on the call';
+      let book = nav.querySelector('.desktop-pilot-link, .lylo-mobile-booking-link');
+      if (!book) book = document.createElement('a');
+      book.className = mobile ? 'lylo-mobile-booking-link' : 'desktop-pilot-link';
+      book.href = bookingHref;
+      book.textContent = '20-minute call';
+      [find('#demos'), find('#privacy'), find('#ai-duties'), research, next, book].forEach((link) => {
+        if (link) nav.appendChild(link);
+      });
+    };
+    orderNav(document.querySelector('.desktop-nav'));
+    orderNav(document.querySelector('#mobileMenu .panel-inner'), true);
     document.querySelector('.lylo-research-strip')?.remove();
 
-    if (window.innerWidth >= 980 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const oldCarousel = document.querySelector('.reg-cards');
-      if (oldCarousel && !oldCarousel.classList.contains('lylo-smooth-carousel')) {
-        const carousel = oldCarousel.cloneNode(true);
-        carousel.querySelectorAll('[aria-hidden="true"]').forEach((clone) => clone.remove());
-        carousel.classList.add('lylo-smooth-carousel');
-        oldCarousel.replaceWith(carousel);
-
-        const originals = Array.from(carousel.children);
-        originals.forEach((card) => {
-          const clone = card.cloneNode(true);
-          clone.setAttribute('aria-hidden', 'true');
-          clone.setAttribute('tabindex', '-1');
-          carousel.appendChild(clone);
-        });
-
-        const track = document.createElement('div');
-        track.className = 'lylo-reg-track';
-        while (carousel.firstChild) track.appendChild(carousel.firstChild);
-        carousel.appendChild(track);
-
-        const firstClone = track.children[originals.length];
-        let offset = 0;
-        let lastTime = performance.now();
-        let interactionUntil = 0;
-        let dragging = false;
-        let dragStartX = 0;
-        let dragStartOffset = 0;
-
-        const loopWidth = () => firstClone ? firstClone.offsetLeft - track.children[0].offsetLeft : 0;
-        const normalise = () => {
-          const width = loopWidth();
-          if (!width) return;
-          while (offset >= width) offset -= width;
-          while (offset < 0) offset += width;
-        };
-        const render = () => {
-          normalise();
-          track.style.transform = `translate3d(${-offset}px,0,0)`;
-        };
-        const pause = (ms = 750) => { interactionUntil = performance.now() + ms; };
-
-        carousel.addEventListener('wheel', (event) => {
-          const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-          if (!delta) return;
-          event.preventDefault();
-          offset += delta;
-          pause(900);
-          render();
-        }, { passive: false });
-
-        carousel.addEventListener('pointerdown', (event) => {
-          if (event.pointerType !== 'mouse' || event.button !== 0) return;
-          dragging = true;
-          dragStartX = event.clientX;
-          dragStartOffset = offset;
-          carousel.classList.add('dragging');
-          carousel.setPointerCapture?.(event.pointerId);
-          pause(5000);
-        });
-        carousel.addEventListener('pointermove', (event) => {
-          if (!dragging) return;
-          offset = dragStartOffset - (event.clientX - dragStartX);
-          pause(5000);
-          render();
-        });
-        const endDrag = (event) => {
-          if (!dragging) return;
-          dragging = false;
-          carousel.classList.remove('dragging');
-          try { carousel.releasePointerCapture?.(event.pointerId); } catch (_) {}
-          pause(800);
-        };
-        carousel.addEventListener('pointerup', endDrag);
-        carousel.addEventListener('pointercancel', endDrag);
-
-        const animate = (now) => {
-          const dt = Math.min(now - lastTime, 24);
-          if (!dragging && now > interactionUntil) {
-            offset += dt * 0.032;
-            render();
-          }
-          lastTime = now;
-          requestAnimationFrame(animate);
-        };
-        render();
-        requestAnimationFrame(animate);
-      }
-    }
-
     const demoIntro = document.querySelector('.demo-intro');
-
-    if (demoIntro && !document.querySelector('.lylo-mission')) {
-      const mission = document.createElement('section');
-      mission.className = 'lylo-mission';
-      mission.innerHTML = `
-        <div class="lylo-mission-inner">
-          <div class="lylo-mission-kicker">Our mission</div>
-          <h2>To develop private, firm-controlled AI that is practical and accessible to every law firm, regardless of size.</h2>
-          <p>So solicitors can benefit from AI while keeping confidential client information under their firm’s control.</p>
-        </div>`;
-      demoIntro.insertAdjacentElement('beforebegin', mission);
+    const demoHeading = document.querySelector('.demo-heading');
+    if (demoIntro) demoIntro.classList.add('lylo-demos-first');
+    if (demoHeading) {
+      const title = demoHeading.querySelector('h2');
+      const copy = demoHeading.querySelector('p');
+      if (title) title.textContent = 'See Lylo work on real legal tasks.';
+      if (copy) copy.textContent = 'Three working proof-of-concept demonstrations show how Lylo could search, draft and calculate inside a private, firm-controlled system.';
     }
+
+    const sections = Array.from(document.querySelectorAll('.demo-section'));
+    const findSection = (terms) => sections.find((section) => {
+      const heading = section.querySelector('.demo-copy h3')?.textContent.toLowerCase() || '';
+      return terms.some((term) => heading.includes(term));
+    });
+    const caseSection = findSection(['ask the case']);
+    const et1Section = findSection(['draft form', 'completed form', 'et1']);
+    const scheduleSection = findSection(['schedule of loss', 'claim is worth']);
+    const phoneSection = sections.find((section) => section.classList.contains('phone-section'));
+
+    const updateDemo = (section, heading, copy) => {
+      if (!section) return;
+      const title = section.querySelector('.demo-copy h3');
+      const body = section.querySelector('.demo-copy p');
+      const cta = section.querySelector('.demo-copy .demo-cta');
+      if (title) title.textContent = heading;
+      if (body) body.textContent = copy;
+      if (cta) {
+        if (cta.tagName === 'BUTTON') {
+          const link = document.createElement('a');
+          link.className = 'demo-cta';
+          link.href = bookingHref;
+          link.textContent = 'See this in a 20-minute call';
+          cta.replaceWith(link);
+        } else {
+          cta.href = bookingHref;
+          cta.textContent = 'See this in a 20-minute call';
+        }
+      }
+    };
+    updateDemo(caseSection, 'Ask the case. Find the source.', 'Search across a case file, bring the relevant answer into one place and open the source behind it before relying on the result.');
+    updateDemo(et1Section, 'Turn case documents into an ET1 draft.', 'Pull names, dates and case details from uploaded documents, prepare the ET1 and flag anything that still needs the solicitor’s review.');
+    updateDemo(scheduleSection, 'Build and check a Schedule of Loss.', 'Bring pay, dates and losses into a structured draft, show the calculation behind each figure and keep the supporting source available for review.');
+
+    let other = document.querySelector('.lylo-other-workflows');
+    const extension = document.querySelector('.et1-extension');
+    if (extension && !other) {
+      other = document.createElement('section');
+      other.className = 'lylo-other-workflows';
+      const inner = document.createElement('div');
+      inner.className = 'lylo-other-workflows-inner reveal in';
+      other.appendChild(inner);
+      inner.appendChild(extension);
+    }
+    if (other) {
+      const title = other.querySelector('.et1-extension-head h4');
+      const copy = other.querySelector('.et1-extension-head p');
+      if (title) title.textContent = 'Other forms and workflows.';
+      if (copy) copy.textContent = 'These demonstrations are a starting point. Lylo could be developed around another repeatable process or form used by your firm.';
+    }
+
+    let mission = document.querySelector('.lylo-mission');
+    if (!mission) {
+      mission = document.createElement('section');
+      mission.className = 'lylo-mission';
+    }
+    mission.innerHTML = '<div class="lylo-mission-inner"><span>Our mission is to make secure, firm-controlled AI practical for law firms of every size.</span></div>';
+
+    const privacy = document.querySelector('.privacy');
+    const lastPrincipal = scheduleSection || et1Section || caseSection;
+    if (lastPrincipal && other) lastPrincipal.insertAdjacentElement('afterend', other);
+    if (other) other.insertAdjacentElement('afterend', mission);
+    else if (lastPrincipal) lastPrincipal.insertAdjacentElement('afterend', mission);
+    if (mission && privacy) mission.insertAdjacentElement('afterend', privacy);
+
+    if (privacy) {
+      const heading = privacy.querySelector('h3');
+      const intro = privacy.querySelector('.privacy-main');
+      if (heading) heading.textContent = 'Private AI, designed to run inside your firm.';
+      if (intro) intro.textContent = 'Use AI on legal work while keeping sensitive case material under the firm’s control. Lylo is being designed so private case files can remain on the firm’s own systems.';
+    }
+
+    let privateCta = document.querySelector('.lylo-private-cta');
+    if (!privateCta) {
+      privateCta = document.createElement('section');
+      privateCta.className = 'lylo-private-cta';
+      privateCta.innerHTML = '<div class="lylo-private-cta-inner"><h3>Could this work inside your firm?</h3><p>In a 20-minute call, we will show the closest demonstration, discuss one time-consuming process and explain what a safe evaluation could involve.</p><a class="cta" href="' + bookingHref + '">' + bookingLabel + '</a><span>No preparation, client data or commitment required.</span></div>';
+    }
+    if (privacy) privacy.insertAdjacentElement('afterend', privateCta);
 
     const reg = document.querySelector('.reg-trust');
-    const privacy = document.querySelector('.privacy');
-    const demoSections = Array.from(document.querySelectorAll('.demo-section'));
-    const phoneSection = demoSections.find((section) => section.classList.contains('phone-section'));
-    const legalSections = demoSections.filter((section) => !section.classList.contains('phone-section'));
-
-    if (demoIntro) demoIntro.classList.add('lylo-demos-first');
-
     let regStage = document.querySelector('.lylo-regulatory-stage');
     if (reg && !regStage) {
       regStage = document.createElement('section');
@@ -222,117 +147,58 @@
       regStage.appendChild(inner);
       inner.appendChild(reg);
     }
-
-    const lastLegal = legalSections[legalSections.length - 1];
-    if (lastLegal && privacy) lastLegal.insertAdjacentElement('afterend', privacy);
-    if (privacy && regStage) privacy.insertAdjacentElement('afterend', regStage);
-
-    let midBooking = document.querySelector('.lylo-mid-booking');
-    if (regStage && !midBooking) {
-      midBooking = document.createElement('section');
-      midBooking.className = 'lylo-mid-booking';
-      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20 minute call</a><p>No preparation. No client data. No commitment.</p>`;
-      regStage.insertAdjacentElement('afterend', midBooking);
+    if (reg) {
+      reg.innerHTML = [
+        '<h2 class="reg-question">AI that supports professional judgement.</h2>',
+        '<p class="reg-lead">Lylo is being designed around three principles that matter when AI is used in legal work.</p>',
+        '<div class="reg-cards lylo-reg-principles" aria-label="Three principles guiding Lylo">',
+          '<article class="reg-card"><strong>Keep sensitive work controlled</strong><span>Lylo is being designed so private legal work can remain within the firm’s environment.</span></article>',
+          '<article class="reg-card"><strong>Show the evidence</strong><span>Answers and drafts can be checked against their source documents.</span></article>',
+          '<article class="reg-card"><strong>Keep the solicitor in control</strong><span>Outputs remain drafts for professional review, editing and approval.</span></article>',
+        '</div>',
+        '<details class="lylo-duty-details"><summary>Read how Lylo is being designed around professional duties</summary><div><p>Accuracy, confidentiality, human oversight and professional responsibility remain central. UK GDPR duties—including privacy by design, data minimisation and controlled access—still depend on each firm’s deployment, policies and use.</p><p><a href="https://lawscot.org.uk/media/pl1lnu5n/ai-guide.pdf" target="_blank" rel="noopener">Law Society of Scotland: Guide to Generative AI</a> · <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/data-protection-by-design-and-by-default/" target="_blank" rel="noopener">ICO: data protection by design</a> · <a href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/" target="_blank" rel="noopener">SRA: misuse of AI warning</a></p></div></details>'
+      ].join('');
     }
+    if (privateCta && regStage) privateCta.insertAdjacentElement('afterend', regStage);
 
     const beyond = document.querySelector('.beyond-casework');
-    const preBeyondAnchor = midBooking || regStage;
-    if (preBeyondAnchor && beyond) preBeyondAnchor.insertAdjacentElement('afterend', beyond);
-    if (phoneSection) {
-      const anchor = beyond || midBooking || regStage || privacy || lastLegal;
-      if (anchor) anchor.insertAdjacentElement('afterend', phoneSection);
+    if (beyond) {
+      const kicker = beyond.querySelector('.beyond-kicker');
+      const title = beyond.querySelector('h3');
+      const copy = beyond.querySelector('p');
+      if (kicker) kicker.textContent = 'Beyond casework';
+      if (title) title.textContent = 'A smaller example: out-of-hours calls.';
+      if (copy) copy.textContent = 'Lylo can also be adapted for useful firm-wide tasks. The receptionist demonstration shows one possible use outside private legal document work.';
     }
-
-    const demoHeadings = new Set([
-      'Ask the case. Get the answer.',
-      'Ask the case. Find the source.',
-      'Turn case files into a completed form.',
-      'Turn case files into a draft form.',
-      'Know what the claim is worth.',
-      'Build a Schedule of Loss.'
-    ]);
-
-    document.querySelectorAll('.demo-section').forEach((section) => {
-      const heading = section.querySelector('.demo-copy h3')?.textContent.trim();
-      if (!demoHeadings.has(heading)) return;
-
-      const cta = section.querySelector('.demo-copy .demo-cta');
-      if (!cta) return;
-
-      if (cta.tagName === 'BUTTON') {
-        const link = document.createElement('a');
-        link.className = Array.from(cta.classList).filter((name) => name !== 'et1-suggest-jump').join(' ');
-        link.href = bookingHref;
-        link.textContent = 'Book a 20 minute call';
-        cta.replaceWith(link);
-      } else {
-        cta.textContent = 'Book a 20 minute call';
-        cta.setAttribute('href', bookingHref);
-      }
-    });
+    const phoneAnchor = regStage || privateCta || privacy || mission || other || lastPrincipal;
+    if (phoneAnchor && beyond) phoneAnchor.insertAdjacentElement('afterend', beyond);
+    if (beyond && phoneSection) beyond.insertAdjacentElement('afterend', phoneSection);
+    if (phoneSection) phoneSection.classList.add('lylo-secondary-demo');
 
     const final = document.querySelector('.final .reveal');
     if (final) {
-      const finalCopy = final.querySelector('p');
-      if (finalCopy) {
-        finalCopy.textContent = 'Our proof-of-concept demos show what we can build, but Lylo is not limited to these examples. Start with a 20-minute call to discuss the processes that take time in your firm and explore a private AI workflow built around the way you work.';
-      }
-
-      final.querySelector('.lylo-demo-explainer')?.remove();
-
-      const finalCta = final.querySelector('.cta');
-      if (finalCta) {
-        finalCta.textContent = 'Book a 20 minute call';
-        finalCta.setAttribute('href', bookingHref);
-      }
-    }
-
-    let brief = final?.querySelector('.lylo-pilot-brief');
-    if (final && !brief) {
-      brief = document.createElement('div');
-      brief.className = 'lylo-pilot-brief';
-      brief.setAttribute('aria-label', 'Founding pilot steps');
-      brief.innerHTML = `
-        <div class="lylo-pilot-step">
-          <span class="lylo-pilot-step-no">01</span>
-          <strong>Start with a 20-minute call with a co founder</strong>
-          <span>Tell us which legal processes take time and see the most relevant proof-of-concept demonstrations.</span>
-        </div>
-        <div class="lylo-pilot-step">
-          <span class="lylo-pilot-step-no">02</span>
-          <strong>Test one safe workflow</strong>
-          <span>If Lylo looks useful, choose one workflow to evaluate using synthetic or properly anonymised material and compare it with your normal process.</span>
-        </div>
-        <div class="lylo-pilot-step">
-          <span class="lylo-pilot-step-no">03</span>
-          <strong>Review the evidence</strong>
-          <span>Review what worked, what needs improvement and whether Lylo provided real value. Only discuss a paid pilot if the results justify taking it further.</span>
-        </div>`;
-
+      const heading = final.querySelector('h3');
+      const copy = final.querySelector('p');
       const cta = final.querySelector('.cta');
-      if (cta) cta.insertAdjacentElement('beforebegin', brief);
-      else final.appendChild(brief);
-    } else if (brief) {
-      const steps = brief.querySelectorAll('.lylo-pilot-step');
-      const copy = [
-        ['Start with a 20-minute call with a co founder', 'Tell us which legal processes take time and see the most relevant proof-of-concept demonstrations.'],
-        ['Test one safe workflow', 'If Lylo looks useful, choose one workflow to evaluate using synthetic or properly anonymised material and compare it with your normal process.'],
-        ['Review the evidence', 'Review what worked, what needs improvement and whether Lylo provided real value. Only discuss a paid pilot if the results justify taking it further.']
-      ];
-      steps.forEach((step, index) => {
-        if (!copy[index]) return;
-        const heading = step.querySelector('strong');
-        const body = step.querySelector('span:last-child');
-        if (heading) heading.textContent = copy[index][0];
-        if (body) body.textContent = copy[index][1];
-      });
+      if (heading) heading.textContent = 'Start with a focused 20-minute call.';
+      if (copy) copy.textContent = 'Tell us where your firm loses time, see the closest working demonstration and decide whether a safe, small evaluation is worth discussing.';
+      if (cta) {
+        cta.href = bookingHref;
+        cta.textContent = bookingLabel;
+      }
+      let brief = final.querySelector('.lylo-pilot-brief');
+      if (!brief) {
+        brief = document.createElement('div');
+        brief.className = 'lylo-pilot-brief';
+        if (cta) cta.insertAdjacentElement('beforebegin', brief);
+      }
+      brief.innerHTML = [
+        '<div class="lylo-pilot-step"><span class="lylo-pilot-step-no">01</span><strong>Tell us where time is lost</strong><span>Choose one legal process that feels repetitive or slow.</span></div>',
+        '<div class="lylo-pilot-step"><span class="lylo-pilot-step-no">02</span><strong>See the closest demonstration</strong><span>We will focus the call on the example most relevant to your firm.</span></div>',
+        '<div class="lylo-pilot-step"><span class="lylo-pilot-step-no">03</span><strong>Decide if a safe test makes sense</strong><span>If there is no useful fit, nothing further happens.</span></div>'
+      ].join('');
     }
-
-    final?.querySelector('.lylo-pilot-more')?.remove();
-
-    
   };
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, { once: true });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run, {once:true});
   else run();
 })();

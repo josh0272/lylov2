@@ -8,3 +8,21 @@ main{overflow:hidden}.hero{min-height:78svh;display:flex;align-items:center;padd
 .footer{padding:36px var(--gutter) 48px;border-top:1px solid rgba(255,255,255,.055);text-align:center;color:#65758a;font-size:11px}.footer a{text-decoration:none;color:#8fa3bd}
 @media(max-width:979px){.desktop-nav{display:none}.menu-button{display:block}.hero{min-height:auto;padding-top:122px}.hero h1{font-size:60px}.hero p{font-size:16px}.steps{grid-template-columns:1fr 1fr}.step:last-child{grid-column:1/-1}.workflow-grid{grid-template-columns:1fr;gap:36px}.workflow-copy{text-align:center;padding-top:0}.workflow-copy>p{margin-left:auto;margin-right:auto}.small-points{max-width:520px;margin-left:auto;margin-right:auto;text-align:left}.form-card{max-width:620px;margin:auto}}
 @media(max-width:620px){.hero{padding:112px 20px 64px}.hero h1{font-size:50px}.hero p{font-size:15px;line-height:1.6}.hero-actions{display:grid}.primary,.secondary{width:100%}.section{padding:58px 20px}.section-head{max-width:360px;margin:0 auto 28px}.section-head h2{font-size:38px;line-height:1.04;margin-bottom:11px}.section-head p{max-width:330px;margin:0 auto;font-size:13.5px;line-height:1.55}.steps{grid-template-columns:1fr;gap:9px}.step:last-child{grid-column:auto}.step{width:min(100%,350px);min-height:0;margin:0 auto;padding:16px 17px 17px;border-radius:14px;text-align:center}.step-no{width:26px;height:26px;margin:0 auto 11px;font-size:10px}.step h3{font-size:14px;margin:0 0 6px}.step p{max-width:292px;margin:0 auto;font-size:11.5px;line-height:1.5}.pilot-note{max-width:350px;margin:22px auto 0;padding:14px 9px;font-size:11.5px;line-height:1.55}.fields{grid-template-columns:1fr}.form-card{padding:20px 16px;border-radius:18px;text-align:left;scroll-margin-top:82px}.form-card h3{font-size:31px}.workflow-copy h2{font-size:42px}.workflow-copy>p{font-size:14px}.small-points{margin-top:22px;gap:11px;max-width:350px}.small-point{font-size:12px}.mobile-menu{padding-top:18px}.mobile-menu a{font-size:20px;padding:16px 2px}}
+
+
+/* Focused 20-minute call journey — September 2026 */
+#agenda{scroll-margin-top:92px}
+.hero-reassurance{margin-top:14px!important;color:#77889e!important;font-size:13px!important}
+#agenda .section-head .eyebrow{margin-bottom:13px}
+#agenda .step-no{width:auto;min-width:34px;padding:0 8px;border-radius:999px}
+#agenda .step-no:after{content:' min';font-size:8px;margin-left:2px;color:#7899c0}
+.contact-expectation{padding:14px 15px;border:1px solid rgba(255,255,255,.065);border-radius:13px;background:rgba(255,255,255,.018);color:#9aaabc!important;font-size:12px!important}
+.optional{font-weight:400;color:#6d7d91}
+.workflow-copy>.eyebrow{text-align:left;margin-bottom:15px}
+.form-card .fields{align-items:start}
+@media(max-width:979px){.workflow-copy>.eyebrow{text-align:center}}
+@media(max-width:620px){
+  .hero-reassurance{max-width:330px!important}
+  #agenda .step-no{min-width:32px}
+  .contact-expectation{font-size:11.5px!important;line-height:1.6!important}
+}

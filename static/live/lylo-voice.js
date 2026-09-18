@@ -178,15 +178,17 @@
 })();
 
 (() => {
-  const s = document.createElement('script');
-  s.src = '/static/site-compliance.js?v=9';
-  s.defer = true;
-  document.head.appendChild(s);
-})();
-
-(() => {
-  const s = document.createElement('script');
-  s.src = '/static/site-pilot-polish.js?v=15';
-  s.defer = true;
-  document.head.appendChild(s);
+  const compliance = document.createElement('script');
+  compliance.src = '/static/site-compliance.js?v=10';
+  compliance.onload = () => {
+    const polish = document.createElement('script');
+    polish.src = '/static/site-pilot-polish.js?v=16';
+    document.head.appendChild(polish);
+  };
+  compliance.onerror = () => {
+    const polish = document.createElement('script');
+    polish.src = '/static/site-pilot-polish.js?v=16';
+    document.head.appendChild(polish);
+  };
+  document.head.appendChild(compliance);
 })();
