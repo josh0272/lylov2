@@ -41,59 +41,7 @@
   };
 
   const initCaptionControls = (videos) => {
-    if (!document.getElementById('lylo-caption-styles')) {
-      const style = document.createElement('style');
-      style.id = 'lylo-caption-styles';
-      style.textContent = `
-        .demo-media .lylo-cc-toggle {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-          z-index: 8;
-          min-width: 42px;
-          height: 32px;
-          padding: 0 10px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 9px;
-          border: 1px solid rgba(255,255,255,.18);
-          background: rgba(4,9,16,.68);
-          color: rgba(245,247,250,.88);
-          font: 700 11px/1 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",sans-serif;
-          letter-spacing: .08em;
-          cursor: pointer;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          box-shadow: 0 7px 22px rgba(0,0,0,.24);
-          transition: background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease;
-        }
-        .demo-media .lylo-cc-toggle:hover {
-          transform: translateY(-1px);
-          border-color: rgba(255,255,255,.28);
-        }
-        .demo-media .lylo-cc-toggle[aria-pressed="true"] {
-          background: rgba(245,247,250,.94);
-          color: #08101d;
-          border-color: rgba(255,255,255,.78);
-        }
-        .demo-media video::cue {
-          color:#fff;
-          background:rgba(2,6,11,.80);
-          font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","Segoe UI",sans-serif;
-        }
-        @media (max-width: 979px) {
-          .demo-media .lylo-cc-toggle {
-            top: 9px;
-            right: 9px;
-            min-width: 39px;
-            height: 30px;
-            border-radius: 8px;
-          }
-        }
-      `;
-      document.head.appendChild(style);
-    }
+    
 
     const configs = [
       { match: '/static/poc.mp4', src: '/static/poc-en.vtt', id: 'poc' },
