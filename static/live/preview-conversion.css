@@ -67,14 +67,14 @@
   object-position: center;
 }
 
-/* Compact problem recognition: sharp pain, then straight into the demos. */
+/* Problem recognition mirrors the site's editorial side-by-side call layout. */
 .preview-problem {
-  padding: 64px var(--gutter) 62px;
+  padding: 78px var(--gutter) 76px;
   border-top: 1px solid var(--preview-line);
   border-bottom: 1px solid var(--preview-line);
   background: radial-gradient(
     640px 220px at 18% 0%,
-    rgba(84, 160, 255, 0.055),
+    rgba(84, 160, 255, 0.045),
     transparent 72%
   );
 }
@@ -82,9 +82,9 @@
   width: min(100%, 1080px);
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(50px, 7vw, 96px);
-  align-items: center;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(54px, 7vw, 94px);
+  align-items: start;
 }
 .preview-problem-heading {
   text-align: left;
@@ -103,54 +103,55 @@
   color: var(--text);
 }
 .preview-problem h2 {
-  font-size: clamp(38px, 4.2vw, 54px);
+  margin: 0;
+  font-size: clamp(40px, 4.5vw, 56px);
   line-height: 1.02;
 }
 .preview-problem-lead {
-  margin: 0;
-  color: #c3cfdd;
-  font-size: 15px;
-  line-height: 1.65;
-}
-.preview-problem-lines {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  max-width: 470px;
   margin: 24px 0 0;
+  color: #9cacbf;
+  font-size: 15px;
+  line-height: 1.68;
+}
+.preview-problem-steps {
   border-top: 1px solid var(--preview-line);
+}
+.preview-problem-step {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 22px 2px;
   border-bottom: 1px solid var(--preview-line);
-}
-.preview-problem-lines p {
-  margin: 0;
-  padding: 16px 14px;
-  color: #94a4b8;
-  font-size: 12px;
-  line-height: 1.35;
   text-align: left;
 }
-.preview-problem-lines p:first-child {
-  padding-left: 0;
+.preview-problem-number {
+  padding-top: 2px;
+  color: #6f92bb;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
 }
-.preview-problem-lines p + p {
-  border-left: 1px solid var(--preview-line);
-}
-.preview-problem-lines strong,
-.preview-problem-lines span {
+.preview-problem-step strong {
   display: block;
+  margin: 0 0 6px;
+  color: #edf3fa;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
 }
-.preview-problem-lines strong {
-  margin-bottom: 4px;
-  color: #edf4fb;
+.preview-problem-step p {
+  margin: 0;
+  color: #8393a8;
   font-size: 13px;
-  font-weight: 600;
+  line-height: 1.62;
 }
-.preview-transition {
-  margin: 17px 0 0;
-  color: #86a9d1;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.055em;
-  text-transform: uppercase;
-  text-align: left;
+.preview-problem-conclusion {
+  margin: 20px 0 0;
+  color: #8ea7c4;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 /* Demos retain the main site's substantial visual treatment. */
@@ -564,8 +565,7 @@
     gap: 25px;
     width: min(100%, 680px);
   }
-  .preview-problem-heading,
-  .preview-problem-detail {
+  .preview-problem-heading {
     text-align: center;
   }
   .preview-problem h2 {
@@ -573,10 +573,11 @@
   }
   .preview-problem-lead {
     max-width: 600px;
-    margin-inline: auto;
+    margin: 20px auto 0;
   }
-  .preview-transition {
-    text-align: center;
+  .preview-problem-steps {
+    width: min(100%, 640px);
+    margin: 0 auto;
   }
   .lylo-preview-page .lylo-demos-first {
     padding-top: 72px;
@@ -668,35 +669,33 @@
     font-size: clamp(38px, 10.5vw, 50px);
   }
   .preview-problem {
-    padding: 48px 18px 44px;
+    padding: 50px 18px 48px;
   }
   .preview-problem-inner {
-    gap: 20px;
+    gap: 30px;
   }
   .preview-problem h2 {
-    font-size: clamp(34px, 9vw, 42px);
+    font-size: clamp(34px, 9vw, 43px);
   }
   .preview-problem-lead {
     font-size: 14px;
-    line-height: 1.58;
+    line-height: 1.6;
   }
-  .preview-problem-lines {
-    margin-top: 20px;
+  .preview-problem-step {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 13px;
+    padding: 18px 0;
   }
-  .preview-problem-lines p {
-    padding: 13px 8px;
-    font-size: 10.5px;
-    text-align: center;
+  .preview-problem-step strong {
+    font-size: 14px;
   }
-  .preview-problem-lines p:first-child {
-    padding-left: 4px;
-  }
-  .preview-problem-lines strong {
+  .preview-problem-step p {
     font-size: 12px;
   }
-  .preview-transition {
-    margin-top: 14px;
-    font-size: 10px;
+  .preview-problem-conclusion {
+    margin-top: 17px;
+    font-size: 11.5px;
+    text-align: center;
   }
   .preview-stage-note {
     font-size: 12px;
