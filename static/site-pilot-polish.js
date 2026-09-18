@@ -192,6 +192,19 @@
     }
 
     const demoIntro = document.querySelector('.demo-intro');
+
+    if (demoIntro && !document.querySelector('.lylo-mission')) {
+      const mission = document.createElement('section');
+      mission.className = 'lylo-mission';
+      mission.innerHTML = `
+        <div class="lylo-mission-inner">
+          <div class="lylo-mission-kicker">Our mission</div>
+          <h2>Our mission is to develop private, firm-controlled AI that is practical and accessible to every law firm, regardless of size.</h2>
+          <p>So solicitors can benefit from AI while keeping confidential client information under their firm’s control.</p>
+        </div>`;
+      demoIntro.insertAdjacentElement('beforebegin', mission);
+    }
+
     const reg = document.querySelector('.reg-trust');
     const privacy = document.querySelector('.privacy');
     const demoSections = Array.from(document.querySelectorAll('.demo-section'));
@@ -321,6 +334,11 @@
       const style = document.createElement('style');
       style.id = 'lylo-pilot-polish-styles';
       style.textContent = `
+        .lylo-mission{padding:120px var(--gutter) 116px;border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);text-align:center}
+        .lylo-mission-inner{width:min(100%,1120px);margin:0 auto}
+        .lylo-mission-kicker{margin-bottom:22px;color:#7fa4cf;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+        .lylo-mission h2{max-width:1040px;margin:0 auto;color:#f1f4f8;font-family:'Cormorant Garamond',serif;font-size:clamp(46px,5.3vw,76px);font-weight:400;letter-spacing:-.035em;line-height:1.04}
+        .lylo-mission p{max-width:760px;margin:28px auto 0;color:#8b9aad;font-size:16px;line-height:1.65}
         .lylo-demos-first .demo-heading{margin-top:0;padding-top:0;border-top:0}
         .lylo-regulatory-stage{padding-top:105px;padding-bottom:92px}
         .lylo-mid-booking{padding:52px var(--gutter) 68px;text-align:center;border-top:1px solid rgba(255,255,255,.045)}
@@ -345,6 +363,10 @@
           .reg-cards.lylo-smooth-carousel .lylo-reg-track{display:flex;gap:18px;width:max-content;padding:8px 4px 10px;will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
         }
         @media(max-width:700px){
+          .lylo-mission{padding:76px 20px 72px}
+          .lylo-mission-kicker{margin-bottom:16px;font-size:9px}
+          .lylo-mission h2{max-width:360px;font-size:38px;line-height:1.08}
+          .lylo-mission p{max-width:335px;margin-top:20px;font-size:13px;line-height:1.58}
           .lylo-regulatory-stage{padding-top:74px;padding-bottom:64px}
           .lylo-mid-booking{padding:38px 18px 52px}
           .lylo-mid-booking p{font-size:11px}
