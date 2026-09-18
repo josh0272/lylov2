@@ -79,3 +79,18 @@ Before adding a new numerical value for:
 first check whether an existing design token already expresses the intended hierarchy.
 
 Runtime JavaScript must not create style blocks for ordinary landing-page presentation.
+
+
+## Page stylesheet architecture
+
+Public page CSS now lives in named stylesheets instead of inline HTML:
+
+- `static/lylo-design-system.css` — landing page
+- `static/lylo-call.css` — 20-minute call page
+- `static/lylo-research.css` — research page
+- `static/lylo-about.css` — co-founders/about page
+- `static/lylo-privacy.css` — privacy page
+- `static/et1-intake.css` — specialised ET1 interaction module
+
+HTML templates should contain structure and content, not large style blocks.
+JavaScript should contain behaviour, not layout/theme CSS.
