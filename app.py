@@ -104,9 +104,9 @@ def about():
     return FileResponse("static/preview-about.html")
 
 
-@app.get("/preview", response_class=HTMLResponse)
-def preview():
-    return render_landing("static/preview/index.html", live=False)
+@app.get("/preview")
+def preview_redirect():
+    return RedirectResponse(url="/", status_code=308)
 
 
 @app.get("/live-assets/{name}")
@@ -143,14 +143,14 @@ def founding_pilot_redirect():
     return RedirectResponse(url="/call", status_code=308)
 
 
-@app.get("/preview/call", response_class=FileResponse)
-def preview_call():
-    return FileResponse("static/founding-pilot.html")
+@app.get("/preview/call")
+def preview_call_redirect():
+    return RedirectResponse(url="/call", status_code=308)
 
 
 @app.get("/preview/founding-pilot")
 def preview_founding_pilot_redirect():
-    return RedirectResponse(url="/preview/call", status_code=308)
+    return RedirectResponse(url="/call", status_code=308)
 
 
 @app.get("/call-lylo-out-of-hours-demo-record-for-jess", response_class=FileResponse)
