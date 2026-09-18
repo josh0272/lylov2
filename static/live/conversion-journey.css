@@ -1,0 +1,261 @@
+/* Conversion journey — canonical homepage additions */
+.lylo-section-kicker{
+  margin:0 0 14px;
+  color:#7891b1;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+.desktop-pilot-link{white-space:nowrap}
+.lylo-problem{
+  padding:76px 24px 72px;
+  border-top:1px solid rgba(131,158,191,.09);
+  border-bottom:1px solid rgba(131,158,191,.09);
+  background:linear-gradient(180deg,rgba(11,20,32,.72),rgba(7,14,24,.96));
+}
+.lylo-problem-inner{width:min(100%,1100px);margin:0 auto;text-align:center}
+.lylo-problem h2{
+  max-width:760px;
+  margin:0 auto 34px;
+  color:#f3f6fa;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(42px,5.4vw,68px);
+  font-weight:400;
+  letter-spacing:-.035em;
+  line-height:1.02;
+}
+.lylo-problem-list{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:0 auto 24px;
+}
+.lylo-problem-list>div{
+  min-height:116px;
+  padding:23px 24px;
+  text-align:left;
+  border:1px solid rgba(134,161,196,.13);
+  border-radius:17px;
+  background:rgba(255,255,255,.018);
+}
+.lylo-problem-list span{
+  display:block;
+  margin-bottom:12px;
+  color:#6f86a3;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.15em;
+}
+.lylo-problem-list strong{
+  display:block;
+  color:#dfe7f1;
+  font-size:15px;
+  font-weight:600;
+  line-height:1.45;
+}
+.lylo-problem-inner>p{margin:0;color:#91a4bb;font-size:14px}
+.lylo-demos-first{padding-top:86px!important}
+.demo-copy p{max-width:520px}
+.lylo-demo-group-cta{
+  padding:30px 24px 86px;
+  background:#07101c;
+}
+.lylo-demo-group-cta-inner{
+  width:min(100%,760px);
+  margin:0 auto;
+  padding:30px 34px;
+  text-align:center;
+  border:1px solid rgba(132,161,198,.15);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(23,37,55,.56),rgba(12,22,35,.78));
+}
+.lylo-demo-group-cta p{margin:0 0 20px;color:#cbd7e5;font-size:17px}
+.lylo-demo-group-cta .cta{margin:0 auto}
+.lylo-demo-group-cta span{
+  display:block;
+  margin-top:13px;
+  color:#75899f;
+  font-size:11px;
+  letter-spacing:.025em;
+}
+.privacy{scroll-margin-top:74px}
+.privacy-inner{max-width:1120px}
+.privacy .lylo-section-kicker{text-align:center}
+.privacy-main{max-width:790px!important}
+.privacy-node{
+  min-height:152px!important;
+  padding:28px 25px!important;
+  text-align:center;
+}
+.privacy-node strong{font-size:15px!important}
+.privacy-node span{font-size:13px!important;line-height:1.55!important}
+.privacy-note{max-width:820px!important}
+.lylo-regulatory-stage{padding-top:92px!important;padding-bottom:92px!important}
+.lylo-regulatory-stage .reg-trust{max-width:960px;margin:0 auto}
+.lylo-regulatory-stage .reg-question{max-width:680px;margin-left:auto;margin-right:auto}
+.lylo-regulatory-stage .reg-lead{max-width:740px!important;margin-left:auto!important;margin-right:auto!important}
+.lylo-guidance-context{margin-top:32px!important}
+.lylo-duty-details{margin-top:28px!important}
+.lylo-other-workflows{padding-top:82px!important;padding-bottom:86px!important}
+.lylo-other-workflows .et1-book-demo{display:none!important}
+.lylo-people-compact{padding:76px 24px!important}
+.lylo-people-compact .lylo-people-inner{max-width:940px!important}
+.lylo-people-compact .lylo-people-intro{max-width:670px!important;margin-bottom:28px!important}
+.lylo-people-compact .lylo-people-list{gap:14px!important}
+.lylo-people-compact .lylo-person{min-height:118px!important;padding:18px 20px!important}
+.lylo-people-compact .lylo-person-photo{width:76px!important;height:76px!important}
+.lylo-call-section{padding-top:96px!important;padding-bottom:92px!important}
+.lylo-call-section>div{max-width:1060px!important}
+.lylo-call-section>div>p{max-width:760px!important}
+.lylo-call-reassurance{
+  width:fit-content;
+  max-width:100%;
+  margin:28px auto 18px;
+  padding:10px 16px;
+  color:#aebed1;
+  font-size:12px;
+  line-height:1.45;
+  border:1px solid rgba(142,172,207,.14);
+  border-radius:999px;
+  background:rgba(255,255,255,.022);
+}
+.lylo-after-booking{
+  max-width:690px!important;
+  margin:18px auto 0!important;
+  color:#8093aa!important;
+  font-size:12.5px!important;
+  line-height:1.65!important;
+}
+.lylo-privacy-fallback{display:inline-flex!important;margin-top:18px!important}
+.lylo-after-call{
+  padding:78px 24px;
+  border-top:1px solid rgba(129,157,190,.08);
+  background:#08111d;
+}
+.lylo-after-call-inner{
+  width:min(100%,820px);
+  margin:0 auto;
+  text-align:center;
+}
+.lylo-after-call h3,.lylo-faq-final h3{
+  margin:0 auto 18px;
+  color:#f2f5f9;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(38px,4.8vw,58px);
+  font-weight:400;
+  letter-spacing:-.03em;
+  line-height:1.04;
+}
+.lylo-after-call p{
+  max-width:700px;
+  margin:0 auto 22px;
+  color:#94a7bd;
+  font-size:15px;
+  line-height:1.7;
+}
+.lylo-faq-final{
+  padding:92px 24px;
+  background:linear-gradient(180deg,#07101b,#091522);
+}
+.lylo-faq-inner{width:min(100%,860px);margin:0 auto;text-align:center}
+.lylo-faq-list{margin:34px auto 34px;text-align:left}
+.lylo-faq-list details{
+  border-top:1px solid rgba(137,165,199,.13);
+}
+.lylo-faq-list details:last-child{border-bottom:1px solid rgba(137,165,199,.13)}
+.lylo-faq-list summary{
+  position:relative;
+  padding:20px 42px 20px 4px;
+  color:#dfe7f1;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  list-style:none;
+}
+.lylo-faq-list summary::-webkit-details-marker{display:none}
+.lylo-faq-list summary::after{
+  content:'+';
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#7890ae;
+  font-size:20px;
+  font-weight:400;
+}
+.lylo-faq-list details[open] summary::after{content:'−'}
+.lylo-faq-list p{margin:0;padding:0 42px 21px 4px;color:#8fa2b8;font-size:13px;line-height:1.7}
+.lylo-faq-final .cta{margin:0 auto}
+.lylo-faq-reassurance{display:block;margin-top:13px;color:#74879e;font-size:11px}
+.beyond-casework{
+  padding-top:84px!important;
+  border-top:1px solid rgba(131,158,191,.09);
+}
+.beyond-casework .beyond-kicker{color:#6f87a5!important}
+.lylo-secondary-demo{opacity:.96}
+.lylo-mobile-sticky-booking{display:none}
+
+@media(max-width:979px){
+  .desktop-pilot-link{white-space:normal}
+  .hero .bullet{font-size:15px!important;line-height:1.55!important}
+  .hero .note strong{font-size:11px!important;line-height:1.55!important}
+  .hero .note span{font-size:11px!important;line-height:1.55!important}
+  .lylo-problem{padding:62px 18px 58px}
+  .lylo-problem h2{margin-bottom:25px;font-size:clamp(38px,10.5vw,52px)}
+  .lylo-problem-list{grid-template-columns:1fr;gap:9px}
+  .lylo-problem-list>div{min-height:0;padding:18px 19px}
+  .lylo-problem-list span{margin-bottom:7px}
+  .lylo-demos-first{padding-top:64px!important}
+  .lylo-demo-group-cta{padding:18px 16px 68px}
+  .lylo-demo-group-cta-inner{padding:26px 18px;border-radius:17px}
+  .lylo-demo-group-cta p{font-size:15px}
+  .privacy-node{min-height:0!important;padding:23px 20px!important}
+  .lylo-regulatory-stage{padding-top:70px!important;padding-bottom:70px!important}
+  .lylo-guidance-links{display:grid!important;grid-template-columns:1fr!important}
+  .lylo-other-workflows{padding-top:64px!important;padding-bottom:68px!important}
+  .lylo-people-compact{padding:62px 18px!important}
+  .lylo-people-compact .lylo-person{padding:16px!important}
+  .lylo-call-section{padding-top:74px!important;padding-bottom:72px!important}
+  .lylo-call-reassurance{border-radius:15px;margin-top:24px;font-size:11px}
+  .lylo-after-call{padding:62px 18px}
+  .lylo-faq-final{padding:70px 18px 82px}
+  .lylo-after-call h3,.lylo-faq-final h3{font-size:clamp(36px,9.5vw,48px)}
+  .lylo-mobile-sticky-booking{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    z-index:1200;
+    display:flex;
+    min-height:48px;
+    align-items:center;
+    justify-content:center;
+    padding:0 20px;
+    color:#07101b;
+    background:#e6eef8;
+    border:1px solid rgba(255,255,255,.55);
+    border-radius:999px;
+    box-shadow:0 16px 44px rgba(0,0,0,.42);
+    font-size:13px;
+    font-weight:700;
+    text-decoration:none;
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(18px);
+    pointer-events:none;
+    transition:opacity .22s ease,transform .22s ease,visibility 0s linear .22s;
+  }
+  .lylo-mobile-sticky-booking.is-visible{
+    opacity:1;
+    visibility:visible;
+    transform:none;
+    pointer-events:auto;
+    transition-delay:0s;
+  }
+  body.lylo-sticky-booking-visible{padding-bottom:76px}
+  body.lylo-chat-open .lylo-mobile-sticky-booking{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .lylo-mobile-sticky-booking{transition:none}
+}
