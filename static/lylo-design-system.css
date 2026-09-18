@@ -813,3 +813,36 @@
     min-height:175px!important;
   }
 }
+
+
+/* Mobile: match professional-judgement cards to Private AI proportions */
+@media(max-width:979px){
+  .lylo-reg-principles{
+    display:flex!important;
+    flex-direction:column!important;
+    gap:8px!important;
+    width:min(100%,430px)!important;
+    max-width:430px!important;
+    margin:30px auto 0!important;
+  }
+  .lylo-reg-principles .reg-card{
+    width:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:14px 16px!important;
+    border-radius:14px!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:center!important;
+  }
+  .lylo-reg-principles .reg-card strong{
+    font-size:14px!important;
+    margin-bottom:4px!important;
+  }
+  .lylo-reg-principles .reg-card span{
+    max-width:320px!important;
+    font-size:12px!important;
+    line-height:1.4!important;
+  }
+}
