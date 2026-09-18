@@ -275,7 +275,7 @@
     if (final) {
       const finalCopy = final.querySelector('p');
       if (finalCopy) {
-        finalCopy.textContent = 'The demos shown above are proof-of-concept demonstrations. In a short demo, see the document Q&A, ET1 and Schedule of Loss workflows, hear how the private/on-premise system is being designed, and tell us where it would—or wouldn’t—fit your firm. If it looks useful, work with us towards testing Lylo on one synthetic or properly anonymised matter and comparing it with your normal workflow.';
+        finalCopy.textContent = 'Our proof-of-concept demos show what we can build, but Lylo is not limited to these examples. Start with a 20-minute call to discuss the processes that take time in your firm and explore a private AI workflow built around the way you work.';
       }
 
       final.querySelector('.lylo-demo-explainer')?.remove();
