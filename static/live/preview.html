@@ -1,87 +1,640 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lylo. — Private AI for solicitors</title>
-<meta name="description" content="Lylo is developing private, firm-controlled AI workflows for solicitors. See the working demonstrations and book a low-risk 20-minute call.">
-<link rel="canonical" href="https://www.lylo.live/preview">\n<meta name="robots" content="noindex, nofollow">
-<meta property="og:title" content="Lylo. — Private AI for solicitors">
-<meta property="og:description" content="Private, firm-controlled AI workflows for legal work. See the working demonstrations and book a low-risk 20-minute call.">
-<meta property="og:url" content="https://www.lylo.live/">
-<meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/live/lylo-design-system.css?v=3">
-<link rel="stylesheet" href="/static/live/et1-intake.css?v=2">
-<style>
-.phone-section .audio-timeline {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(-3px);
-  transition: opacity .28s ease, transform .28s ease, visibility 0s linear .28s;
-}
-.phone-section .audio-demo.started .audio-timeline {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: none;
-  transition-delay: 0s;
-}
-</style>
-</head>
-<body>
-<header class="site-header"><div class="header-inner"><a class="logo-small" href="/">Lylo.</a><nav class="desktop-nav" aria-label="Primary">
-      
-      
-      
-      
-    <a href="#demos">Demos</a><a href="#privacy">Private AI</a><a href="#ai-duties">AI &amp; professional duties</a><a href="/research">Research</a><a class="lylo-pilot-nav-text" href="/call">What happens on the call</a><a class="desktop-pilot-link" href="/call#book">20-minute call</a></nav><button class="hamburger" id="hamburger" type="button" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false"><span class="line top"></span><span class="line middle"></span><span class="line bottom"></span></button></div></header>
-<nav class="nav-panel" id="mobileMenu" aria-hidden="true"><div class="panel-inner">
-      
-      
-      
-      
-    <a href="#demos">Demos</a><a href="#privacy">Private AI</a><a href="#ai-duties">AI &amp; professional duties</a><a href="/research">Research</a><a class="lylo-pilot-nav-text" href="/call">What happens on the call</a><a class="lylo-mobile-booking-link" href="/call#book">20-minute call</a></div></nav>
-<main>
-<section class="hero"><div class="wrap"><h1 class="logo">Lylo.</h1><p class="tagline">Private AI, designed for solicitors.</p><aside class="visual"><div class="hero-frame"><img src="/static/live/poc.jpg?v=1" alt="Lylo legal AI screen"></div></aside><ul class="bullets"><li class="bullet">Search case files, prepare legal drafts and reduce repetitive work—while keeping confidential client information under your firm’s control.</li></ul><a href="/call#book" class="cta">See Lylo in a 20-minute call</a><div class="note"><strong>No preparation. No client data. No sales commitment.</strong><span>See the most relevant working demonstration and identify one process in your firm that may suit a safe AI test.</span></div></div></section>
-<section class="demo-intro lylo-demos-first"><div class="reveal in"><div class="demo-heading" id="demos"><h2>See Lylo work on real legal tasks.</h2><p>Three working proof-of-concept demonstrations show how Lylo could search, draft and calculate inside a private, firm-controlled system.</p></div></div></section>
-<section class="demo-section"><div class="demo-grid reveal in"><div class="demo-media"><video muted="" loop="" playsinline="" controls="" poster="/static/live/poc.jpg?v=1" aria-label="Lylo case file demo"><source src="/static/live/poc.mp4?v=1" type="video/mp4"><source src="/static/live/poc.webm?v=1" type="video/webm"></video></div><div class="demo-copy"><h3>Ask the case. Find the source.</h3><p>Search across a case file, bring the relevant answer into one place and open the source behind it before relying on the result.</p><a class="demo-cta" href="/call#book">See this in a 20-minute call</a></div></div></section>
-<section class="demo-section alt et1-section"><div class="demo-grid reveal in"><div class="demo-copy"><h3>Turn case documents into an ET1 draft.</h3><p>Pull names, dates and case details from uploaded documents, prepare the ET1 and flag anything that still needs the solicitor’s review.</p><a href="/call#book" class="demo-cta">See this in a 20-minute call</a></div><div class="demo-media"><video muted="" loop="" playsinline="" controls="" preload="auto" aria-label="ET1 demo"><source src="/static/live/et1.mp4?v=1" type="video/mp4"></video></div></div></section>
-<section class="demo-section"><div class="demo-grid reveal in"><div class="demo-media"><video muted="" loop="" playsinline="" controls="" preload="auto" aria-label="Schedule of Loss demo"><source src="/static/live/schedule-of-loss.mp4?v=1" type="video/mp4"></video></div><div class="demo-copy"><h3>Build and check a Schedule of Loss.</h3><p>Bring pay, dates and losses into a structured draft, show the calculation behind each figure and keep the supporting source available for review.</p><a class="demo-cta" href="/call#book">See this in a 20-minute call</a></div></div></section><section class="lylo-other-workflows"><div class="lylo-other-workflows-inner reveal in"><div class="et1-extension reveal in"><div class="et1-extension-head"><h4>Other forms and workflows.</h4><p>These demonstrations are a starting point. Lylo could be developed around any repeatable process or form used by your firm.</p><p class="lylo-modules-label">Potential form or workflow modules include:</p></div><div class="et1-form-strip" aria-label="Examples of forms Lylo could be adapted to fill"><div class="et1-form-track"><div class="et1-form-set"><span class="et1-form-chip" role="button" tabindex="0">ET1</span><span class="et1-form-chip" role="button" tabindex="0">ET3</span><span class="et1-form-chip" role="button" tabindex="0">N1 Claim Form</span><span class="et1-form-chip" role="button" tabindex="0">N244 Application</span><span class="et1-form-chip" role="button" tabindex="0">C100 Family Application</span><span class="et1-form-chip" role="button" tabindex="0">Form E</span><span class="et1-form-chip" role="button" tabindex="0">Simple Procedure</span><span class="et1-form-chip is-own" role="button" tabindex="0">Your firm’s own forms</span></div><div class="et1-form-set" aria-hidden="true"><span class="et1-form-chip">ET1</span><span class="et1-form-chip">ET3</span><span class="et1-form-chip">N1 Claim Form</span><span class="et1-form-chip">N244 Application</span><span class="et1-form-chip">C100 Family Application</span><span class="et1-form-chip">Form E</span><span class="et1-form-chip">Simple Procedure</span><span class="et1-form-chip is-own">Your firm’s own forms</span></div></div></div><form class="et1-suggest" id="et1-form-suggest"><label for="et1-form-input">What form takes your firm too much time?</label><div class="et1-suggest-row"><input id="et1-form-input" name="form_suggestion" type="text" autocomplete="off" maxlength="140" placeholder="e.g. ET3, Form E, our client intake form…" aria-describedby="et1-form-status"><button type="submit">Suggest a form</button><a class="et1-book-demo" href="/founding-pilot?workflow=et1#book">Book a 20-minute demo</a></div><div class="et1-suggest-status" id="et1-form-status" aria-live="polite"></div></form></div></div></section><section class="lylo-mission"><div class="lylo-mission-inner"><div class="lylo-mission-kicker">Our mission</div><h2>Make secure, firm-controlled AI practical for law firms of every size.</h2></div></section><section class="privacy" id="privacy"><div class="privacy-inner reveal in"><h3>Private AI, designed to run inside your firm.</h3><p class="privacy-main">Use AI on legal work while keeping sensitive case material under the firm’s control. Lylo is being designed so private case files can remain on the firm’s own systems.</p><div class="privacy-visual"><div class="privacy-node" style="animation: auto ease 0s 1 normal none running none !important;"><strong>On-premise AI</strong><span>The private legal AI is being designed to run on hardware inside the firm.</span></div><div class="privacy-node" style="animation: auto ease 0s 1 normal none running none !important;"><strong>Local case files</strong><span>The on-premise design is intended to keep sensitive documents on the firm’s own network.</span></div><div class="privacy-node" style="animation: auto ease 0s 1 normal none running none !important;"><strong>Clear cloud boundary</strong><span>The private legal AI is being designed to keep legal work local, while phone and voice services remain separate.</span></div></div><p class="privacy-note">Lylo is being designed around UK GDPR principles including privacy by design, data minimisation and controlled access. Final compliance still depends on each firm’s deployment, policies and use.</p></div></section><section class="lylo-private-cta"><div class="lylo-private-cta-inner"><h3>Could this work inside your firm?</h3><p>In a 20-minute call, we will show the closest demonstration, discuss one time-consuming process and explain what a safe evaluation could involve.</p><a class="cta" href="/call#book">See Lylo in a 20-minute call</a><span>No preparation, client data or commitment required.</span></div></section><section class="demo-intro lylo-regulatory-stage"><div class="reveal in"><div class="reg-trust" id="ai-duties"><h2 class="reg-question">AI that supports professional judgement.</h2><p class="reg-lead">Lylo is being designed around three principles that matter when AI is used in legal work.</p><div class="lylo-guidance-context"><span>Developed with current professional guidance in view</span><div class="lylo-guidance-links"><a href="https://lawscot.org.uk/media/pl1lnu5n/ai-guide.pdf" target="_blank" rel="noopener">Law Society of Scotland · Guide to Generative AI</a><a href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/" target="_blank" rel="noopener">England &amp; Wales · 17 Aug 2026 · SRA Misuse of AI warning</a></div></div><div class="reg-cards lylo-reg-principles" aria-label="Three principles guiding Lylo"><article class="reg-card"><strong>Keep sensitive work controlled</strong><span>Lylo is being designed so private legal work can remain within the firm’s environment.</span></article><article class="reg-card"><strong>Show the evidence</strong><span>Answers and drafts can be checked against their source documents.</span></article><article class="reg-card"><strong>Keep the solicitor in control</strong><span>Outputs remain drafts for professional review, editing and approval.</span></article></div><details class="lylo-duty-details"><summary>Read how Lylo is being designed around professional duties</summary><div><p>Accuracy, confidentiality, human oversight and professional responsibility remain central. UK GDPR duties—including privacy by design, data minimisation and controlled access—still depend on each firm’s deployment, policies and use.</p><p><a href="https://lawscot.org.uk/media/pl1lnu5n/ai-guide.pdf" target="_blank" rel="noopener">Law Society of Scotland: Guide to Generative AI</a> · <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/data-protection-by-design-and-by-default/" target="_blank" rel="noopener">ICO: data protection by design</a> · <a href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/" target="_blank" rel="noopener">SRA: misuse of AI warning</a></p></div></details></div></div></section><section class="beyond-casework">
-          <div class="beyond-casework-inner">
-            <div class="beyond-kicker">Beyond casework</div>
-            <h3>A smaller example: out-of-hours calls.</h3>
-            <p>Lylo can also be adapted for useful firm-wide tasks. The receptionist demonstration shows one possible use outside private legal document work.</p>
-            <div class="beyond-boundary">The voice receptionist uses separate cloud voice services and is separate from Lylo’s private on-premise legal AI.</div>
-          </div>
-        </section><section class="demo-section alt phone-section lylo-secondary-demo"><div class="demo-grid reveal in"><div class="demo-copy"><h3>Let Lylo answer the phone.</h3><p>Lylo answers after hours, speaks to callers in a natural voice, collects the first details and passes the message to your team.</p><div class="call-box"><div class="call-label">Try the live receptionist</div><button class="call-number lylo-voice-call lylo-desktop-call phone-live-cta" id="lylo-voice-call" type="button">Call Lylo</button><a class="call-number call-number-link lylo-mobile-call phone-live-cta" href="tel:+441416732902" aria-label="Call Lylo on 0141 673 2902">0141 673 2902</a><div class="lylo-voice-status" id="lylo-voice-status">Browser voice call · No phone number needed</div><div class="phone-call-helper">Call Lylo and speak as if you were a client.</div></div></div><div class="audio-stage"><div class="audio-demo" id="phoneAudioDemo"><div class="audio-title">Sample call</div><div class="audio-wave" id="phoneWave" aria-hidden="true"><span class="audio-bar active" style="height: 6%;"></span><span class="audio-bar" style="height: 9%;"></span><span class="audio-bar" style="height: 12%;"></span><span class="audio-bar" style="height: 8%;"></span><span class="audio-bar" style="height: 15%;"></span><span class="audio-bar" style="height: 11%;"></span><span class="audio-bar" style="height: 19%;"></span><span class="audio-bar" style="height: 13%;"></span><span class="audio-bar" style="height: 24%;"></span><span class="audio-bar" style="height: 18%;"></span><span class="audio-bar" style="height: 30%;"></span><span class="audio-bar" style="height: 21%;"></span><span class="audio-bar" style="height: 36%;"></span><span class="audio-bar" style="height: 27%;"></span><span class="audio-bar" style="height: 44%;"></span><span class="audio-bar" style="height: 31%;"></span><span class="audio-bar" style="height: 52%;"></span><span class="audio-bar" style="height: 39%;"></span><span class="audio-bar" style="height: 60%;"></span><span class="audio-bar" style="height: 45%;"></span><span class="audio-bar" style="height: 68%;"></span><span class="audio-bar" style="height: 52%;"></span><span class="audio-bar" style="height: 76%;"></span><span class="audio-bar" style="height: 58%;"></span><span class="audio-bar" style="height: 83%;"></span><span class="audio-bar" style="height: 64%;"></span><span class="audio-bar" style="height: 72%;"></span><span class="audio-bar" style="height: 55%;"></span><span class="audio-bar" style="height: 63%;"></span><span class="audio-bar" style="height: 48%;"></span><span class="audio-bar" style="height: 54%;"></span><span class="audio-bar" style="height: 41%;"></span><span class="audio-bar" style="height: 46%;"></span><span class="audio-bar" style="height: 35%;"></span><span class="audio-bar" style="height: 40%;"></span><span class="audio-bar" style="height: 31%;"></span><span class="audio-bar" style="height: 36%;"></span><span class="audio-bar" style="height: 28%;"></span><span class="audio-bar" style="height: 42%;"></span><span class="audio-bar" style="height: 34%;"></span><span class="audio-bar" style="height: 49%;"></span><span class="audio-bar" style="height: 38%;"></span><span class="audio-bar" style="height: 58%;"></span><span class="audio-bar" style="height: 45%;"></span><span class="audio-bar" style="height: 66%;"></span><span class="audio-bar" style="height: 51%;"></span><span class="audio-bar" style="height: 73%;"></span><span class="audio-bar" style="height: 57%;"></span><span class="audio-bar" style="height: 81%;"></span><span class="audio-bar" style="height: 62%;"></span><span class="audio-bar" style="height: 88%;"></span><span class="audio-bar" style="height: 69%;"></span><span class="audio-bar" style="height: 78%;"></span><span class="audio-bar" style="height: 60%;"></span><span class="audio-bar" style="height: 70%;"></span><span class="audio-bar" style="height: 54%;"></span><span class="audio-bar" style="height: 61%;"></span><span class="audio-bar" style="height: 47%;"></span><span class="audio-bar" style="height: 53%;"></span><span class="audio-bar" style="height: 41%;"></span><span class="audio-bar" style="height: 46%;"></span><span class="audio-bar" style="height: 36%;"></span><span class="audio-bar" style="height: 39%;"></span><span class="audio-bar" style="height: 31%;"></span><span class="audio-bar" style="height: 34%;"></span><span class="audio-bar" style="height: 27%;"></span><span class="audio-bar" style="height: 29%;"></span><span class="audio-bar" style="height: 23%;"></span><span class="audio-bar" style="height: 24%;"></span><span class="audio-bar" style="height: 19%;"></span><span class="audio-bar" style="height: 18%;"></span><span class="audio-bar" style="height: 14%;"></span><span class="audio-bar" style="height: 12%;"></span><span class="audio-bar" style="height: 9%;"></span></div><div class="audio-controls"><button class="audio-play" id="phonePlay" type="button" aria-label="Play Lylo voice demo"><svg id="phonePlayIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10-6.5z"></path></svg></button></div><div class="transcript" id="phoneTranscript" aria-live="polite"></div><audio id="phoneDemoAudio" preload="metadata" src="/static/live/ai-receptionist.mp3?v=1"></audio></div></div></div></section>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lylo. — Private AI for solicitors</title>
+    <meta
+      name="description"
+      content="Private, firm-controlled AI for legal work: search case files, draft ET1s and Schedules of Loss, and keep outputs tied to their sources."
+    />
+    <link rel="canonical" href="https://www.lylo.live/preview" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta property="og:title" content="Lylo. — Private AI for solicitors" />
+    <meta
+      property="og:description"
+      content="Search case files, draft ET1s and Schedules of Loss, and keep every answer tied to its source while client information stays under the firm’s control."
+    />
+    <meta property="og:url" content="https://www.lylo.live/preview" />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/live/lylo-design-system.css?v=3" />
+    <link rel="stylesheet" href="/static/live/et1-intake.css?v=2" />
+    <link rel="stylesheet" href="/static/live/preview-conversion.css?v=1" />
+  </head>
+  <body class="lylo-preview-page">
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="logo-small" href="/preview">Lylo.</a>
+        <nav class="desktop-nav" aria-label="Primary">
+          <a href="#demos">Demos</a>
+          <a href="#privacy">Private AI</a>
+          <a href="#about">About</a>
+          <a class="desktop-pilot-link" href="/call#book"
+            >Book a 20-minute demo</a
+          >
+        </nav>
+        <button
+          class="hamburger"
+          id="hamburger"
+          type="button"
+          aria-label="Open menu"
+          aria-controls="mobileMenu"
+          aria-expanded="false"
+        >
+          <span class="line top"></span><span class="line middle"></span
+          ><span class="line bottom"></span>
+        </button>
+      </div>
+    </header>
+    <nav class="nav-panel" id="mobileMenu" aria-hidden="true">
+      <div class="panel-inner">
+        <a href="#demos">Demos</a>
+        <a href="#privacy">Private AI</a>
+        <a href="#about">About</a>
+        <a class="lylo-mobile-booking-link" href="/call#book"
+          >Book a 20-minute demo</a
+        >
+      </div>
+    </nav>
 
-
-<section class="lylo-people">
-      <div class="lylo-people-inner reveal in">
-        <div class="lylo-section-kicker">Meet the co-founders of Lylo</div>
-        <h3>Built by Joshua and Jessica.</h3>
-        <p class="lylo-people-intro">A small team combining engineering and legal backgrounds while Lylo is being researched, tested and shaped.</p>
-        <div class="lylo-people-list" aria-label="People behind Lylo">
-          <div class="lylo-person">
-            <a class="lylo-person-photo" href="/about#joshua" aria-label="Read more about Joshua Sam"><img src="/static/joshua-profile.jpg?v=1" alt="Joshua Sam"></a>
-            <div><strong>Joshua Sam</strong><span class="role">Product &amp; Engineering</span><span class="credential">MEng Electrical &amp; Mechanical Engineering · University of Strathclyde</span></div>
-          </div>
-          <div class="lylo-person">
-            <a class="lylo-person-photo" href="/about#jessica" aria-label="Read more about Jessica Jayan"><img src="/static/jessica-profile.jpg?v=1" alt="Jessica Jayan"></a>
-            <div><strong>Jessica Jayan</strong><span class="role">Legal Research &amp; Workflow</span><span class="credential">Scots (Clinical) LLB · University of Strathclyde</span></div>
+    <main>
+      <section class="hero" id="top">
+        <div class="wrap">
+          <h1 class="logo">Lylo.</h1>
+          <p class="tagline">Private AI, designed for solicitors.</p>
+          <aside class="visual">
+            <div class="hero-frame">
+              <img
+                src="/static/live/poc-source-result.jpg?v=1"
+                alt="Lylo showing an answer, its citations and the source case document"
+              />
+            </div>
+          </aside>
+          <ul class="bullets">
+            <li class="bullet">
+              Search case files, draft ET1s and Schedules of Loss, and keep
+              every answer tied to its source — with client information staying
+              under your firm’s control.
+            </li>
+          </ul>
+          <a href="/call#book" class="cta">Book a 20-minute demo</a>
+          <div class="note">
+            <strong
+              >20-minute video call · nothing to prepare · no client data needed
+              · no obligation</strong
+            >
           </div>
         </div>
-        <a class="lylo-secondary-link" href="/about">Meet the people behind Lylo <span class="arrow">→</span></a>
-      </div></section><section class="final"><div class="reveal in"><h3>Start with a focused 20-minute call.</h3><p>Tell us where your firm loses time, see the closest working demonstration and decide whether a safe, small evaluation is worth discussing.</p><div class="lylo-pilot-brief"><div class="lylo-pilot-step"><span class="lylo-pilot-step-no">01</span><strong>Tell us where time is lost</strong><span>Choose one legal process that feels repetitive or slow.</span></div><div class="lylo-pilot-step"><span class="lylo-pilot-step-no">02</span><strong>See the closest demonstration</strong><span>We will focus the call on the example most relevant to your firm.</span></div><div class="lylo-pilot-step"><span class="lylo-pilot-step-no">03</span><strong>Decide if a safe test makes sense</strong><span>If there is no useful fit, nothing further happens.</span></div></div><a href="/call#book" class="cta">See Lylo in a 20-minute call</a></div></section>
-</main><footer><a class="lylo-privacy-link" href="/privacy" style="display: inline-block; margin-right: 14px; color: rgb(141, 160, 184); text-decoration: none;">Privacy</a>© 2026 Lylo. All rights reserved.</footer>
-<script src="/live-assets/mobile-preview.js?v=12" defer></script>
-<script src="/live-assets/video-audio-state.js?v=7" defer></script>
-<script src="/live-assets/phone-demo.js?v=6" defer></script>
-<script src="/live-assets/et1-intake.js?v=4" defer></script>
-<script src="/live-assets/lylo-voice.js?v=11" defer></script>
-</body>
+      </section>
+
+      <section class="preview-problem" aria-labelledby="preview-problem-title">
+        <div class="preview-narrow reveal in">
+          <div class="preview-eyebrow">The work around the law</div>
+          <h2 id="preview-problem-title">
+            Where does your firm lose the hours?
+          </h2>
+          <div
+            class="preview-problem-lines"
+            aria-label="Common time-consuming legal tasks"
+          >
+            <p>Rebuilding the same chronology from the same bundle.</p>
+            <p>
+              Retyping the same client facts into an ET1, then into the next
+              form.
+            </p>
+            <p>Checking a calculation back against the source, line by line.</p>
+          </div>
+          <p class="preview-transition">
+            Here’s what that could look like with Lylo.
+          </p>
+        </div>
+      </section>
+
+      <section class="demo-intro lylo-demos-first" id="demos">
+        <div class="reveal in">
+          <div class="demo-heading">
+            <div class="preview-eyebrow">Working proof of concept</div>
+            <h2>See Lylo work on real legal tasks.</h2>
+            <p>
+              Three demonstrations show the result first: a sourced answer, a
+              populated ET1 and a Schedule of Loss with its working visible.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="demo-grid reveal in">
+          <div class="demo-media">
+            <video
+              muted
+              loop
+              playsinline
+              controls
+              poster="/static/live/poc-source-result.jpg?v=1"
+              aria-label="Lylo searching a case file and showing its source"
+            >
+              <source src="/static/live/poc.mp4?v=1" type="video/mp4" />
+              <source src="/static/live/poc.webm?v=1" type="video/webm" />
+            </video>
+          </div>
+          <div class="demo-copy">
+            <h3>Ask the case. Find the source.</h3>
+            <p>
+              Find the relevant answer across the case file and see exactly
+              where it came from.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section alt et1-section">
+        <div class="demo-grid reveal in">
+          <div class="demo-copy">
+            <h3>Turn case documents into an ET1 draft.</h3>
+            <p>
+              Names, dates and key facts are brought into the draft, while
+              missing information stays visible for review.
+            </p>
+          </div>
+          <div class="demo-media">
+            <video
+              muted
+              loop
+              playsinline
+              controls
+              preload="metadata"
+              aria-label="ET1 draft built from case documents"
+            >
+              <source src="/static/live/et1.mp4?v=1" type="video/mp4" />
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="demo-grid reveal in">
+          <div class="demo-media">
+            <video
+              muted
+              loop
+              playsinline
+              controls
+              preload="metadata"
+              aria-label="Schedule of Loss with calculations and sources"
+            >
+              <source
+                src="/static/live/schedule-of-loss.mp4?v=1"
+                type="video/mp4"
+              />
+            </video>
+          </div>
+          <div class="demo-copy">
+            <h3>Build and check a Schedule of Loss.</h3>
+            <p>
+              Figures, assumptions and source documents stay connected so the
+              solicitor can check the working.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-demo-bridge">
+        <div class="preview-narrow">
+          <p>Want to see the example closest to your firm’s work?</p>
+          <a class="demo-cta" href="#book-demo"
+            >See Lylo on your kind of case</a
+          >
+        </div>
+      </section>
+
+      <section class="privacy preview-privacy" id="privacy">
+        <div class="privacy-inner reveal in">
+          <div class="preview-eyebrow">Firm-controlled by design</div>
+          <h3>Private AI, designed to run inside your firm.</h3>
+          <p class="privacy-main">
+            Lylo is being developed so legal work can use AI without
+            confidential case material being sent to a public AI service.
+          </p>
+          <div class="preview-trust-list">
+            <div>
+              <strong>Private deployment</strong
+              ><span
+                >Client information remains within the agreed firm-controlled
+                environment.</span
+              >
+            </div>
+            <div>
+              <strong>No training on your case data</strong
+              ><span
+                >Firm documents are not used to train the underlying public
+                model.</span
+              >
+            </div>
+            <div>
+              <strong>Source-linked outputs</strong
+              ><span
+                >Lylo can show the evidence behind an answer instead of asking
+                the solicitor to trust a black box.</span
+              >
+            </div>
+          </div>
+          <p class="privacy-note">
+            The precise safeguards depend on each firm’s deployment, access
+            controls, policies and use. Lylo is being developed around privacy
+            by design, data minimisation and controlled access.
+          </p>
+          <p class="preview-stage-note">
+            <strong>Lylo is a working proof of concept.</strong> We’re now
+            looking for a small number of firms to help shape how it develops
+            into a production system.
+          </p>
+        </div>
+      </section>
+
+      <section class="preview-judgement" id="ai-duties">
+        <div class="preview-narrow reveal in">
+          <div class="preview-eyebrow">Professional control</div>
+          <h2>AI supports. You decide.</h2>
+          <p class="preview-lead">
+            Lylo is designed to reduce the work around legal judgement, not
+            replace it. Drafts, calculations and answers remain available for
+            the solicitor to review, edit and approve.
+          </p>
+          <div class="preview-guidance">
+            <span
+              >Developed with current professional guidance in view — not
+              endorsed by the organisations below.</span
+            >
+            <div>
+              <a
+                href="https://lawscot.org.uk/media/pl1lnu5n/ai-guide.pdf"
+                target="_blank"
+                rel="noopener"
+                >Law Society of Scotland · Guide to Generative AI</a
+              ><a
+                href="https://media.sra.org.uk/solicitors/guidance/misuse-ai/"
+                target="_blank"
+                rel="noopener"
+                >SRA · Misuse of AI warning</a
+              >
+            </div>
+          </div>
+          <details class="lylo-duty-details">
+            <summary>
+              Read how Lylo is being designed around professional duties
+            </summary>
+            <div>
+              <p>
+                Accuracy, confidentiality, human oversight and professional
+                responsibility remain central. UK GDPR duties—including privacy
+                by design, data minimisation and controlled access—still depend
+                on each firm’s deployment, policies and use.
+              </p>
+              <p>
+                <a
+                  href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/data-protection-by-design-and-by-default/"
+                  target="_blank"
+                  rel="noopener"
+                  >ICO: data protection by design</a
+                >
+              </p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <section class="lylo-other-workflows" id="workflows">
+        <div class="lylo-other-workflows-inner reveal in">
+          <div class="et1-extension reveal in">
+            <div class="et1-extension-head">
+              <div class="preview-eyebrow">Beyond the examples</div>
+              <h4>Other forms and workflows.</h4>
+              <p>
+                These demonstrations are a starting point. Lylo could be
+                developed around any repeatable process or form used by your
+                firm.
+              </p>
+              <p class="lylo-modules-label">
+                Potential form or workflow modules include
+              </p>
+            </div>
+            <div
+              class="et1-form-strip"
+              aria-label="Examples of forms Lylo could be adapted to fill"
+            >
+              <div class="et1-form-track">
+                <div class="et1-form-set">
+                  <span class="et1-form-chip" role="button" tabindex="0"
+                    >ET1</span
+                  ><span class="et1-form-chip" role="button" tabindex="0"
+                    >ET3</span
+                  ><span class="et1-form-chip" role="button" tabindex="0"
+                    >N1 Claim Form</span
+                  ><span class="et1-form-chip" role="button" tabindex="0"
+                    >N244 Application</span
+                  ><span class="et1-form-chip" role="button" tabindex="0"
+                    >C100 Family Application</span
+                  ><span class="et1-form-chip" role="button" tabindex="0"
+                    >Form E</span
+                  ><span class="et1-form-chip" role="button" tabindex="0"
+                    >Simple Procedure</span
+                  ><span class="et1-form-chip is-own" role="button" tabindex="0"
+                    >Your firm’s own forms</span
+                  >
+                </div>
+                <div class="et1-form-set" aria-hidden="true">
+                  <span class="et1-form-chip">ET1</span
+                  ><span class="et1-form-chip">ET3</span
+                  ><span class="et1-form-chip">N1 Claim Form</span
+                  ><span class="et1-form-chip">N244 Application</span
+                  ><span class="et1-form-chip">C100 Family Application</span
+                  ><span class="et1-form-chip">Form E</span
+                  ><span class="et1-form-chip">Simple Procedure</span
+                  ><span class="et1-form-chip is-own"
+                    >Your firm’s own forms</span
+                  >
+                </div>
+              </div>
+            </div>
+            <form class="et1-suggest" id="et1-form-suggest">
+              <label for="et1-form-input"
+                >What form takes your firm too much time?</label
+              >
+              <div class="et1-suggest-row">
+                <input
+                  id="et1-form-input"
+                  name="form_suggestion"
+                  type="text"
+                  autocomplete="off"
+                  maxlength="140"
+                  placeholder="e.g. ET3, Form E, our client intake form…"
+                  aria-describedby="et1-form-status"
+                /><button type="submit">Suggest a form</button
+                ><a class="et1-book-demo" href="/call#book"
+                  >Book a 20-minute demo</a
+                >
+              </div>
+              <div
+                class="et1-suggest-status"
+                id="et1-form-status"
+                aria-live="polite"
+              ></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="lylo-people preview-people" id="about">
+        <div class="lylo-people-inner reveal in">
+          <div class="preview-eyebrow">Why Lylo exists</div>
+          <h3>Built by Joshua and Jessica.</h3>
+          <p class="lylo-people-intro">
+            We are combining engineering and legal-workflow experience to make
+            secure, firm-controlled AI practical for law firms of every size.
+          </p>
+          <div class="lylo-people-list" aria-label="People behind Lylo">
+            <div class="lylo-person">
+              <a
+                class="lylo-person-photo"
+                href="/about#joshua"
+                aria-label="Read more about Joshua Sam"
+                ><img src="/static/joshua-profile.jpg?v=1" alt="Joshua Sam"
+              /></a>
+              <div>
+                <strong>Joshua Sam</strong
+                ><span class="role">Product &amp; Engineering</span
+                ><span class="credential"
+                  >Building and testing Lylo’s private AI workflows.</span
+                >
+              </div>
+            </div>
+            <div class="lylo-person">
+              <a
+                class="lylo-person-photo"
+                href="/about#jessica"
+                aria-label="Read more about Jessica Jayan"
+                ><img src="/static/jessica-profile.jpg?v=1" alt="Jessica Jayan"
+              /></a>
+              <div>
+                <strong>Jessica Jayan</strong
+                ><span class="role">Legal Research &amp; Workflow</span
+                ><span class="credential"
+                  >Connecting Lylo’s development to real legal work and
+                  professional duties.</span
+                >
+              </div>
+            </div>
+          </div>
+          <a class="lylo-secondary-link" href="/about"
+            >Meet the people behind Lylo <span class="arrow">→</span></a
+          >
+        </div>
+      </section>
+
+      <section class="final preview-call" id="book-demo">
+        <div class="reveal in">
+          <div class="preview-eyebrow">Your 20 minutes</div>
+          <h3>See how Lylo could fit your firm.</h3>
+          <p>
+            Tell us one process that takes more time than it should. We’ll show
+            you the closest Lylo demonstration and discuss whether the same
+            approach could work for your firm.
+          </p>
+          <div class="preview-call-steps">
+            <div>
+              <span>01</span><strong>Tell us where the time goes</strong
+              ><small>No preparation needed.</small>
+            </div>
+            <div>
+              <span>02</span><strong>See the closest Lylo demonstration</strong
+              ><small>We show the product. You ask questions.</small>
+            </div>
+            <div>
+              <span>03</span
+              ><strong>Decide whether anything is worth exploring</strong
+              ><small>Nothing else happens unless it makes sense.</small>
+            </div>
+          </div>
+          <a href="/call#book" class="cta">Book a 20-minute demo</a>
+          <p class="preview-reassurance">
+            Video call · 20 minutes · no client data needed · no obligation
+          </p>
+          <p class="preview-after-booking">
+            After booking, we’ll ask what type of work you’d most like to
+            improve so we can show you the most relevant demonstration.
+          </p>
+          <a class="preview-text-link" href="#privacy"
+            >Not ready for a call? See how Lylo approaches privacy →</a
+          >
+        </div>
+      </section>
+
+      <section class="preview-after-call">
+        <div class="preview-narrow reveal in">
+          <div class="preview-eyebrow">After the call, if it fits</div>
+          <h2>Help shape Lylo with us.</h2>
+          <p>
+            We’re looking for a small number of firms to help test the workflows
+            Lylo is being built around. If there is a genuine fit after the
+            demonstration, we can discuss a focused founding pilot together.
+          </p>
+          <strong>No commitment to continue after the call.</strong>
+        </div>
+      </section>
+
+      <section class="preview-faq" aria-labelledby="preview-faq-title">
+        <div class="preview-narrow reveal in">
+          <div class="preview-eyebrow">Before you book</div>
+          <h2 id="preview-faq-title">A straightforward first conversation.</h2>
+          <div class="preview-faq-list">
+            <details>
+              <summary>Do I need to share client data?</summary>
+              <p>
+                No. The initial demonstration uses demonstration material and
+                does not require client information.
+              </p>
+            </details>
+            <details>
+              <summary>Do I need to install anything?</summary>
+              <p>No. Nothing needs to be installed for the demonstration.</p>
+            </details>
+            <details>
+              <summary>Who will I speak to?</summary>
+              <p>Joshua or Jessica from Lylo.</p>
+            </details>
+            <details>
+              <summary>What happens after the call?</summary>
+              <p>
+                Nothing automatically. If there is something genuinely worth
+                exploring, we can discuss a small next step.
+              </p>
+            </details>
+            <details>
+              <summary>What if my firm works in another practice area?</summary>
+              <p>
+                Tell us the workflow. Lylo’s underlying approach could
+                potentially be applied beyond the examples shown here.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="preview-final-cta">
+        <div class="preview-narrow reveal in">
+          <h2>Bring us the process that costs your firm time.</h2>
+          <p>
+            We’ll show you the closest working example and give you an honest
+            view of whether Lylo could help.
+          </p>
+          <a href="/call#book" class="cta">Book a 20-minute demo</a
+          ><span>Nothing to prepare · no client data · no obligation</span>
+        </div>
+      </section>
+
+      <section class="beyond-casework">
+        <div class="beyond-casework-inner">
+          <div class="beyond-kicker">Beyond casework</div>
+          <h3>Lylo can support other parts of the firm too.</h3>
+          <p>
+            The receptionist demonstration is one example of how the same
+            approach could support useful firm-wide work outside private legal
+            documents.
+          </p>
+          <div class="beyond-boundary">
+            The voice receptionist uses separate cloud voice services and is
+            separate from Lylo’s private on-premise legal AI.
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section alt phone-section lylo-secondary-demo">
+        <div class="demo-grid reveal in">
+          <div class="demo-copy">
+            <h3>Let Lylo answer the phone.</h3>
+            <p>
+              Lylo answers after hours, speaks to callers in a natural voice,
+              collects the first details and passes the message to your team.
+            </p>
+            <div class="call-box">
+              <div class="call-label">Try the live receptionist</div>
+              <button
+                class="call-number lylo-voice-call lylo-desktop-call phone-live-cta"
+                id="lylo-voice-call"
+                type="button"
+              >
+                Call Lylo</button
+              ><a
+                class="call-number call-number-link lylo-mobile-call phone-live-cta"
+                href="tel:+441416732902"
+                aria-label="Call Lylo on 0141 673 2902"
+                >0141 673 2902</a
+              >
+              <div class="lylo-voice-status" id="lylo-voice-status">
+                Browser voice call · No phone number needed
+              </div>
+              <div class="phone-call-helper">
+                Call Lylo and speak as if you were a client.
+              </div>
+            </div>
+          </div>
+          <div class="audio-stage">
+            <div class="audio-demo" id="phoneAudioDemo">
+              <div class="audio-title">Sample call</div>
+              <div class="audio-wave" id="phoneWave" aria-hidden="true"></div>
+              <div class="audio-controls">
+                <button
+                  class="audio-play"
+                  id="phonePlay"
+                  type="button"
+                  aria-label="Play Lylo voice demo"
+                >
+                  <svg
+                    id="phonePlayIcon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path d="M8 5.5v13l10-6.5z"></path>
+                  </svg>
+                </button>
+              </div>
+              <div
+                class="transcript"
+                id="phoneTranscript"
+                aria-live="polite"
+              ></div>
+              <audio
+                id="phoneDemoAudio"
+                preload="metadata"
+                src="/static/live/ai-receptionist.mp3?v=1"
+              ></audio>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <a class="preview-mobile-booking" href="/call#book"
+      >Book a 20-minute demo</a
+    >
+    <footer>
+      <a class="lylo-privacy-link" href="/privacy">Privacy</a
+      ><a href="/research">Research</a
+      ><span>© 2026 Lylo. All rights reserved.</span>
+    </footer>
+
+    <script src="/live-assets/mobile-preview.js?v=12" defer></script>
+    <script src="/static/live/preview-conversion.js?v=1" defer></script>
+    <script src="/live-assets/video-audio-state.js?v=7" defer></script>
+    <script src="/live-assets/phone-demo.js?v=6" defer></script>
+    <script src="/live-assets/et1-intake.js?v=4" defer></script>
+    <script src="/live-assets/lylo-voice.js?v=11" defer></script>
+  </body>
 </html>

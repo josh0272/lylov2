@@ -1,0 +1,674 @@
+/* Preview-only conversion journey. The main homepage does not load this file. */
+.lylo-preview-page {
+  --preview-line: rgba(255, 255, 255, 0.065);
+  --preview-muted: #8e9eb2;
+  --preview-soft: #718198;
+  --preview-blue: #83b9f2;
+}
+
+.lylo-preview-page main {
+  overflow: hidden;
+}
+.lylo-preview-page .preview-narrow {
+  width: min(100%, 880px);
+  margin: 0 auto;
+  text-align: center;
+}
+.lylo-preview-page .preview-eyebrow {
+  margin: 0 0 15px;
+  color: #7896b9;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.lylo-preview-page .preview-text-link,
+.lylo-preview-page .lylo-secondary-link {
+  color: #9ebadd;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: color 0.18s ease;
+}
+.lylo-preview-page .preview-text-link:hover,
+.lylo-preview-page .lylo-secondary-link:hover {
+  color: #d7e5f5;
+}
+
+/* Focused navigation */
+.lylo-preview-page .desktop-nav {
+  gap: 30px;
+}
+.lylo-preview-page .desktop-pilot-link {
+  white-space: nowrap;
+}
+
+/* Hero */
+.lylo-preview-page .hero .bullet {
+  max-width: 520px;
+}
+.lylo-preview-page .hero .cta {
+  margin-top: 2px;
+}
+.lylo-preview-page .hero .note {
+  display: block !important;
+  max-width: 610px !important;
+  margin-top: 9px !important;
+}
+.lylo-preview-page .hero .note strong {
+  color: #7d8da2;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.55;
+}
+.lylo-preview-page .hero-frame img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Problem recognition uses lines and space, not cards. */
+.preview-problem {
+  padding: 102px var(--gutter);
+  border-top: 1px solid var(--preview-line);
+  background: radial-gradient(
+    620px 280px at 50% 0%,
+    rgba(84, 160, 255, 0.045),
+    transparent 72%
+  );
+}
+.preview-problem h2,
+.preview-judgement h2,
+.preview-after-call h2,
+.preview-faq h2,
+.preview-final-cta h2 {
+  margin: 0 auto;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(46px, 5.7vw, 68px);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.032em;
+  color: var(--text);
+}
+.preview-problem-lines {
+  width: min(100%, 720px);
+  margin: 42px auto 0;
+  border-top: 1px solid var(--preview-line);
+}
+.preview-problem-lines p {
+  margin: 0;
+  padding: 17px 4px;
+  border-bottom: 1px solid var(--preview-line);
+  color: #b7c3d2;
+  font-size: 15px;
+  line-height: 1.55;
+}
+.preview-transition {
+  margin: 27px 0 0;
+  color: #73849a;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+/* Demos retain the main site's substantial visual treatment. */
+.lylo-preview-page .lylo-demos-first {
+  padding-top: 88px;
+  padding-bottom: 54px;
+}
+.lylo-preview-page .lylo-demos-first .demo-heading {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.lylo-preview-page .demo-section {
+  padding-top: 112px;
+  padding-bottom: 112px;
+}
+.lylo-preview-page .demo-copy p {
+  max-width: 470px;
+}
+.preview-demo-bridge {
+  padding: 62px var(--gutter) 72px;
+  border-top: 1px solid var(--preview-line);
+  border-bottom: 1px solid var(--preview-line);
+  background: rgba(255, 255, 255, 0.01);
+}
+.preview-demo-bridge p {
+  margin: 0 0 20px;
+  color: #8595aa;
+  font-size: 13px;
+}
+.preview-demo-bridge .demo-cta {
+  margin-top: 0;
+}
+
+/* Privacy is editorial: one statement and three divided points. */
+.lylo-preview-page .preview-privacy {
+  padding-top: 132px;
+  padding-bottom: 120px;
+}
+.preview-trust-list {
+  width: min(100%, 900px);
+  margin: 54px auto 0;
+  border-top: 1px solid var(--preview-line);
+}
+.preview-trust-list > div {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 1.3fr);
+  gap: 46px;
+  align-items: baseline;
+  padding: 23px 4px;
+  border-bottom: 1px solid var(--preview-line);
+  text-align: left;
+}
+.preview-trust-list strong {
+  color: #edf3fa;
+  font-size: 15px;
+  font-weight: 600;
+}
+.preview-trust-list span {
+  color: var(--preview-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.preview-stage-note {
+  width: min(100%, 760px);
+  margin: 35px auto 0;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.045);
+  color: #8393a8;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.preview-stage-note strong {
+  color: #c6d2e0;
+  font-weight: 600;
+}
+
+/* Professional judgement stays calm and secondary to the product. */
+.preview-judgement {
+  padding: 108px var(--gutter);
+  border-top: 1px solid var(--preview-line);
+}
+.preview-judgement .preview-lead {
+  width: min(100%, 700px);
+  margin: 24px auto 0;
+  color: var(--preview-muted);
+  font-size: 17px;
+  line-height: 1.68;
+}
+.preview-guidance {
+  margin: 37px auto 0;
+}
+.preview-guidance > span {
+  display: block;
+  margin-bottom: 13px;
+  color: #667890;
+  font-size: 10px;
+  line-height: 1.55;
+}
+.preview-guidance > div {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.preview-guidance a {
+  color: #90a9c7;
+  text-decoration: none;
+  font-size: 11px;
+  border-bottom: 1px solid rgba(144, 169, 199, 0.24);
+}
+.preview-guidance a:hover {
+  color: #c8d9ec;
+}
+.lylo-preview-page .lylo-duty-details {
+  margin-top: 28px;
+}
+
+/* Breadth is intentionally quieter than the flagship demos. */
+.lylo-preview-page .lylo-other-workflows {
+  padding-top: 84px;
+  padding-bottom: 88px;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 16, 29, 0.18),
+    rgba(8, 16, 29, 0.38)
+  );
+}
+.lylo-preview-page .lylo-other-workflows .et1-extension-head h4 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(38px, 4.4vw, 52px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+.lylo-preview-page .et1-form-strip {
+  opacity: 0.86;
+}
+.lylo-preview-page .et1-book-demo {
+  opacity: 0.72;
+}
+.lylo-preview-page .et1-book-demo:hover {
+  opacity: 1;
+}
+.lylo-preview-page .et1-suggest.is-submitted .et1-suggest-row {
+  display: none;
+}
+.preview-suggest-success {
+  display: grid;
+  gap: 7px;
+  justify-items: center;
+  color: #9bb0c9;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.preview-suggest-success a {
+  color: #c6d8ed;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(198, 216, 237, 0.24);
+}
+
+/* Founders + mission, compactly. */
+.lylo-preview-page .preview-people {
+  padding: 92px var(--gutter);
+  border-top: 1px solid var(--preview-line);
+  background: radial-gradient(
+    600px 240px at 50% 0%,
+    rgba(89, 151, 222, 0.045),
+    transparent 74%
+  );
+}
+.lylo-preview-page .preview-people .lylo-people-inner {
+  max-width: 940px;
+}
+.lylo-preview-page .preview-people h3 {
+  font-size: clamp(42px, 5vw, 58px);
+}
+.lylo-preview-page .preview-people .lylo-people-intro {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 14px;
+}
+.lylo-preview-page .preview-people .lylo-people-list {
+  margin-top: 34px;
+}
+.lylo-preview-page .preview-people .lylo-person {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.055);
+  box-shadow: none;
+}
+
+/* Call process: numbered editorial lines instead of another card grid. */
+.lylo-preview-page .preview-call {
+  padding-top: 125px;
+  padding-bottom: 105px;
+}
+.lylo-preview-page .preview-call > div {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.lylo-preview-page .preview-call > div > p {
+  max-width: 680px;
+}
+.preview-call-steps {
+  width: min(100%, 790px);
+  margin: 45px auto 36px;
+  border-top: 1px solid var(--preview-line);
+  text-align: left;
+}
+.preview-call-steps > div {
+  display: grid;
+  grid-template-columns: 58px minmax(220px, 0.9fr) minmax(0, 1.1fr);
+  gap: 22px;
+  align-items: center;
+  padding: 20px 5px;
+  border-bottom: 1px solid var(--preview-line);
+}
+.preview-call-steps span {
+  color: #6f92bb;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+.preview-call-steps strong {
+  color: #e9f0f8;
+  font-size: 14px;
+  font-weight: 600;
+}
+.preview-call-steps small {
+  color: #8090a5;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.preview-reassurance {
+  margin: 14px auto 0 !important;
+  color: #76869b !important;
+  font-size: 11px !important;
+  line-height: 1.55 !important;
+}
+.preview-after-booking {
+  margin: 23px auto 0 !important;
+  color: #8798ad !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+}
+.preview-call .preview-text-link {
+  display: inline-block;
+  margin-top: 14px;
+}
+
+/* Founding relationship is visibly downstream. */
+.preview-after-call {
+  padding: 84px var(--gutter);
+  border-top: 1px solid var(--preview-line);
+  background: rgba(255, 255, 255, 0.009);
+}
+.preview-after-call h2 {
+  font-size: clamp(40px, 4.7vw, 56px);
+}
+.preview-after-call p {
+  width: min(100%, 680px);
+  margin: 22px auto 15px;
+  color: var(--preview-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.preview-after-call strong {
+  color: #aab9ca;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Short FAQ using the site's established accordion language. */
+.preview-faq {
+  padding: 102px var(--gutter);
+  border-top: 1px solid var(--preview-line);
+}
+.preview-faq h2 {
+  font-size: clamp(42px, 5vw, 60px);
+}
+.preview-faq-list {
+  width: min(100%, 760px);
+  margin: 42px auto 0;
+  border-top: 1px solid var(--preview-line);
+  text-align: left;
+}
+.preview-faq-list details {
+  border-bottom: 1px solid var(--preview-line);
+}
+.preview-faq-list summary {
+  position: relative;
+  padding: 19px 34px 19px 2px;
+  cursor: pointer;
+  list-style: none;
+  color: #c7d2df;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.preview-faq-list summary::-webkit-details-marker {
+  display: none;
+}
+.preview-faq-list summary::after {
+  content: "+";
+  position: absolute;
+  right: 3px;
+  top: 18px;
+  color: #7189a5;
+  font-size: 17px;
+  font-weight: 400;
+}
+.preview-faq-list details[open] summary::after {
+  content: "−";
+}
+.preview-faq-list details p {
+  margin: 0;
+  padding: 0 34px 20px 2px;
+  color: #8494a9;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.preview-final-cta {
+  padding: 88px var(--gutter) 100px;
+  border-top: 1px solid var(--preview-line);
+  background: radial-gradient(
+    620px 260px at 50% 10%,
+    rgba(84, 160, 255, 0.06),
+    transparent 72%
+  );
+}
+.preview-final-cta h2 {
+  font-size: clamp(42px, 5vw, 60px);
+  max-width: 760px;
+}
+.preview-final-cta p {
+  width: min(100%, 600px);
+  margin: 19px auto 27px;
+  color: var(--preview-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+.preview-final-cta .cta {
+  display: inline-flex;
+}
+.preview-final-cta span {
+  display: block;
+  margin-top: 14px;
+  color: #718198;
+  font-size: 11px;
+}
+
+/* Receptionist is still polished, but clearly outside the primary casework journey. */
+.lylo-preview-page .beyond-casework {
+  padding-top: 66px !important;
+  padding-bottom: 38px !important;
+}
+.lylo-preview-page .beyond-casework h3 {
+  font-size: clamp(34px, 4vw, 48px);
+}
+.lylo-preview-page .lylo-secondary-demo {
+  padding-top: 62px !important;
+  padding-bottom: 80px !important;
+}
+.lylo-preview-page .lylo-secondary-demo .demo-grid {
+  max-width: 960px !important;
+}
+.phone-section .audio-timeline {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-3px);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    visibility 0s linear 0.28s;
+}
+.phone-section .audio-demo.started .audio-timeline {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition-delay: 0s;
+}
+
+/* Preview footer and mobile booking cue. */
+.lylo-preview-page footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.lylo-preview-page footer a {
+  color: #8da0b8;
+  text-decoration: none;
+}
+.lylo-preview-page footer span {
+  color: #68778b;
+}
+.preview-mobile-booking {
+  display: none;
+}
+
+@media (max-width: 979px) {
+  .preview-problem {
+    padding: 76px 18px;
+  }
+  .preview-problem-lines {
+    margin-top: 31px;
+  }
+  .preview-problem-lines p {
+    padding: 15px 3px;
+    font-size: 14px;
+  }
+  .lylo-preview-page .lylo-demos-first {
+    padding-top: 72px;
+    padding-bottom: 42px;
+  }
+  .lylo-preview-page .demo-section {
+    padding-top: 78px;
+    padding-bottom: 78px;
+  }
+  .preview-demo-bridge {
+    padding: 52px 18px 60px;
+  }
+  .lylo-preview-page .preview-privacy {
+    padding-top: 96px;
+    padding-bottom: 88px;
+  }
+  .preview-trust-list {
+    margin-top: 40px;
+  }
+  .preview-trust-list > div {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 19px 2px;
+    text-align: center;
+  }
+  .preview-trust-list span {
+    font-size: 13px;
+  }
+  .preview-judgement {
+    padding: 82px 18px;
+  }
+  .preview-judgement .preview-lead {
+    font-size: 15px;
+  }
+  .preview-guidance > div {
+    display: grid;
+    gap: 11px;
+    justify-items: center;
+  }
+  .lylo-preview-page .lylo-other-workflows {
+    padding-top: 66px;
+    padding-bottom: 70px;
+  }
+  .lylo-preview-page .preview-people {
+    padding: 76px 18px;
+  }
+  .lylo-preview-page .preview-call {
+    padding-top: 92px;
+    padding-bottom: 82px;
+  }
+  .preview-call-steps {
+    margin-top: 35px;
+  }
+  .preview-call-steps > div {
+    grid-template-columns: 40px 1fr;
+    gap: 5px 14px;
+    padding: 18px 2px;
+  }
+  .preview-call-steps small {
+    grid-column: 2;
+  }
+  .preview-after-call {
+    padding: 68px 18px;
+  }
+  .preview-faq {
+    padding: 80px 18px;
+  }
+  .preview-final-cta {
+    padding: 72px 18px 84px;
+  }
+  .lylo-preview-page .lylo-secondary-demo {
+    padding-bottom: 104px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .lylo-preview-page .hero .bullet {
+    font-size: 14px;
+    line-height: 1.52;
+  }
+  .lylo-preview-page .hero .note strong {
+    font-size: 10.5px;
+  }
+  .preview-problem h2,
+  .preview-judgement h2,
+  .preview-after-call h2,
+  .preview-faq h2,
+  .preview-final-cta h2 {
+    font-size: clamp(38px, 10.5vw, 50px);
+  }
+  .preview-stage-note {
+    font-size: 12px;
+  }
+  .lylo-preview-page .et1-suggest-row {
+    gap: 9px;
+  }
+  .lylo-preview-page .et1-book-demo {
+    width: 100%;
+    justify-content: center;
+  }
+  .preview-faq-list {
+    margin-top: 32px;
+  }
+  .preview-mobile-booking {
+    position: fixed;
+    left: 50%;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    z-index: 1350;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 20px;
+    border: 1px solid rgba(126, 187, 248, 0.34);
+    border-radius: 999px;
+    background: rgba(8, 18, 31, 0.92);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    color: #f4f8fd;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.42);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 18px);
+    transition:
+      opacity 0.24s ease,
+      transform 0.24s ease,
+      visibility 0.24s ease;
+    white-space: nowrap;
+  }
+  .preview-mobile-booking.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+  body.preview-sticky-visible {
+    padding-bottom: 76px;
+  }
+  body.preview-sticky-visible #lylo-chat-launcher {
+    bottom: 72px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-mobile-booking {
+    transition: none;
+  }
+}
