@@ -179,14 +179,14 @@
 
 (() => {
   const s = document.createElement('script');
-  s.src = '/static/site-compliance.js?v=8';
+  s.src = '/static/site-compliance.js?v=9';
   s.defer = true;
   document.head.appendChild(s);
 })();
 
 (() => {
   const s = document.createElement('script');
-  s.src = '/static/site-pilot-polish.js?v=14';
+  s.src = '/static/site-pilot-polish.js?v=15';
   s.defer = true;
   document.head.appendChild(s);
 })();
