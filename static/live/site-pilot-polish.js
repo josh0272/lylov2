@@ -114,6 +114,7 @@
         else other.querySelector('.et1-extension-head')?.appendChild(modulesLabel);
       }
       modulesLabel.textContent = 'Potential form or workflow modules include:';
+      other.querySelectorAll('.et1-potential-modules-label').forEach((legacyLabel) => legacyLabel.remove());
     }
 
     let mission = document.querySelector('.lylo-mission');
