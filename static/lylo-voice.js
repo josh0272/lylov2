@@ -186,7 +186,7 @@
 
 (() => {
   const s = document.createElement('script');
-  s.src = '/static/site-pilot-polish.js?v=12';
+  s.src = '/static/site-pilot-polish.js?v=13';
   s.defer = true;
   document.head.appendChild(s);
 })();
