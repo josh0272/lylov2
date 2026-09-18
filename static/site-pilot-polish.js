@@ -281,26 +281,37 @@
       brief.innerHTML = `
         <div class="lylo-pilot-step">
           <span class="lylo-pilot-step-no">01</span>
-          <strong>See Lylo live</strong>
-          <span>Start with a short 20-minute demonstration of the current system and demos.</span>
+          <strong>Start with a 20-minute call</strong>
+          <span>Tell us which legal processes take time and see the most relevant proof-of-concept demonstrations.</span>
         </div>
         <div class="lylo-pilot-step">
           <span class="lylo-pilot-step-no">02</span>
-          <strong>Test a safe workflow</strong>
-          <span>Use synthetic or properly anonymised material and compare Lylo with your normal process.</span>
+          <strong>Test one safe workflow</strong>
+          <span>If Lylo looks useful, choose one workflow to evaluate using synthetic or properly anonymised material and compare it with your normal process.</span>
         </div>
         <div class="lylo-pilot-step">
           <span class="lylo-pilot-step-no">03</span>
-          <strong>Review the result</strong>
-          <span>Review what worked and only discuss a paid pilot if the experiment proves useful.</span>
+          <strong>Review the evidence</strong>
+          <span>Review what worked, what needs improvement and whether Lylo provided real value. Only discuss a paid pilot if the results justify taking it further.</span>
         </div>`;
 
       const cta = final.querySelector('.cta');
       if (cta) cta.insertAdjacentElement('beforebegin', brief);
       else final.appendChild(brief);
     } else if (brief) {
-      const firstStepCopy = brief.querySelector('.lylo-pilot-step>span:last-child');
-      if (firstStepCopy) firstStepCopy.textContent = 'Start with a short 20-minute demonstration of the current system and demos.';
+      const steps = brief.querySelectorAll('.lylo-pilot-step');
+      const copy = [
+        ['Start with a 20-minute call', 'Tell us which legal processes take time and see the most relevant proof-of-concept demonstrations.'],
+        ['Test one safe workflow', 'If Lylo looks useful, choose one workflow to evaluate using synthetic or properly anonymised material and compare it with your normal process.'],
+        ['Review the evidence', 'Review what worked, what needs improvement and whether Lylo provided real value. Only discuss a paid pilot if the results justify taking it further.']
+      ];
+      steps.forEach((step, index) => {
+        if (!copy[index]) return;
+        const heading = step.querySelector('strong');
+        const body = step.querySelector('span:last-child');
+        if (heading) heading.textContent = copy[index][0];
+        if (body) body.textContent = copy[index][1];
+      });
     }
 
     if (final && brief) {
