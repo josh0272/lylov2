@@ -6,6 +6,7 @@
     const hero = document.querySelector('.hero');
     const heroCta = hero?.querySelector('.cta');
     if (hero && heroCta) {
+      heroCta.textContent = 'Book a 20-minute call';
       heroCta.setAttribute('href', bookingHref);
 
       const note = hero.querySelector('.note');
@@ -314,16 +315,7 @@
       });
     }
 
-    if (final && brief) {
-      let more = final.querySelector('.lylo-pilot-more');
-      if (!more) {
-        more = document.createElement('a');
-        more.className = 'lylo-pilot-more';
-        more.href = pilotHref;
-        more.textContent = 'See what happens next →';
-      }
-      brief.insertAdjacentElement('afterend', more);
-    }
+    final?.querySelector('.lylo-pilot-more')?.remove();
 
     if (!document.getElementById('lylo-pilot-polish-styles')) {
       const style = document.createElement('style');
