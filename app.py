@@ -42,66 +42,38 @@ model = WhisperModel(MODEL_SIZE, compute_type=COMPUTE_TYPE)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
-def render_landing(template_path: str, live: bool = False):
-    with open(template_path, "r", encoding="utf-8") as f:
-        html = f.read()
+HTML_REVALIDATE_HEADERS = {
+    "Cache-Control": "no-cache, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "0",
+}
 
-    html = html.replace(
-        '<video controls playsinline preload="metadata" aria-label="Schedule of Loss demo"><source src="/static/schedule-of-loss.mp4" type="video/mp4"></video>',
-        '<video muted loop playsinline controls preload="auto" aria-label="Schedule of Loss demo"><source src="/static/schedule-of-loss.mp4" type="video/mp4"></video>'
-    )
 
-    et1_original = '<section class="demo-section alt"><div class="demo-grid reveal"><div class="demo-copy"><h3>Turn case files into a draft form.</h3><p>Lylo is being designed to pull names, dates and case details from uploaded documents, fill the ET1 and prepare the information for review. You stay in control before it is used.</p><a class="demo-cta" href="/call#book">Book a 20 minute call</a></div><div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div></div></section>'
-    et1_expanded = '''<section class="demo-section alt et1-section"><div class="demo-grid reveal"><div class="demo-copy"><h3>Turn case files into a draft form.</h3><p>Lylo is being designed to pull names, dates and case details from uploaded documents, fill the ET1 and prepare the information for review. You stay in control before it is used.</p><button class="demo-cta et1-suggest-jump" id="et1-suggest-jump" type="button">Suggest a form</button></div><div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div></div><div class="et1-extension reveal"><div class="et1-extension-head"><h4>One form is just the start.</h4><p>The same approach could be extended to other forms your firm uses.</p><p class="et1-potential-modules-label">Potential form modules include:</p></div><div class="et1-form-strip" aria-label="Examples of forms Lylo could be adapted to fill"><div class="et1-form-track"><div class="et1-form-set"><span class="et1-form-chip">ET1</span><span class="et1-form-chip">ET3</span><span class="et1-form-chip">N1 Claim Form</span><span class="et1-form-chip">N244 Application</span><span class="et1-form-chip">C100 Family Application</span><span class="et1-form-chip">Form E</span><span class="et1-form-chip">Simple Procedure</span><span class="et1-form-chip is-own">Your firm’s own forms</span></div><div class="et1-form-set" aria-hidden="true"><span class="et1-form-chip">ET1</span><span class="et1-form-chip">ET3</span><span class="et1-form-chip">N1 Claim Form</span><span class="et1-form-chip">N244 Application</span><span class="et1-form-chip">C100 Family Application</span><span class="et1-form-chip">Form E</span><span class="et1-form-chip">Simple Procedure</span><span class="et1-form-chip is-own">Your firm’s own forms</span></div></div></div><form class="et1-suggest" id="et1-form-suggest"><label for="et1-form-input">What form takes your firm too much time?</label><div class="et1-suggest-row"><input id="et1-form-input" name="form_suggestion" type="text" autocomplete="off" maxlength="140" placeholder="e.g. ET3, Form E, our client intake form…" aria-describedby="et1-form-status"><button type="submit">Suggest a form</button></div><div class="et1-suggest-status" id="et1-form-status" aria-live="polite"></div></form></div></section>'''
-    html = html.replace(et1_original, et1_expanded)
+def html_file(path: str):
+    with open(path, "r", encoding="utf-8") as f:
+        return HTMLResponse(content=f.read(), headers=HTML_REVALIDATE_HEADERS)
 
-    html = html.replace(
-        '<div class="demo-media"><div class="blank-video" aria-label="ET1 demo video space"></div></div>',
-        '<div class="demo-media"><video muted loop playsinline controls preload="auto" aria-label="ET1 demo"><source src="/static/et1.mp4" type="video/mp4"></video></div>'
-    )
 
-    html = html.replace(
-        '<div class="call-number">07700 900 642</div>',
-        '<button class="call-number lylo-voice-call lylo-desktop-call" id="lylo-voice-call" type="button">Call Lylo</button><a class="call-number call-number-link lylo-mobile-call" href="tel:+441416732902" aria-label="Call Lylo on 0141 673 2902">0141 673 2902</a><div class="lylo-voice-status" id="lylo-voice-status">Browser voice call · no phone number needed</div>'
-    )
-
-    html = html.replace("touch-action:pan-y", "touch-action:pan-x pan-y")
-    html = html.replace(
-        "if(e.pointerType==='mouse'&&e.button!==0)return;isDragging=true;",
-        "if(e.pointerType!=='mouse'||e.button!==0)return;isDragging=true;"
-    )
-    html = html.replace(
-        "if(!isDragging&&now>interactionUntil){regCarousel.scrollLeft+=dt*.032;wrapPosition()}",
-        "if(window.innerWidth>979&&!isDragging&&now>interactionUntil){regCarousel.scrollLeft+=dt*.032;wrapPosition()}"
-    )
-
-    html = html.replace(
-        "</head>",
-        '<link rel="stylesheet" href="/static/et1-intake.css?v=2"></head>'
-    )
-
-    html = html.replace(
-        "</body>",
-        '<script src="/static/mobile-preview.js?v=11" defer></script><script src="/static/video-audio-state.js?v=7" defer></script><script src="/static/phone-demo.js?v=4" defer></script><script src="/static/et1-intake.js?v=3" defer></script><script id="preview-cta-script" src="/static/preview-cta.js?v=7" defer></script><script src="/static/lylo-voice.js?v=10" defer></script></body>'
-    )
-
-    if live:
-        html = html.replace('/static/', '/static/live/')
-        for name in ('mobile-preview.js','video-audio-state.js','phone-demo.js','et1-intake.js','preview-cta.js','lylo-voice.js'):
-            html = html.replace(f'/static/live/{name}', f'/live-assets/{name}')
-        html = html.replace('/live-assets/phone-demo.js?v=4', '/live-assets/phone-demo.js?v=5')
-
-    return HTMLResponse(content=html)
+@app.middleware("http")
+async def cache_policy(request, call_next):
+    response = await call_next(request)
+    path = request.url.path
+    if path.startswith("/static/") or path.startswith("/live-assets/"):
+        if request.query_params.get("v"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        elif "Cache-Control" not in response.headers:
+            response.headers["Cache-Control"] = "public, max-age=3600"
+    return response
 
 
 @app.get("/", response_class=HTMLResponse)
 def home():
-    return render_landing("static/live/index.html", live=True)
+    return html_file("static/live/index.html")
 
 
-@app.get("/about", response_class=FileResponse)
+@app.get("/about", response_class=HTMLResponse)
 def about():
-    return FileResponse("static/preview-about.html")
+    return html_file("static/preview-about.html")
 
 
 @app.get("/preview")
@@ -112,30 +84,29 @@ def preview_redirect():
 @app.get("/live-assets/{name}")
 def live_asset(name: str):
     allowed = {
-        'mobile-preview.js','video-audio-state.js','phone-demo.js',
-        'et1-intake.js','preview-cta.js','lylo-voice.js'
+        'mobile-preview.js', 'video-audio-state.js', 'phone-demo.js',
+        'et1-intake.js', 'lylo-voice.js'
     }
     if name not in allowed:
         raise HTTPException(status_code=404, detail="Not found")
     path = os.path.join("static", "live", name)
     with open(path, "r", encoding="utf-8") as f:
         content = f.read().replace('/static/', '/static/live/')
-    if name == 'preview-cta.js':
-        content = content.replace("const aboutPath = 'static/preview-about.html';", "const aboutPath = '/about';")
     if name == 'phone-demo.js':
         content = content.replace(
             "      const naturalTypingDuration = Math.max(0.35, turn.text.length / TYPE_CHARS_PER_SECOND);\n      const typingDuration = Math.min(availableDuration, naturalTypingDuration);",
             "      const typingDuration = availableDuration;"
         )
-    return Response(content=content, media_type="application/javascript")
+    return Response(
+        content=content,
+        media_type="application/javascript",
+        headers={"Cache-Control": "public, max-age=31536000, immutable"},
+    )
 
 
 @app.get("/call", response_class=HTMLResponse)
 def call_page():
-    with open("static/live/founding-pilot.html", "r", encoding="utf-8") as f:
-        html = f.read()
-    html = html.replace('href="/preview#', 'href="/#').replace('href="/preview"', 'href="/"')
-    return HTMLResponse(content=html)
+    return html_file("static/live/founding-pilot.html")
 
 
 @app.get("/founding-pilot")
@@ -162,9 +133,14 @@ def jess_out_of_hours_demo():
     return response
 
 
-@app.get("/research", response_class=FileResponse)
+@app.get("/research", response_class=HTMLResponse)
 def research():
-    return FileResponse("static/research.html")
+    return html_file("static/research.html")
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+def privacy():
+    return html_file("static/privacy.html")
 
 
 @app.get("/healthz")

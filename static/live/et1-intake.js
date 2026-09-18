@@ -3,7 +3,7 @@
     return Array.from(document.querySelectorAll('.demo-section')).find((section) => {
       const heading = section.querySelector('.demo-copy h3');
       const title = heading?.textContent?.trim();
-      return title === 'Turn case files into a completed form.' || title === 'Turn case files into a draft form.';
+      return title === 'Turn case documents into an ET1 draft.';
     });
   };
 
@@ -55,51 +55,6 @@
     window.setTimeout(applyCaptionState, 250);
   };
 
-  const buildExtension = () => {
-    const wrap = document.createElement('div');
-    wrap.className = 'et1-extension reveal in';
-    wrap.innerHTML = `
-      <div class="et1-extension-head">
-        <h4>One form is just the start.</h4>
-        <p>Lylo can be built to fill the forms your firm uses every day.</p>
-      </div>
-      <div class="et1-form-strip" aria-label="Examples of forms Lylo could be adapted to fill">
-        <div class="et1-form-track">
-          <div class="et1-form-set">
-            <span class="et1-form-chip">ET1</span>
-            <span class="et1-form-chip">ET3</span>
-            <span class="et1-form-chip">N1 Claim Form</span>
-            <span class="et1-form-chip">N244 Application</span>
-            <span class="et1-form-chip">C100 Family Application</span>
-            <span class="et1-form-chip">Form E</span>
-            <span class="et1-form-chip">Simple Procedure</span>
-            <span class="et1-form-chip is-own">Your firm’s own forms</span>
-          </div>
-          <div class="et1-form-set" aria-hidden="true">
-            <span class="et1-form-chip">ET1</span>
-            <span class="et1-form-chip">ET3</span>
-            <span class="et1-form-chip">N1 Claim Form</span>
-            <span class="et1-form-chip">N244 Application</span>
-            <span class="et1-form-chip">C100 Family Application</span>
-            <span class="et1-form-chip">Form E</span>
-            <span class="et1-form-chip">Simple Procedure</span>
-            <span class="et1-form-chip is-own">Your firm’s own forms</span>
-          </div>
-        </div>
-      </div>
-      <form class="et1-suggest" id="et1-form-suggest">
-        <label for="et1-form-input">What form takes your firm too much time?</label>
-        <div class="et1-suggest-row">
-          <input id="et1-form-input" name="form_suggestion" type="text" autocomplete="off" maxlength="140" placeholder="e.g. ET3, Form E, our client intake form…" aria-describedby="et1-form-status">
-          <button type="submit">Suggest a form</button>
-          <a class="et1-book-demo" href="/research">Book a 20-minute demo</a>
-        </div>
-        <div class="et1-suggest-status" id="et1-form-status" aria-live="polite"></div>
-      </form>
-    `;
-    return wrap;
-  };
-
   const init = () => {
     const section = findEt1Section();
     if (!section) return;
@@ -107,25 +62,8 @@
     section.classList.add('et1-section');
     initEt1Captions(section);
 
-    let extension = section.querySelector('.et1-extension');
-    if (!extension) {
-      extension = buildExtension();
-      section.appendChild(extension);
-    }
-
-    const existingCta = section.querySelector('.demo-copy .demo-cta');
-    if (existingCta) {
-      if (existingCta.tagName === 'A') {
-        existingCta.href = '/research';
-        existingCta.textContent = 'Explore the founding pilot';
-      } else {
-        const link = document.createElement('a');
-        link.href = '/research';
-        link.className = 'demo-cta';
-        link.textContent = 'Explore the founding pilot';
-        existingCta.replaceWith(link);
-      }
-    }
+    const extension = section.querySelector('.et1-extension');
+    if (!extension) return;
 
     const form = document.getElementById('et1-form-suggest');
     const input = document.getElementById('et1-form-input');
@@ -237,19 +175,9 @@
     });
   };
 
-  const loadPreviewCtas = () => {
-    if (document.getElementById('preview-cta-script')) return;
-    const script = document.createElement('script');
-    script.id = 'preview-cta-script';
-    script.src = '/static/preview-cta.js?v=4';
-    script.defer = true;
-    document.body.appendChild(script);
-  };
-
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => { init(); loadPreviewCtas(); }, { once: true });
+    document.addEventListener('DOMContentLoaded', init, { once: true });
   } else {
     init();
-    loadPreviewCtas();
   }
 })();

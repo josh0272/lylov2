@@ -2,6 +2,24 @@
   const mq = window.matchMedia('(max-width: 979px)');
   const isMobile = () => mq.matches;
 
+  const initMenu = () => {
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (!hamburger || !mobileMenu || hamburger.dataset.menuReady === '1') return;
+    hamburger.dataset.menuReady = '1';
+
+    const setMenu = (open) => {
+      hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      hamburger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      mobileMenu.classList.toggle('open', open);
+      mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    hamburger.addEventListener('click', () => setMenu(hamburger.getAttribute('aria-expanded') !== 'true'));
+    mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+  };
+
   const isVideoFullscreen = (video) => {
     const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
     return fullscreenElement === video || video.webkitDisplayingFullscreen === true || video.dataset.lyloFullscreenActive === '1';
@@ -386,6 +404,7 @@
   };
 
   const init = () => {
+    initMenu();
     document.querySelectorAll('.privacy-node').forEach((node) => {
       node.style.setProperty('animation', 'none', 'important');
     });
