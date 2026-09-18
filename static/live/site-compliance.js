@@ -56,14 +56,14 @@
     if (tagline) tagline.textContent = 'Private AI, designed for solicitors.';
 
     const heroSupportingCopy = document.querySelector('.hero .bullet');
-    if (heroSupportingCopy) heroSupportingCopy.textContent = 'Retrieval-based AI system in development, with specialist modules being designed to support drafting Statements of Fact, ET1s, Schedules of Loss and Simple Procedure claim forms for solicitor review.';
+    if (heroSupportingCopy) heroSupportingCopy.textContent = 'We are developing private AI for legal work, so solicitors can use the benefits of AI without sending confidential client data to public AI services such as ChatGPT.';
 
     const demoHeading = document.querySelector('.demo-heading');
     if (demoHeading) {
       const title = demoHeading.querySelector('h2');
       const copy = demoHeading.querySelector('p');
-      if (title) title.textContent = 'See what we’re building.';
-      if (copy) copy.textContent = 'Four proof-of-concept demos. Each one shows a real task Lylo is being designed to help with.';
+      if (title) title.textContent = 'See what we could build for your firm.';
+      if (copy) copy.textContent = 'Four proof-of-concept demos showing real legal tasks Lylo is being designed to support—within a private system intended to keep confidential client information under your firm’s control.';
     }
 
     document.querySelectorAll('.demo-section').forEach((section) => {
