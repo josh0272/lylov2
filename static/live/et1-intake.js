@@ -2,7 +2,8 @@
   const findEt1Section = () => {
     return Array.from(document.querySelectorAll('.demo-section')).find((section) => {
       const heading = section.querySelector('.demo-copy h3');
-      return heading?.textContent?.trim() === 'Turn case files into a completed form.';
+      const title = heading?.textContent?.trim();
+      return title === 'Turn case files into a completed form.' || title === 'Turn case files into a draft form.';
     });
   };
 
