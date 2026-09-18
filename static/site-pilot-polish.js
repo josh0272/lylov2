@@ -1,7 +1,7 @@
 (() => {
   const run = () => {
-    const bookingHref = '/founding-pilot#book';
-    const pilotHref = '/founding-pilot';
+    const bookingHref = '/call#book';
+    const pilotHref = '/call';
 
     const hero = document.querySelector('.hero');
     const heroCta = hero?.querySelector('.cta');
@@ -31,7 +31,7 @@
     if (desktopNav) {
       const bookingButton = desktopNav.querySelector('.desktop-pilot-link');
       if (bookingButton) {
-        bookingButton.textContent = 'Book a 20-minute demo';
+        bookingButton.textContent = 'Book a 20-minute call';
         bookingButton.setAttribute('href', bookingHref);
       }
 
@@ -40,7 +40,7 @@
         pilotTextLink = document.createElement('a');
         pilotTextLink.className = 'lylo-pilot-nav-text';
         pilotTextLink.href = pilotHref;
-        pilotTextLink.textContent = 'Founding Pilot';
+        pilotTextLink.textContent = 'What happens next';
         if (bookingButton) desktopNav.insertBefore(pilotTextLink, bookingButton);
         else desktopNav.appendChild(pilotTextLink);
       }
@@ -70,12 +70,12 @@
         if (existingPilot) {
           pilotTextLink = existingPilot;
           pilotTextLink.classList.add('lylo-pilot-nav-text');
-          pilotTextLink.textContent = 'Founding Pilot';
+          pilotTextLink.textContent = 'What happens next';
         } else {
           pilotTextLink = document.createElement('a');
           pilotTextLink.className = 'lylo-pilot-nav-text';
           pilotTextLink.href = pilotHref;
-          pilotTextLink.textContent = 'Founding Pilot';
+          pilotTextLink.textContent = 'What happens next';
         }
       }
 
@@ -84,7 +84,7 @@
         bookingLink = document.createElement('a');
         bookingLink.className = 'lylo-mobile-booking-link';
         bookingLink.href = bookingHref;
-        bookingLink.textContent = 'Book a 20-minute demo';
+        bookingLink.textContent = 'Book a 20-minute call';
       }
 
       const ordered = [
@@ -217,7 +217,7 @@
     if (regStage && !midBooking) {
       midBooking = document.createElement('section');
       midBooking.className = 'lylo-mid-booking';
-      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20-minute demo</a><p>No preparation. No client data. No commitment.</p>`;
+      midBooking.innerHTML = `<a class="cta" href="${bookingHref}">Book a 20-minute call</a><p>No preparation. No client data. No commitment.</p>`;
       regStage.insertAdjacentElement('afterend', midBooking);
     }
 
@@ -249,10 +249,10 @@
         const link = document.createElement('a');
         link.className = Array.from(cta.classList).filter((name) => name !== 'et1-suggest-jump').join(' ');
         link.href = bookingHref;
-        link.textContent = 'Book a 20-minute demo';
+        link.textContent = 'Book a 20-minute call';
         cta.replaceWith(link);
       } else {
-        cta.textContent = 'Book a 20-minute demo';
+        cta.textContent = 'Book a 20-minute call';
         cta.setAttribute('href', bookingHref);
       }
     });
@@ -268,7 +268,7 @@
 
       const finalCta = final.querySelector('.cta');
       if (finalCta) {
-        finalCta.textContent = 'Book a 20-minute demo';
+        finalCta.textContent = 'Book a 20-minute call';
         finalCta.setAttribute('href', bookingHref);
       }
     }
@@ -309,7 +309,7 @@
         more = document.createElement('a');
         more.className = 'lylo-pilot-more';
         more.href = pilotHref;
-        more.textContent = 'Learn more about the founding pilot →';
+        more.textContent = 'See what happens next →';
       }
       brief.insertAdjacentElement('afterend', more);
     }
