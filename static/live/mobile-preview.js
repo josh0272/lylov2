@@ -20,6 +20,41 @@
     mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
   };
 
+  const initStickyBooking = () => {
+    const bar = document.querySelector('.lylo-mobile-sticky-booking');
+    const hero = document.querySelector('.hero');
+    const bookingSection = document.querySelector('.lylo-call-section');
+    if (!bar || !hero || bar.dataset.stickyReady === '1') return;
+    bar.dataset.stickyReady = '1';
+
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const heroGone = hero.getBoundingClientRect().bottom < 0;
+      const bookingVisible = bookingSection
+        ? bookingSection.getBoundingClientRect().top < window.innerHeight * 0.82 &&
+          bookingSection.getBoundingClientRect().bottom > window.innerHeight * 0.18
+        : false;
+      const visible = isMobile() && heroGone && !bookingVisible;
+      bar.classList.toggle('is-visible', visible);
+      document.body.classList.toggle('lylo-sticky-booking-visible', visible);
+    };
+    const queue = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue, { passive: true });
+    if (typeof mq.addEventListener === 'function') mq.addEventListener('change', queue);
+    bar.addEventListener('click', () => {
+      bar.classList.remove('is-visible');
+      document.body.classList.remove('lylo-sticky-booking-visible');
+    });
+    update();
+  };
+
   const isVideoFullscreen = (video) => {
     const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
     return fullscreenElement === video || video.webkitDisplayingFullscreen === true || video.dataset.lyloFullscreenActive === '1';
@@ -405,6 +440,7 @@
 
   const init = () => {
     initMenu();
+    initStickyBooking();
     document.querySelectorAll('.privacy-node').forEach((node) => {
       node.style.setProperty('animation', 'none', 'important');
     });
