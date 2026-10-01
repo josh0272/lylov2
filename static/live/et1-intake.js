@@ -16,7 +16,7 @@
     track.kind = 'captions';
     track.label = 'English';
     track.srclang = 'en';
-    track.src = '/static/et1-en.vtt';
+    track.src = '/static/live/et1-en.vtt';
     track.default = true;
     track.dataset.lyloCaptionTrack = 'et1';
     video.appendChild(track);
