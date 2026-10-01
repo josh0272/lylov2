@@ -76,18 +76,10 @@ def about():
     return html_file("static/preview-about.html")
 
 
-@app.get("/preview", response_class=HTMLResponse)
-@app.get("/preview/", response_class=HTMLResponse)
-def preview():
-    with open("static/live/preview.html", "r", encoding="utf-8") as f:
-        return HTMLResponse(
-            content=f.read(),
-            headers={
-                "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
-                "Pragma": "no-cache",
-                "Expires": "0",
-            },
-        )
+@app.get("/preview")
+@app.get("/preview/")
+def preview_redirect():
+    return RedirectResponse(url="/", status_code=308)
 
 
 @app.get("/live-assets/{name}")
