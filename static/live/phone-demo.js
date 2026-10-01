@@ -16,7 +16,7 @@
   const audio = document.createElement('audio');
   audio.id = 'phoneDemoAudio';
   audio.preload = 'metadata';
-  audio.src = '/static/ai-receptionist.mp3';
+  audio.src = '/static/live/ai-receptionist.mp3';
   oldAudio.replaceWith(audio);
 
   const icon = button.querySelector('svg');
@@ -294,8 +294,7 @@
       const { line, copy } = ensureLine(index);
 
       const availableDuration = Math.max(0.25, turn.end - turn.start);
-      const naturalTypingDuration = Math.max(0.35, turn.text.length / TYPE_CHARS_PER_SECOND);
-      const typingDuration = Math.min(availableDuration, naturalTypingDuration);
+      const typingDuration = availableDuration;
       const progress = Math.max(0, Math.min(1, (time - turn.start) / typingDuration));
       const chars = Math.max(1, Math.floor(turn.text.length * progress));
       copy.textContent = turn.text.slice(0, chars);
