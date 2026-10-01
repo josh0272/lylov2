@@ -32,7 +32,7 @@
       <a href="#ai-duties">AI & professional duties</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
-      <a class="desktop-pilot-link" href="/founding-pilot">Founding Pilot</a>
+      <a class="desktop-pilot-link" href="/call#book">Book a 20-minute demo</a>
     `;
   };
 
@@ -54,7 +54,7 @@
       <a href="#ai-duties">AI & professional duties</a>
       <a href="#demos">Demos</a>
       <a href="#privacy">Private AI</a>
-      <a href="/founding-pilot">Founding Pilot</a>
+      <a href="/call#book">Book a 20-minute demo</a>
     `;
 
     panel.querySelectorAll('a').forEach((link) => {
@@ -181,7 +181,7 @@
     const heroCta = document.querySelector('.hero .cta');
     if (heroCta) {
       heroCta.textContent = 'Book a 20-minute demo';
-      heroCta.setAttribute('href', '/founding-pilot#book');
+      heroCta.setAttribute('href', '/call#book');
     }
     text('.hero .note', 'See Lylo, ask questions, and decide if the pilot is worth testing.');
     text('.privacy-main', 'What if your firm could use the benefits of AI without sending sensitive client data to a public AI service? With Lylo, case files stay on the firm’s own systems.');
@@ -192,15 +192,15 @@
     const caseSection = byHeading('Ask the case. Get the answer.') || byHeading('Ask the case. Find the source.');
     const caseCta = caseSection?.querySelector('.demo-cta');
     if (caseCta) {
-      caseCta.textContent = 'Explore the founding pilot';
-      caseCta.setAttribute('href', '/founding-pilot');
+      caseCta.textContent = 'Book a 20-minute demo';
+      caseCta.setAttribute('href', '/call#book');
     }
 
     const et1Section = byHeading('Turn case files into a completed form.') || byHeading('Turn case files into a draft form.');
     const et1Cta = et1Section?.querySelector('.demo-copy .demo-cta');
     if (et1Cta) {
-      et1Cta.textContent = 'Explore the founding pilot';
-      et1Cta.setAttribute('href', '/founding-pilot?workflow=et1');
+      et1Cta.textContent = 'Book a 20-minute demo';
+      et1Cta.setAttribute('href', '/call#book');
     }
 
     const et1Form = et1Section?.querySelector('#et1-form-suggest');
@@ -208,19 +208,19 @@
     if (et1Row && !et1Row.querySelector('.et1-book-demo')) {
       const demoLink = document.createElement('a');
       demoLink.className = 'et1-book-demo';
-      demoLink.href = '/founding-pilot?workflow=et1#book';
+      demoLink.href = '/call#book';
       demoLink.textContent = 'Book a 20-minute demo';
       et1Row.appendChild(demoLink);
     } else {
       const demoLink = et1Row?.querySelector('.et1-book-demo');
-      if (demoLink) demoLink.href = '/founding-pilot?workflow=et1#book';
+      if (demoLink) demoLink.href = '/call#book';
     }
 
     const scheduleSection = byHeading('Know what the claim is worth.') || byHeading('Build a Schedule of Loss.');
     const scheduleCta = scheduleSection?.querySelector('.demo-cta');
     if (scheduleCta) {
       scheduleCta.textContent = 'Test this with your workflow';
-      scheduleCta.setAttribute('href', '/founding-pilot?workflow=schedule#book');
+      scheduleCta.setAttribute('href', '/call#book');
     }
 
     const phoneSection = byHeading('Let Lylo answer the phone.');
@@ -264,8 +264,8 @@
       if (title) title.textContent = 'We are looking for a small number of law firms to pilot Lylo with us.';
       if (copy) copy.textContent = 'Start with a short demo. If it looks useful, test Lylo on one synthetic or properly anonymised matter and compare it with your normal workflow.';
       if (cta) {
-        cta.textContent = 'Apply for the founding pilot';
-        cta.setAttribute('href', '/founding-pilot#book');
+        cta.textContent = 'Book a 20-minute demo';
+        cta.setAttribute('href', '/call#book');
       }
     }
 
