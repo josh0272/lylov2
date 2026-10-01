@@ -394,15 +394,6 @@
     }, 32);
   };
 
-  const loadChat = () => {
-    if (document.getElementById('lylo-chat-script')) return;
-    const script = document.createElement('script');
-    script.id = 'lylo-chat-script';
-    script.src = '/static/lylo-chat.js?v=1';
-    script.defer = true;
-    document.body.appendChild(script);
-  };
-
   const init = () => {
     initMenu();
     document.querySelectorAll('.privacy-node').forEach((node) => {
@@ -420,7 +411,6 @@
       initDesktopVideos(videos);
     }
 
-    loadChat();
   };
 
   if (document.readyState === 'loading') {
