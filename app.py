@@ -73,7 +73,7 @@ def home():
 
 @app.get("/about", response_class=HTMLResponse)
 def about():
-    return html_file("static/preview-about.html")
+    return html_file("static/about.html")
 
 
 @app.get("/preview")
@@ -107,7 +107,7 @@ def live_asset(name: str):
 
 @app.get("/call", response_class=HTMLResponse)
 def call_page():
-    return html_file("static/live/founding-pilot.html")
+    return html_file("static/live/call.html")
 
 
 @app.get("/founding-pilot")
