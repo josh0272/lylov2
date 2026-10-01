@@ -43,7 +43,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 HTML_REVALIDATE_HEADERS = {
-    "Cache-Control": "no-cache, must-revalidate",
+    "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
     "Pragma": "no-cache",
     "Expires": "0",
 }
