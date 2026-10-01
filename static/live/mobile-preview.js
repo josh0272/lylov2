@@ -62,8 +62,8 @@
     
 
     const configs = [
-      { match: '/static/poc.mp4', src: '/static/poc-en.vtt', id: 'poc' },
-      { match: '/static/schedule-of-loss.mp4', src: '/static/schedule-of-loss-en.vtt', id: 'schedule' }
+      { match: '/media/poc.mp4', src: '/static/live/poc-en.vtt', id: 'poc' },
+      { match: '/media/schedule-of-loss.mp4', src: '/static/live/schedule-of-loss-en.vtt', id: 'schedule' }
     ];
 
     videos.forEach((video) => {
@@ -155,6 +155,7 @@
       entries.forEach((entry) => {
         const video = entry.target;
 
+        if (video.dataset.lyloSeeking === '1') return;
         if (entry.isIntersecting && entry.intersectionRatio >= 0.35 && !document.hidden) {
           safePlay(video);
         } else if (!video.paused && !isVideoFullscreen(video)) {
@@ -224,6 +225,9 @@
     };
 
     videos.forEach((video) => {
+      video.dataset.lyloSeeking = '0';
+      video.addEventListener('seeking', () => { video.dataset.lyloSeeking = '1'; });
+      video.addEventListener('seeked', () => { window.setTimeout(() => { video.dataset.lyloSeeking = '0'; }, 120); });
       video.autoplay = false;
       video.removeAttribute('autoplay');
       video.muted = true;
