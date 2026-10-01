@@ -105,6 +105,73 @@ def live_asset(name: str):
     )
 
 
+@app.get("/media/{name}")
+def media_file(name: str, request: Request):
+    allowed = {
+        "poc.mp4": ("static/live/poc.mp4", "video/mp4"),
+        "poc.webm": ("static/live/poc.webm", "video/webm"),
+        "et1.mp4": ("static/live/et1.mp4", "video/mp4"),
+        "schedule-of-loss.mp4": ("static/live/schedule-of-loss.mp4", "video/mp4"),
+    }
+    item = allowed.get(name)
+    if not item:
+        raise HTTPException(status_code=404, detail="Not found")
+
+    path, media_type = item
+    file_size = os.path.getsize(path)
+    range_header = request.headers.get("range")
+    common_headers = {
+        "Accept-Ranges": "bytes",
+        "Cache-Control": "public, max-age=31536000, immutable",
+    }
+
+    if not range_header:
+        return FileResponse(path, media_type=media_type, headers=common_headers)
+
+    try:
+        unit, value = range_header.strip().split("=", 1)
+        if unit.lower() != "bytes" or "," in value:
+            raise ValueError
+        start_text, end_text = value.split("-", 1)
+        if start_text:
+            start = int(start_text)
+            end = int(end_text) if end_text else file_size - 1
+        else:
+            suffix_length = int(end_text)
+            if suffix_length <= 0:
+                raise ValueError
+            start = max(0, file_size - suffix_length)
+            end = file_size - 1
+        if start < 0 or start >= file_size or end < start:
+            raise ValueError
+        end = min(end, file_size - 1)
+    except (ValueError, TypeError):
+        return Response(
+            status_code=416,
+            headers={**common_headers, "Content-Range": f"bytes */{file_size}"},
+        )
+
+    length = end - start + 1
+
+    def iter_file():
+        remaining = length
+        with open(path, "rb") as file_obj:
+            file_obj.seek(start)
+            while remaining > 0:
+                chunk = file_obj.read(min(1024 * 1024, remaining))
+                if not chunk:
+                    break
+                remaining -= len(chunk)
+                yield chunk
+
+    headers = {
+        **common_headers,
+        "Content-Range": f"bytes {start}-{end}/{file_size}",
+        "Content-Length": str(length),
+    }
+    return StreamingResponse(iter_file(), status_code=206, media_type=media_type, headers=headers)
+
+
 @app.get("/call", response_class=HTMLResponse)
 def call_page():
     return html_file("static/live/call.html")
