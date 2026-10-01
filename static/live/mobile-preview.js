@@ -139,6 +139,9 @@
 
   const initDesktopVideos = (videos) => {
     videos.forEach((video) => {
+      video.dataset.lyloSeeking = '0';
+      video.addEventListener('seeking', () => { video.dataset.lyloSeeking = '1'; });
+      video.addEventListener('seeked', () => { window.setTimeout(() => { video.dataset.lyloSeeking = '0'; }, 120); });
       video.autoplay = false;
       video.removeAttribute('autoplay');
       video.muted = true;
@@ -324,6 +327,7 @@
       });
 
       videos.forEach((video) => {
+        if (video.dataset.lyloSeeking === '1') return;
         if (video !== bestVideo) {
           autoPause(video);
           return;
